@@ -18,7 +18,6 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
   - [📚 Documentação Adicional](#📚-documentação-adicional)
 
 
-<br>
 
 ## ℹ️ Descrição do teste
 
@@ -28,12 +27,6 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
 O Teste Técnico Back-end da BeTalent consiste em estruturar uma API RESTful conectada a um banco de dados.
 
 Trata-se de um sistema que permite cadastrar usuários externos. Ao realizarem login, estes usuários deverão poder registrar clientes, produtos e vendas.
-
-<details>
-
-  <summary>Mostrar mais informações</summary>
-
-  <br/>
 
 O(a) candidato(a) deve desenvolver o projeto em um dos seguintes frameworks: `Adonis (Node.js)` ou `Laravel (PHP)`.
 
@@ -109,28 +102,19 @@ Serão critérios para avaliação da solução fornecida:
 - Seguimento dos padrões especificados;
 - Clareza na documentação.
 
-</details>
-
 
 # 📚 Documentação Completa do Projeto
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
 
 A documentação completa detalha as tecnologias utilizadas, a estrutura do projeto, instruções de instalação e execução, exemplos de uso e referências adicionais.
 
 Também comtém informações sobre as rotas disponíveis, os métodos HTTP permitidos e os parâmetros necessários para cada uma delas.
 
-<br>
-
-<details>
-
-<br>
-
-  <summary>Ver documentação</summary>
-
-  [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
-
-  <br/>
-
   ## 🚀 Tecnologias utilizadas
+  
+  [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
   - [Node.js](https://nodejs.org/en/)
     - **Descrição:**
@@ -186,5 +170,4 @@ Também comtém informações sobre as rotas disponíveis, os métodos HTTP perm
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  Links e referências para documentação adicional e recursos úteis.
-</details>
+  Links e referências para documentação adicional e recursos úteis

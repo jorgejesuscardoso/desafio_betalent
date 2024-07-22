@@ -1,21 +1,21 @@
 import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
-export default class Usuario extends BaseModel {
+export default class User extends BaseModel {
   @column({ isPrimary: true })
   public id: number
 
   @column()
-  public nome: string
+  public name: string
 
   @column()
   public email: string
 
   @column()
-  public senha: string
+  public password: string
   
   @column()
-  public foto: string
+  public photo: string
 
   @column()
   public role: string

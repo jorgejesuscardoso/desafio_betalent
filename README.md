@@ -5,17 +5,17 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
 ###  Sumário
 
 - [📄 Teste Técnico Back-end BeTalent](#-teste-técnico-back-end-betalent)
-  - [🗄️ Banco de dados](#🗄️-banco-de-dados)
-  - [🧭 Rotas do sistema](#🧭-rotas-do-sistema)
-  - [🔍 Observações](#🔍-observações)
-  - [📝 Critérios de avaliação](#📝-critérios-de-avaliação)
+  - [🗄️ Banco de dados](#-banco-de-dados)
+  - [🧭 Rotas do sistema](#-rotas-do-sistema)
+  - [🔍 Observações](#-observações)
+  - [📝 Critérios de avaliação](#-critérios-de-avaliação)
 
-- [📚 Documentação Completa do Projeto](#📚-documentação-completa-do-projeto)
-  - [🚀 Tecnologias utilizadas](#🚀-tecnologias-utilizadas)
-  - [📋 Estrutura do Projeto](#📋-estrutura-do-projeto)
-  - [📦 Instalação e Execução](#📦-instalação-e-execução)
-  - [📝 Uso e Exemplos](#📝-uso-e-exemplos)
-  - [📚 Documentação Adicional](#📚-documentação-adicional)
+- [📚 Documentação Completa do Projeto](#-documentação-completa-do-projeto)
+  - [🚀 Tecnologias utilizadas](#-tecnologias-utilizadas)
+  - [📋 Estrutura do Projeto](#-estrutura-do-projeto)
+  - [📦 Instalação e Execução](#-instalação-e-execução)
+  - [📝 Uso e Exemplos](#-uso-e-exemplos)
+  - [📚 Documentação Adicional](#-documentação-adicional)
 
 
 

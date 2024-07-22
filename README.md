@@ -10,8 +10,7 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
   - [🔍 Observações](#🔍-observações)
   - [📝 Critérios de avaliação](#📝-critérios-de-avaliação)
 
-- [📚 Documentação Completa do Projeto] 
-    - [Requisitos](#requisitos)(#📚-documentação-completa-do-projeto)
+- [📚 Documentação Completa do Projeto](#📚-documentação-completa-do-projeto)
   - [🚀 Tecnologias utilizadas](#🚀-tecnologias-utilizadas)
   - [📋 Estrutura do Projeto](#📋-estrutura-do-projeto)
   - [📦 Instalação e Execução](#📦-instalação-e-execução)

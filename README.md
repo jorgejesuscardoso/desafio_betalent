@@ -370,6 +370,34 @@ node server.ts
  ```bash
  docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
  ```
+ Após isso, insira a senha do banco de dados e você estará conectado ao banco de dados.
+
+  > OBS: Enquanto você estiver digitando a senha, não aparecerá nada na tela, mas ela está sendo digitada.
+
+ Para certificar que entro de fato no banco de dados, utilize as seguintes queries:
+ ```bash
+  show databases;
+  use betalent;
+  show tables;
+```
+
+Se for sua primeira consulta e você não fez nenhuma alteração no banco de dados, o retorno deverá ser algo parecido com isso:
+
+```bash
++------------------------+
+| Tables_in_betalent     |
++------------------------+
+| addresses              |
+| adonis_schema          |
+| adonis_schema_versions |
+| categories             |
+| clients                |
+| phones                 |
+| products               |
+| sales                  |
+| users                  |
++------------------------+
+```
 
 ###### Dados Iniciais
 Caso deseje criar dados iniciais para testes
@@ -384,7 +412,7 @@ Outros comandos disponíveis podem ser visualizados com o comando `node ace`.
 
 #### 🐳 Docker Container
 
-Para instalar o projeto e rodar o projeto em um container Docker, siga as instruções abaixo:
+Para instalar e rodar o projeto em um container Docker, siga as instruções abaixo:
 
 > Obs: Caso deseje criar dados iniciais para testes, siga os passos descritos na instalação [local](#dados-iniciais). E as faças antes das instruções abaixo.
 
@@ -420,7 +448,7 @@ Caso deseje parar o container, utilize o comando:
 ```bash
 docker-compose down
 ```
-Para limpar as imagens e volumes de todos os containeres, utilize o comando:
+Para apagar, <b>permanentemente</b>, todas as imagens e volumes de todos os containeres, utilize o comando:
 
 ```bash
 docker system prune -af

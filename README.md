@@ -149,7 +149,7 @@ Nestas seções, são apresentadas as principais partes do projeto, incluindo a 
 
 ### 📁 Estrutura das Pastas
 
-A estrutura de pastas do projeto é organizada de acordo com as melhores práticas de desenvolvimento de software e segue o padrão MVC (Model-View-Controller). Cada parte do projeto é responsável por uma função específica e segue um conjunto de convenções para garantir a consistência e a legibilidade do código.
+A estrutura do projeto visa separar as diferentes partes da aplicação em módulos distintos, facilitando a manutenção e a escalabilidade do código. Cada pasta contém arquivos relacionados a uma parte específica da aplicação, como controladores, modelos, rotas e utilitários.
 
 A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 
@@ -243,10 +243,10 @@ Instruções sobre como configurar o ambiente de desenvolvimento e realizar a in
 
 Para executar o projeto, é necessário ter as seguintes ferramentas instaladas e devidamente configuradas no seu sistema:
 
-- [Node.js](https://nodejs.org/en/): (v18.13.0)
-- [npm](https://www.npmjs.com/): (v10.2.8)
-- [Docker](https://www.docker.com/): (v25.0.2)
-- [GIT](https://git-scm.com/): (v2.39.2)
+- [Node.js](https://nodejs.org/en/): (v18.13.0) ou superior.
+- [npm](https://www.npmjs.com/): (v10.2.8) ou superior.
+- [Docker](https://www.docker.com/): (v25.0.2) ou superior.
+- [GIT](https://git-scm.com/): (v2.39.2) ou superior.
 
 As versões listadas são as utilizadas durante o desenvolvimento do projeto. Tenha certeza de que as versões instaladas em seu sistema são as mesmas ou superiores.
 
@@ -265,15 +265,15 @@ Para instalar e rodar o projeto localmente, siga as instruções abaixo:
 git clone <link_do_projeto>
 ```
 
-###### Configuração do Docker-Compose
+**Exemplo de configuração do Docker-Compose**
 
 ```yml
 version: '3.8' # Versão do Docker Compose
 
 services: # Serviços do Docker Compose
-  mysql: # Serviço do banco de dados MySQL
-    image: mysql:8.0 # Imagem do MySQL
-    container_name: mysql_container # Nome do container
+  mysql: # Serviço do banco de dados MySQL altere se desejar
+    image: mysql:8.0  # Imagem do MySQL. Use essa versão ou superior
+    container_name: <seu_mysql_container> # Nome do container
     environment: # Variáveis de ambiente
       MYSQL_ROOT_PASSWORD: exampleRootPassword # Senha do usuário root
       MYSQL_DATABASE: exampleDatabase # Nome do banco de dados
@@ -281,21 +281,21 @@ services: # Serviços do Docker Compose
     ports:
       - "3306:3306" # Porta do MySQL
     volumes:
-      - mysql_data:/var/lib/mysql # Volume para persistência dos dados
+      - mysql_data:/var/lib/mysql # Volume para persistência dos dados, caso o container seja removido. Altere se desejar, mas mantenha a estrutura
     networks:
-      - betalent_network # Rede do Docker Compose
+      - <sua_network> # Rede do Docker Compose para comunicação entre os serviços
 
   adonis:     # Serviço do AdonisJS
-    container_name: adonis_container # Nome do container
+    container_name: <seu_adonis_container> # Nome do container
     build: # Configuração do build
-      context: ./betalent # Contexto do build
-      dockerfile: Dockerfile # Arquivo Dockerfile
-    working_dir: /app # Diretório de trabalho
+      context: ./betalent # Contexto do build, onde está o Dockerfile. Altere se necessário mas deve ser o mesmo que o diretório do projeto
+      dockerfile: Dockerfile # Arquivo Dockerfile, onde está a configuração do container
+    working_dir: /app # Diretório de trabalho, onde o código-fonte será montado
     volumes: # Volumes
-      - ./betalent:/app # Volume para montagem do código-fonte
+      - ./betalent:/app # Volume para montagem do código-fonte. Cuide para que o diretório do projeto seja o mesmo que o contexto do build
     command: ["npm", "run", "start"] # Comando para iniciar o servidor
     ports: 
-      - "3333:3333" # Porta do servidor. Altere conforme necessário, caso a porta 3333 esteja em uso. Mas lembre-se de alterar no arquivo .env e o Dockerfile
+      - "3333:3333" # Porta do servidor. Altere conforme desejar ou caso a porta 3333 esteja em uso. Mas lembre-se de alterar no arquivo .env e o Dockerfile
     environment: # Variáveis de ambiente
       - PORT=3333
       - HOST=0.0.0.0
@@ -307,10 +307,10 @@ services: # Serviços do Docker Compose
       - MYSQL_PASSWORD=rootpassword
       - APP_KEY=JsSD0IKWYOhiaH19G5j3NmguWLgXtKrG
       - SECRET=betalent
-    depends_on: # Dependências do serviço AdonisJS
+    depends_on: # Dependências do serviço AdonisJS, garante que o MySQL esteja rodando antes de iniciar o servidor
       - mysql
-    networks: # Rede do Docker Compose
-      - betalent_network
+    networks: # Rede do Docker Compose para comunicação entre os serviços
+      - <sua_nertwork>
 
 volumes:
   mysql_data:
@@ -324,7 +324,9 @@ networks:
 ```bash
   docker-compose up -d
 ``` 
-  > OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+    
+  >> OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+
   
 3. Entre na pasta do projeto e instale as dependências:
 ```bash
@@ -333,7 +335,7 @@ networks:
 ```
 4. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
-    > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+    >> OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
 
 ###### Variáveis de Ambiente

@@ -5,6 +5,7 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
 ###  Sumário
 
 - [📄 Teste Técnico Back-end BeTalent](#-teste-técnico-back-end-betalent)
+  - [ℹ️ Descrição do teste](#i-descrição-do-teste)
   - [🗄️ Banco de dados](#-banco-de-dados)
   - [🧭 Rotas do sistema](#-rotas-do-sistema)
   - [🔍 Observações](#-observações)
@@ -397,6 +398,10 @@ Se for sua primeira consulta e você não fez nenhuma alteração no banco de da
 | sales                  |
 | users                  |
 +------------------------+
+```
+Para sair do banco de dados, utilize o comando:
+```bash
+exit;
 ```
 
 ###### Dados Iniciais

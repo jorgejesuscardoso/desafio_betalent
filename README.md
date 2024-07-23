@@ -326,7 +326,7 @@ networks:
   docker-compose up -d
 ``` 
     
-    >> OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+  >> OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
 
   
 3. Entre na pasta do projeto e instale as dependências:

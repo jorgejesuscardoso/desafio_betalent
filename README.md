@@ -36,12 +36,12 @@ O(a) candidato(a) deve desenvolver o projeto em um dos seguintes frameworks: `Ad
 
 O banco de dados deve ser estruturado à escolha do(a) candidato(a), mas minimamente deve conter:
 
-- **usuários:** email, senha;
-- **clientes:** nome, cpf;
-- **endereço:** todos os campos de endereço;
-- **telefones:** cliente, número;
-- **produtos:** dados necessários para um tipo de produto, além de preço;
-- **vendas:** cliente, produto, quantidade, preço unitário, preço total, data e hora.
+  - **usuários:** email, senha;
+  - **clientes:** nome, cpf;
+  - **endereço:** todos os campos de endereço;
+  - **telefones:** cliente, número;
+  - **produtos:** dados necessários para um tipo de produto, além de preço;
+  - **vendas:** cliente, produto, quantidade, preço unitário, preço total, data e hora.
 
 ### 🧭 Rotas do sistema
 
@@ -80,11 +80,11 @@ As rotas de clientes, produtos e vendas só devem poder ser acessadas por usuár
 
 **São requisitos básicos:**
 
-- Estruturar o sistema observando o MVC (porém, sem as views);
-- Usar MySQL como banco de dados;
-- Respostas devem ser em JSON;
-- Pode-se usar recursos e bibliotecas que auxiliam na administração do banco de dados (Eloquent, Lucid, Knex, Bookshelf etc.);
-- Documentar as instruções necessárias em um README (requisitos, como instalar e rodar o projeto, detalhamento de rotas e outras informações que julgar relevantes).
+  - Estruturar o sistema observando o MVC (porém, sem as views);
+  - Usar MySQL como banco de dados;
+  - Respostas devem ser em JSON;
+  - Pode-se usar recursos e bibliotecas que auxiliam na administração do banco de dados (Eloquent, Lucid, Knex, Bookshelf etc.);
+  - Documentar as instruções necessárias em um README (requisitos, como instalar e rodar o projeto, detalhamento de rotas e outras informações que julgar relevantes).
 
 Caso o(a) candidato(a) não consiga completar o teste até o prazo definido, deve garantir que tudo que foi construído esteja em funcionamento. Neste caso, relatar no README quais foram as dificuldades encontradas.
 
@@ -94,13 +94,13 @@ Caso o(a) candidato(a) não consiga completar o teste até o prazo definido, dev
 
 Serão critérios para avaliação da solução fornecida:
 
-- Lógica de programação;
-- Organização do projeto;
-- Legibilidade do código;
-- Validação necessária dos dados;
-- Forma adequada de utilização dos recursos;
-- Seguimento dos padrões especificados;
-- Clareza na documentação.
+  - Lógica de programação;
+  - Organização do projeto;
+  - Legibilidade do código;
+  - Validação necessária dos dados;
+  - Forma adequada de utilização dos recursos;
+  - Seguimento dos padrões especificados;
+  - Clareza na documentação.
 
 
 # 📚 Documentação Completa do Projeto
@@ -108,7 +108,7 @@ Serão critérios para avaliação da solução fornecida:
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
 
-A documentação completa detalha as tecnologias utilizadas, a estrutura do projeto, instruções de instalação e execução, exemplos de uso e referências adicionais.
+A documentação detalha as tecnologias utilizadas, a estrutura do projeto, instruções de instalação e execução, exemplos de uso e referências adicionais.
 
 Também contém informações sobre as rotas disponíveis, os métodos HTTP permitidos e os parâmetros necessários para cada uma delas.
 
@@ -248,7 +248,7 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 
 Instruções sobre como configurar o ambiente de desenvolvimento e realizar a instalação do projeto.
 
-### 🏅 Requisitos
+### 👀 Requisitos para a instalação
 
 Para executar o projeto, é necessário ter as seguintes ferramentas instaladas e devidamente configuradas no seu sistema:
 
@@ -257,21 +257,84 @@ Para executar o projeto, é necessário ter as seguintes ferramentas instaladas 
 - [Docker](https://www.docker.com/): (v25.0.2)
 - [GIT](https://git-scm.com/): (v2.39.2)
 
+As versões listadas são as utilizadas durante o desenvolvimento do projeto. Tenha certeza de que as versões instaladas em seu sistema são as mesmas ou superiores.
+
 Certifique-se de que todas as ferramentas estão instaladas corretamente antes de prosseguir com a instalação do projeto.
 
-#### 📦 Instalação
+### 📦 Instalação
 
-Para instalar o projeto, siga as instruções abaixo:
+#### 🏠 Local
 
-1. Clone o repositório do projeto:
+Para instalar o projeto e rodar o projeto localmente, siga as instruções abaixo:
+
+
+1. Clone o repositório do projeto e comfigure o docker-composer.yml:
 
 ```bash
-git clone
+git clone <link_do_projeto>
 ```
-2. Rode o banco de dados em um container Docker:  
+
+###### Configuração do Docker-Compose
+
+```yml
+version: '3.8' # Versão do Docker Compose
+
+services: # Serviços do Docker Compose
+  mysql: # Serviço do banco de dados MySQL
+    image: mysql:8.0 # Imagem do MySQL
+    container_name: mysql_container # Nome do container
+    environment: # Variáveis de ambiente
+      MYSQL_ROOT_PASSWORD: exampleRootPassword # Senha do usuário root
+      MYSQL_DATABASE: exampleDatabase # Nome do banco de dados
+      MYSQL_PASSWORD: examplePassword # Senha do banco de dados
+    ports:
+      - "3306:3306" # Porta do MySQL
+    volumes:
+      - mysql_data:/var/lib/mysql # Volume para persistência dos dados
+    networks:
+      - betalent_network # Rede do Docker Compose
+
+  adonis:     # Serviço do AdonisJS
+    container_name: adonis_container # Nome do container
+    build: # Configuração do build
+      context: ./betalent # Contexto do build
+      dockerfile: Dockerfile # Arquivo Dockerfile
+    working_dir: /app # Diretório de trabalho
+    volumes: # Volumes
+      - ./betalent:/app # Volume para montagem do código-fonte
+    command: ["npm", "run", "start"] # Comando para iniciar o servidor
+    ports: 
+      - "3333:3333" # Porta do servidor. Altere conforme necessário, caso a porta 3333 esteja em uso. Mas lembre-se de alterar no arquivo .env e o Dockerfile
+    environment: # Variáveis de ambiente
+      - PORT=3333
+      - HOST=0.0.0.0
+      - DB_CONNECTION=mysql
+      - MYSQL_HOST=mysql
+      - MYSQL_PORT=3306
+      - MYSQL_DATABASE=betalent
+      - MYSQL_USER=root
+      - MYSQL_PASSWORD=rootpassword
+      - APP_KEY=JsSD0IKWYOhiaH19G5j3NmguWLgXtKrG
+      - SECRET=betalent
+    depends_on: # Dependências do serviço AdonisJS
+      - mysql
+    networks: # Rede do Docker Compose
+      - betalent_network
+
+volumes:
+  mysql_data:
+
+networks:
+  betalent_network:
+
+```
+
+2. Na raiz do projeto, rode o banco de dados em um container Docker:  
 ```bash
   docker-compose up -d
 ``` 
+  > OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+  
 3. Entre na pasta do projeto e instale as dependências:
 ```bash
   cd betalent
@@ -282,22 +345,27 @@ git clone
     > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
 
-```bash
-  PORT=<suaPorta> # Porta do servidor tem que ser diferente da porta do banco de dados e ser numérica
-  HOST=<seuHost>
-  NODE_ENV=development
-  APP_KEY=<suaChave> # Chave de aplicativo gerada pelo comando node ace generate:key
-  DRIVE_DISK=local
-  SECRET=<suaChave> # Chave secreta para geração de tokens JWT
-  EXPIRES_IN=<tempo> # Tempo de expiração dos tokens JWT (ex: 1h, 1d, 1w, 1m, 1y)
-  HASH_DRIVER=<seuDriver> # Driver de hashing de senhas (bcrypt, argon)
-  SALT_ROUNDS=<número> # Número de rounds para hashing de senhas (ex: 10)
-  DB_CONNECTION=mysql
-  MYSQL_HOST=localhost
-  MYSQL_PORT=<suaPorta> # Porta do banco de dados
-  MYSQL_DATABASE=<seuBanco> # Nome do banco de dados
-  MYSQL_PASSWORD=<suaSenha> # Senha do banco de dados
-```
+###### Variáveis de Ambiente
+
+| Variável        | Descrição                                    | Exemplo                 |
+|-----------------|----------------------------------------------|-------------------------|
+| `PORT`          | Porta do servidor                            | `3000`                  |
+| `HOST`          | Host do servidor                             | `localhost`             |
+| `NODE_ENV`      | Ambiente de execução                         | `development`           |
+| `APP_KEY`       | Chave de aplicativo                          | `gerada pelo comando`   |
+| `DRIVE_DISK`    | Disco de armazenamento                       | `local`                 |
+| `SECRET`        | Chave secreta para JWT                       | `sua_chave_secreta`     |
+| `EXPIRES_IN`    | Tempo de expiração do token                  | `1h`                    |
+| `HASH_DRIVER`   | Driver de hashing                            | `bcrypt`                |
+| `SALT_ROUNDS`   | Número de rounds para hashing                | `10`                    |
+| `DB_CONNECTION` | Tipo de conexão de banco de dados            | `mysql`                 |
+| `MYSQL_HOST`    | Host do banco de dados                       | `localhost`             |
+| `MYSQL_PORT`    | Porta do banco de dados                      | `3306`                  |
+| `MYSQL_DATABASE`| Nome do banco de dados                       | `meu_banco`             |
+| `MYSQL_USER`    | Usuário do banco de dados                    | `root`                  |
+| `MYSQL_PASSWORD`| Senha do banco de dados                      | `senha_secreta`         |
+
+
 5. Execute as migrações do banco de dados:
 ```bash
 node ace migration:run
@@ -308,8 +376,12 @@ node server.ts
 ```
 7. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
 
-8. Para acessar o banco de dados, utilize um cliente MySQL (ex: MySQL Workbench, DBeaver) e conecte-se ao banco de dados com as credenciais configuradas no arquivo `.env`. Também é possível acessar o banco de dados a partir de um terminal usando o comando `docker exec -it <seu_container> mysql -u <seu_mysql_user> -p`.
+8. Para acessar o banco de dados, utilize um cliente MySQL (ex: MySQL Workbench, DBeaver) e conecte-se ao banco de dados com as credenciais configuradas no arquivo `.env`. Também é possível acessar o banco de dados a partir de um terminal usando o comando:
+ ```bash
+ docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
+ ```
 
+###### Dados Iniciais
 Caso deseje criar dados iniciais para testes
 
 1. Execute o comando `node ace make:seeder` para criar um seeder.
@@ -319,6 +391,58 @@ Caso deseje criar dados iniciais para testes
 Todos os dados iniciais contido nos seeders serão inseridos no banco de dados.
 
 Outros comandos disponíveis podem ser visualizados com o comando `node ace`.
+
+#### 🐳 Docker Container
+
+Para instalar o projeto e rodar o projeto em um container Docker, siga as instruções abaixo:
+
+> Obs: Caso deseje criar dados iniciais para testes, siga os passos descritos na instalação [local](#dados-iniciais). E as faças antes das instruções abaixo.
+
+1. Clone o repositório do projeto:
+
+```bash
+git clone <link_do_projeto>
+```
+2. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente, [veja um exemplo das variáveis de ambiente](#variáveis-de-ambiente).
+
+    > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+
+3. Execulte o docker-compose para subir o container backend e do banco de dados:
+
+```bash
+docker-compose up -d
+```
+4. Poderá acessar o container do backend pelo terminal com o comando:
+
+```bash
+docker exec -it <seu_container_backend> /bin/bash
+```
+5. Para acessar o banco de dados, utilize um cliente MySQL (ex: MySQL Workbench, DBeaver) e conecte-se ao banco de dados com as credenciais configuradas no arquivo `.env`. Também é possível acessar o banco de dados a partir de um terminal usando o comando: 
+
+```bash
+docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
+```
+
+Todas as dependências do projeto serão instaladas, todas migrações serão feitas e o servidor será iniciado automaticamente. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
+
+Caso deseje parar o container, utilize o comando:
+
+```bash
+docker-compose down
+```
+Para limpar as imagens e volumes de todos os containeres, utilize o comando:
+
+```bash
+docker system prune -af
+```
+
+Caso não consiga acessar o container, verifique se o container está rodando com o comando:
+
+```bash
+docker ps
+```
+
+Confira se o container está rodando e se o nome do container está correto. O nome do container é o nome que você deu ao container no arquivo `docker-compose.yml`.
 
 ## 📝 Uso e Exemplos
 

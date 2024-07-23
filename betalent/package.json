@@ -5,7 +5,7 @@
   "scripts": {
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
-    "start": "node server.js",
+    "start": "npm install && npm run db:reset && node ace db:seed && node ace db:seed && node ace serve --watch",
     "test": "node ace test",
     "db:reset": "node ace migration:reset && node ace migration:run && node ace db:seed"
   },

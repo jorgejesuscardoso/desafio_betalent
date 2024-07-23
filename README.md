@@ -152,7 +152,94 @@ Também comtém informações sobre as rotas disponíveis, os métodos HTTP perm
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  Aqui você encontrará uma visão geral detalhada da estrutura do projeto, incluindo configuração, funcionalidades e requisitos.
+  ### Visão Geral
+
+  Nestas seções, são apresentadas as principais partes do projeto, incluindo a estrutura de pastas, arquivos e módulos. A estrutura do projeto é organizada de acordo com as melhores práticas de desenvolvimento de software e segue o padrão MVC (Model-View-Controller). Cada parte do projeto é responsável por uma função específica e segue um conjunto de convenções para garantir a consistência e a legibilidade do código.
+
+  ### Estrutura de Pastas
+
+  A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
+
+  ```bash
+  /betalent
+  ├── /app
+  │   ├── /Controllers
+  │   │   ├── /Http
+  │   │   │   ├── AuthController.ts       # Controlador para autenticação
+  │   │   │   └── UserController.ts       # Controlador para gerenciamento de usuários
+  │   ├── /DTO
+  │   │   └── /Users
+  │   │       ├── CreateUserDTO.ts        # DTO para criação de usuários
+  │   │       └── ResponseUserDTO.ts      # DTOs para formato de resposta ao usuários
+  │   ├── /Exceptions
+  │   │   └── Handler.ts                  # Manipulador de exceções
+  │   ├── /Middleware
+  │   │   └── Auth.ts                     # Middleware de autenticação
+  │   ├── /Models
+  │   │   ├── Address.ts                  # Modelo para endereços
+  │   │   ├── Category.ts                 # Modelo para categorias
+  │   │   ├── Client.ts                   # Modelo para clientes
+  │   │   ├── Phone.ts                    # Modelo para telefones
+  │   │   ├── Product.ts                  # Modelo para produtos
+  │   │   ├── Sale.ts                     # Modelo para vendas
+  │   │   └── User.ts                     # Modelo para usuários
+  │   └── /Utils
+  │       ├── ImageUpload.ts              # Funções para upload e manipulação de imagens
+  │       ├── Regex.ts                   # Funções e expressões regulares
+  │       ├── JWT.ts                     # Funções para criação e verificação de tokens JWT
+  │       └── ReturnDefault.ts           # Mensagens padrão de retorno
+  ├── /Commands
+  │   └── Index.ts                        # Comandos personalizados para o projeto
+  ├── /Config
+  │   ├── app.ts                          # Configurações gerais do aplicativo
+  │   ├── bodyparser.ts                   # Configuração do bodyparser
+  │   ├── cors.ts                         # Configuração de CORS
+  │   ├── database.ts                     # Configuração do banco de dados
+  │   ├── drive.ts                        # Configuração do drive
+  │   └── hash.ts                         # Configuração de hashing de senhas
+  ├── /Contracts
+  │   ├── drive.ts                        # Contratos de configuração do drive
+  │   ├── env.ts                          # Contratos de ambiente
+  │   ├── events.ts                       # Contratos de eventos
+  │   ├── hash.ts                         # Contratos de hashing
+  │   └── tests.ts                        # Contratos de testes
+  ├── /database
+  │   ├── /factories
+  │   │   └── index.ts                    # Fábricas de dados para testes
+  │   └── /migrations
+  │       ├── <timestamp>_categories.ts   # Migração para a tabela de categorias
+  │       ├── <timestamp>_users.ts        # Migração para a tabela de usuários
+  │       ├── <timestamp>_clients.ts      # Migração para a tabela de clientes
+  │       ├── <timestamp>_products.ts     # Migração para a tabela de produtos
+  │       ├── <timestamp>_sales.ts        # Migração para a tabela de vendas
+  │       ├── <timestamp>_addresses.ts    # Migração para a tabela de endereços
+  │       └── <timestamp>_phones.ts       # Migração para a tabela de telefones
+  ├── /providers
+  │   └── AppProvider.ts                  # Provedor de serviços da aplicação
+  ├── /start
+  │   ├── kernel.ts                       # Configuração do kernel do aplicativo
+  │   └── routes.ts                       # Definição das rotas da aplicação
+  ├── /test
+  │   ├── /functional
+  │   │   └── hello_world.spec.ts         # Testes funcionais
+  │   └── bootstrap.ts                    # Configuração de bootstrap para testes
+  ├── /tmp
+  │   └── /uploads                       # Diretório temporário para uploads
+  ├── .adonisrc.json                     # Configuração do AdonisJS
+  ├── .editorconfig                       # Configurações do editor de código
+  ├── .env                                # Variáveis de ambiente para desenvolvimento
+  ├── .env.example                        # Exemplo de arquivo de variáveis de ambiente
+  ├── .env.test                           # Variáveis de ambiente para testes
+  ├── ace                                 # Ferramenta de CLI do AdonisJS
+  ├── package-lock.json                   # Lockfile do npm
+  ├── package.json                        # Configuração do projeto npm
+  ├── server.ts                           # Arquivo de inicialização do servidor
+  ├── test.ts                             # Arquivo de testes (se aplicável)
+  ├── tsconfig.json                       # Configuração do TypeScript
+  ├── docker-compose.yml                  # Configuração do Docker Compose (se aplicável)
+  └── README.md                           # Documentação do projeto
+
+  ```
 
   ## 📦 Instalação e Execução
 

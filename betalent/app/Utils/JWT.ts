@@ -7,10 +7,16 @@ type DataToToken ={
   email: string
 }
 
-export  const CreateToken = (data: DataToToken) => {
+export  const TokenGenerate = (data: DataToToken) => {
   const token = jwt.sign(data, Env.get('SECRET'), {
     expiresIn: Env.get('EXPIRES_IN')
   })
 
   return token
+}
+
+export const TokenVerify = (token: string) => {
+  const data = jwt.verify(token, Env.get('SECRET'))
+  
+  return data
 }

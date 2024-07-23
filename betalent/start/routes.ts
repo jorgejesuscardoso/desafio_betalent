@@ -1,8 +1,7 @@
 import Route from '@ioc:Adonis/Core/Route'
 
-Route.post('/login', 'AuthController.login').prefix('api').middleware('auth')
-Route.post('/register', 'AuthController.register').prefix('api').middleware('register')
+Route.post('/login', 'Auth.Controller.login').prefix('api').middleware('auth')
 
 Route.group(() => {
-  Route.resource('/user', "UserController").apiOnly()
+  Route.resource('/user', "User.Controller").apiOnly()
 }).prefix('api')

@@ -255,10 +255,10 @@ Certifique-se de que todas as ferramentas estão instaladas corretamente antes d
 
 #### 🏠 Local
 
-Para instalar o projeto e rodar o projeto localmente, siga as instruções abaixo:
+Para instalar e rodar o projeto localmente, siga as instruções abaixo:
 
 
-1. Clone o repositório do projeto e comfigure o docker-composer.yml:
+1. Clone o repositório do projeto e configure o docker-composer.yml:
 
 ```bash
 git clone <link_do_projeto>

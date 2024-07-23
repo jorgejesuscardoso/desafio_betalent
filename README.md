@@ -152,11 +152,11 @@ Também contém informações sobre as rotas disponíveis, os métodos HTTP perm
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-### Visão Geral
+### 👀 Visão Geral
 
 Nestas seções, são apresentadas as principais partes do projeto, incluindo a estrutura de pastas, arquivos e módulos. A estrutura do projeto é organizada de acordo com as melhores práticas de desenvolvimento de software e segue o padrão MVC (Model-View-Controller). Cada parte do projeto é responsável por uma função específica e segue um conjunto de convenções para garantir a consistência e a legibilidade do código.
 
-### Estrutura das Pastas
+### 📁 Estrutura das Pastas
 
 A estrutura de pastas do projeto é organizada de acordo com as melhores práticas de desenvolvimento de software e segue o padrão MVC (Model-View-Controller). Cada parte do projeto é responsável por uma função específica e segue um conjunto de convenções para garantir a consistência e a legibilidade do código.
 
@@ -248,18 +248,18 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 
 Instruções sobre como configurar o ambiente de desenvolvimento e realizar a instalação do projeto.
 
-### Requisitos
+### 🏅 Requisitos
 
 Para executar o projeto, é necessário ter as seguintes ferramentas instaladas e devidamente configuradas no seu sistema:
 
-- [Node.js](https://nodejs.org/en/): Preferível versão 18.13.0 ou superior. Utilizei esta versão para o desenvolvimento do projeto.
-- [npm](https://www.npmjs.com/): Preferível versão 10.8.2 ou superior.
-- [Docker](https://www.docker.com/): Preferível 25.0.2 ou superior.
-- [GIT](https://git-scm.com/): Preferível 2.39.2 ou superior.
+- [Node.js](https://nodejs.org/en/): (v18.13.0)
+- [npm](https://www.npmjs.com/): (v10.2.8)
+- [Docker](https://www.docker.com/): (v25.0.2)
+- [GIT](https://git-scm.com/): (v2.39.2)
 
 Certifique-se de que todas as ferramentas estão instaladas corretamente antes de prosseguir com a instalação do projeto.
 
-#### Instalação
+#### 📦 Instalação
 
 Para instalar o projeto, siga as instruções abaixo:
 
@@ -318,7 +318,7 @@ Caso deseje criar dados iniciais para testes
 
 Todos os dados iniciais contido nos seeders serão inseridos no banco de dados.
 
-Outro comandos disponíveis podem ser visualizados com o comando `node ace`.
+Outros comandos disponíveis podem ser visualizados com o comando `node ace`.
 
 ## 📝 Uso e Exemplos
 

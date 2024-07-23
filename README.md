@@ -321,21 +321,23 @@ networks:
 ```
 
 2. Na raiz do projeto, rode o banco de dados em um container Docker:  
+
 ```bash
   docker-compose up -d
 ``` 
     
-  >> OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+    >> OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
 
   
 3. Entre na pasta do projeto e instale as dependências:
+
 ```bash
   cd betalent
   npm install
 ```
 4. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
-    >> OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+    > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
 
 ###### Variáveis de Ambiente

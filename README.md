@@ -5,7 +5,7 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
 ###  Sumário
 
 - [📄 Teste Técnico Back-end BeTalent](#-teste-técnico-back-end-betalent)
-  - [ℹ️ Descrição do teste](#i-descrição-do-teste)
+  - [ℹ️ Descrição do teste](#-descrição-do-teste)
   - [🗄️ Banco de dados](#-banco-de-dados)
   - [🧭 Rotas do sistema](#-rotas-do-sistema)
   - [🔍 Observações](#-observações)

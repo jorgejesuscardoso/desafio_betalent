@@ -116,8 +116,6 @@ Serão critérios para avaliação da solução fornecida:
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-## 👁 Visão Geral
-
 A documentação detalha as tecnologias utilizadas, a estrutura do projeto, instruções de instalação e execução, exemplos de uso e referências adicionais.
 
 Também contém informações sobre as rotas disponíveis, os métodos HTTP permitidos e os parâmetros necessários para cada uma delas.
@@ -263,9 +261,7 @@ Certifique-se de que todas as ferramentas estão instaladas corretamente antes d
 
 <br>
 
-### 📦 Instalação
-
-#### 🏠 Local
+#### 🏠 Instalação Local
 
 Para instalar e rodar o projeto localmente, siga as instruções abaixo:
 
@@ -337,9 +333,13 @@ networks:
   docker-compose up -d
 ``` 
     
-  >> OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+<br>
+
+  > OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
 
   
+<br>
+
 3. Entre na pasta do projeto e instale as dependências:
 
 ```bash
@@ -348,8 +348,12 @@ networks:
 ```
 4. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente:
 
-    > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+<br>
 
+  > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+
+
+<br>
 
 **Variáveis de Ambiente**
 
@@ -608,7 +612,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 **📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:**
   
-  >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
 
   ***`URL: http://example/api/users/:id`***
 
@@ -636,6 +640,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 <details> <summary>Ver exemplos de uso</summary>
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+<br>
 
   - **Método:** `POST`
   - **Endpoint:** `/api/users`
@@ -854,6 +860,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
+<br>
+
   - **Método:** `POST`
   - **Endpoint:** `/api/users`
   - **Parâmetros:** `email`, `password`
@@ -956,6 +964,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
+<br>
+
   - **Método:** `GET`
   - **Endpoint:** `/api/users/:id`
   - **Parâmetros:** `id`
@@ -1002,7 +1012,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
         "message": "Usuário não encontrado."
       }
       ```
-    - Error interno do servidor:
+  - **Error interno do servidor:**
 
     Requisição: ***<i>htt://www.example.com/api/users/1</i>***
     
@@ -1025,6 +1035,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 <details> <summary>Ver exemplos de uso</summary>
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+<br>
 
   - **Método:** `GET`
   - **Endpoint:** `/api/users`
@@ -1212,9 +1224,9 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 <details> <summary>Ver exemplos de uso</summary>
 
-<br>
-
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+<br>
 
   - **Método:** `DELETE`
   - **Endpoint:** `/api/users/:id`
@@ -1340,7 +1352,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   
   ### 📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:
 
-  >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
   
   **`HEADER: Authorization / Bearer <token>`**
 

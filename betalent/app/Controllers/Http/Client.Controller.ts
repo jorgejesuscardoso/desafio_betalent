@@ -8,7 +8,7 @@ export default class UserClient {
     private clientModel = Client,
     private validateEmail = ValidateEmail,
     private validatePhone = ValidatePhone,
-    private validateCPF = ValidateCPF,
+    private validateCPF = ValidateCPF, 
     private returnDefaultMsg = ReturnDefaultMsg,
   ) {}
 

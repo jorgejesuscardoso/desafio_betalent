@@ -544,13 +544,21 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
 **🗄️ Obter os dados de um usuário `METHOD:GET`:**
 
-  ***`URL: http://example/api/users/:id`***
+  **`BODY: { }`**
+
+  **`URL: http://example/api/users/:id`**
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
 
+  Essa consulta não precisa de um corpo, apenas o ID do usuário a ser consultado.
+
 **🗄️ Obter os dados de todos os usuários `METHOD:GET`:**
 
+  **`BODY: { }`**
+
   ***`URL: http://example/api/users`***
+
+  Essa consulta não precisa de um corpo, apenas o ID do usuário a ser consultado.
 
 **📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:**
   
@@ -1147,18 +1155,23 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     ```
   </details>
 
+</details>
 
-  ### 🧑‍💼 Clientes
+### 🧑‍💼 Clientes
 
   A rota de clientes, `/api/clients`, permite criar um novo cliente no sistema, obter informações sobre o cliente, atualizar os dados do cliente e deletar cliente.
 
   Ao cadastrar um novo cliente, os dados do cliente são validados e armazenados no banco de dados.
 
+  A rota de clientes é protegida por autenticação JWT e requer um token válido para acesso. Os tokens JWT são gerados durante o processo de autenticação(login) e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas.
+
   **📋 Cadastrar `METHOD:POST`:**
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  ***`URL: http://example/api/clients`***
+  **`URL: http://example/api/clients`**
+
+  **`HEADER: Authorization / Bearer <token>`**
 
   - **name**: Nome do cliente (string, obrigatório).
   - **email**: E-mail do cliente (string, obrigatório, único). Formato de e-mail válido.
@@ -1167,19 +1180,37 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   **🗄️ Obter os dados de um cliente `METHOD:GET`:**
    
-  ***`URL: http://example/api/clients/:id`***
+  **`BODY: {  }`**
+  
+  **`URL: http://example/api/clients/:id`**
+
+  **`HEADER: Authorization / Bearer <token>`**
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser consultado.
 
+  Essa consulta não precisa de um corpo, apenas o ID do cliente a ser consultado.
+
+  É necessário um token de autenticação no cabeçalho.
+
   **🗄️ Obter os dados de todos os clientes `METHOD:GET`:**
 
-  ***`URL: http://example/api/clients`***
+  **`BODY: {  }`**
+  
+  **`URL: http://example/api/clients/:id`**
+
+  **`HEADER: Authorization / Bearer <token>`**
+
+  Essa consulta não precisa de um corpo, apenas o ID do cliente a ser consultado.
+
+  É necessário um token de autenticação no cabeçalho.
 
   **📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:**
 
   >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
 
-  ***`URL: http://example/api/clients/:id`***
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`URL: http://example/api/clients/:id`**
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser atualizado.
   - **name**: Nome do cliente (string, opcional).
@@ -1189,7 +1220,9 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   **🗑️ Deletar um cliente `METHOD:DELETE`:**
 
-  ***`URL: http://example/api/clients/:id`***
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`URL: http://example/api/clients/:id`**
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser deletado.
 
@@ -1202,12 +1235,13 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **Método:** `POST`
   - **Endpoint:** `/api/clients`
   - **Parâmetros:** `name`, `email`, `phone`, `cpf`
+  - **Autenticação:** Requer autenticação
 
   **✅ Caso de sucesso:**
 
   Requisição:
 
-  ```json
+  ```json  
   {
     "name": "John Doe",
     "email": "john.doe@mail.com",
@@ -1231,6 +1265,210 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       }
     }
   ```
+
+  **❌ Casos de erro:**
+
+  <details> <summary>Ver Casos de Erro</summary>
+
+  - **Sem token ou token inválido:**
+
+    Exemplo de entrada: `POST /api/clients`
+  
+    Requisição:
+
+      ```json
+      {
+        "name": "John Doe",
+        "email": "john.doe@mail.com",
+        "phone": "11 1 1111-1111",
+        "cpf": "123.456.789-10"
+      }
+    ```
+
+    Resposta:
+
+      ```json
+      {
+        "message": "Erro interno do servidor.",
+        "error": {
+            "name": "JsonWebTokenError",
+            "message": "jwt malformed"
+        }
+      }
+      ```
+  - **Token expirado:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor.",
+      "error": {
+          "name": "TokenExpiredError",
+          "message": "jwt expired"
+      }
+    }
+    ```
+
+  - **Algum campo obrigatório não preenchido:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "", // Campo obrigatório não preenchido
+      "email": "john.doe@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Campo obrigatório não preenchido. Verifique os campos obrigatórios."
+    }
+    ```
+
+  - **CPF já cadastrado:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "CPF já cadastrado."
+    }
+    ```
+
+  - **CPF com formato inválido:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "12.456.79-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "CPF inválido."
+    }
+    ```
+
+  - **Telefone com formato inválido:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.com",
+      "phone": "111 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Telefone inválido."
+    }
+    ```
+
+  - **Email já cadastrado:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Email já cadastrado."
+    }
+    ```
+
+  - **Email com formato inválido:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.",
+      "phone": "11 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Email inválido."
+    }
+    ```
+
+  - **Error ao salvar no banco de dados ou do servidor:**
+
+    Requisição:
+
+    ```json
+    {
+      "name": "John Doe",
+      "email": "john.doe@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "123.456.789-10"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+
+    </details>
 
   </details>
 

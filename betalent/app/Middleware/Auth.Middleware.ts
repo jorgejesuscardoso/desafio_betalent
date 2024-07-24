@@ -12,12 +12,9 @@ export default class AuthMiddleware {
     try {
       const token = request.headers().authorization;
       const removeBearer = token?.split(' ')[1];
+      const isValidToken = this.tokenVerify(String(removeBearer));
 
-      if (!token) {
-        return response.status(401).json(this.returnDefaultMsg.tokenNotFound);
-      } else if (!this.tokenVerify(String(removeBearer))) {
-        return response.status(401).json(this.returnDefaultMsg.invalidToken);
-      }
+      if (!token && !isValidToken) return response.status(401).json(this.returnDefaultMsg.unauthorized);
 
       await next()
 

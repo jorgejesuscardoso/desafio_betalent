@@ -39,6 +39,8 @@ Trata-se de um sistema que permite cadastrar usuários externos. Ao realizarem l
 
 O(a) candidato(a) deve desenvolver o projeto em um dos seguintes frameworks: `Adonis (Node.js)` ou `Laravel (PHP)`.
 
+<br>
+
 ### 🗄️ Banco de dados
 
 O banco de dados deve ser estruturado à escolha do(a) candidato(a), mas minimamente deve conter:
@@ -49,6 +51,8 @@ O banco de dados deve ser estruturado à escolha do(a) candidato(a), mas minimam
   - **telefones:** cliente, número;
   - **produtos:** dados necessários para um tipo de produto, além de preço;
   - **vendas:** cliente, produto, quantidade, preço unitário, preço total, data e hora.
+
+<br>
 
 ### 🧭 Rotas do sistema
 
@@ -93,6 +97,8 @@ As rotas de clientes, produtos e vendas só devem poder ser acessadas por usuár
 
 Caso o(a) candidato(a) não consiga completar o teste até o prazo definido, deve garantir que tudo que foi construído esteja em funcionamento. Neste caso, relatar no README quais foram as dificuldades encontradas.
 
+<br>
+
 ### 📝 Critérios de avaliação
 
 Serão critérios para avaliação da solução fornecida:
@@ -110,6 +116,7 @@ Serão critérios para avaliação da solução fornecida:
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
+## 👁 Visão Geral
 
 A documentação detalha as tecnologias utilizadas, a estrutura do projeto, instruções de instalação e execução, exemplos de uso e referências adicionais.
 
@@ -118,37 +125,26 @@ Também contém informações sobre as rotas disponíveis, os métodos HTTP perm
 ## 🚀 Tecnologias utilizadas
 
 
-- [Node.js](https://nodejs.org/en/)
-  - **Descrição:**
-    Node.js é um ambiente de execução JavaScript que permite executar código JavaScript no servidor. Ele é baseado no motor V8 do Google Chrome e permite a execução de código JavaScript no lado do servidor.
+- [Node.js](https://nodejs.org/en/):  Node.js é um ambiente de execução JavaScript que permite executar código JavaScript no servidor. Ele é baseado no motor V8 do Google Chrome e permite a execução de código JavaScript no lado do servidor.
 
-- [Adonis.js](https://adonisjs.com/)
-  - **Descrição:** Adonis.js é um framework Node.js que permite a criação de aplicações web robustas e escaláveis. Ele é inspirado no Laravel e segue o padrão MVC.
+- [Adonis.js](https://adonisjs.com/): Adonis.js é um framework Node.js que permite a criação de aplicações web robustas e escaláveis. Ele é inspirado no Laravel e segue o padrão MVC.
   
-- [MySQL](https://www.mysql.com/)
-  - **Descrição:** MySQL é um sistema de gerenciamento de banco de dados relacional de código aberto. Ele é amplamente utilizado em aplicações web e é uma das tecnologias mais populares para armazenamento de dados.
+- [MySQL](https://www.mysql.com/): MySQL é um sistema de gerenciamento de banco de dados relacional de código aberto. Ele é amplamente utilizado em aplicações web e é uma das tecnologias mais populares para armazenamento de dados.
   
-- [Docker](https://www.docker.com/)
-  - **Descrição:** Docker é uma plataforma de código aberto que permite a criação, execução e gerenciamento de aplicações em contêineres. Ele é amplamente utilizado para facilitar o desenvolvimento, implantação e escalabilidade de aplicações.
+- [Docker](https://www.docker.com/): Docker é uma plataforma de código aberto que permite a criação, execução e gerenciamento de aplicações em contêineres. Ele é amplamente utilizado para facilitar o desenvolvimento, implantação e escalabilidade de aplicações.
 
-- [Docker Compose](https://docs.docker.com/compose/)
-  - **Descrição:** Docker Compose é uma ferramenta que permite definir e executar aplicações Docker multi-contêiner em um único arquivo de configuração. Ele é amplamente utilizado para simplificar o processo de execução de aplicações em ambientes de desenvolvimento e produção.
+- [Docker Compose](https://docs.docker.com/compose/): Docker Compose é uma ferramenta que permite definir e executar aplicações Docker multi-contêiner em um único arquivo de configuração. Ele é amplamente utilizado para simplificar o processo de execução de aplicações em ambientes de desenvolvimento e produção.
 
-- [JWT](https://jwt.io/)
-  - **Descrição:** JWT (JSON Web Token) é um padrão aberto que define um formato compacto e autocontido para transmitir informações entre partes como um objeto JSON. Ele é amplamente utilizado para autenticação e autorização em aplicações web e APIs.
+- [JWT](https://jwt.io/): JWT (JSON Web Token) é um padrão aberto que define um formato compacto e autocontido para transmitir informações entre partes como um objeto JSON. Ele é amplamente utilizado para autenticação e autorização em aplicações web e APIs.
   Os tokens JWT são assinados digitalmente e podem ser verificados para garantir a integridade dos dados.
   
-- [Bcrypt](https://www.npmjs.com/package/bcrypt)
-  - **Descrição:** Bcrypt é uma biblioteca de criptografia de senhas que permite armazenar senhas de forma segura em um banco de dados. Ele é amplamente utilizado para proteger as senhas dos usuários contra ataques de força bruta e outros tipos de ataques.
+- [Bcrypt](https://www.npmjs.com/package/bcrypt): Bcrypt é uma biblioteca de criptografia de senhas que permite armazenar senhas de forma segura em um banco de dados. Ele é amplamente utilizado para proteger as senhas dos usuários contra ataques de força bruta e outros tipos de ataques.
 
-- [Lucid ORM](https://adonisjs.com/docs/4.1/lucid)
-  - **Descrição:** Lucid ORM é um ORM (Object-Relational Mapping) que permite interagir com um banco de dados relacional usando objetos JavaScript. Ele é amplamente utilizado em aplicações Node.js para simplificar o acesso e a manipulação de dados em um banco de dados.
+- [Lucid ORM](https://adonisjs.com/docs/4.1/lucid): Lucid ORM é um ORM (Object-Relational Mapping) que permite interagir com um banco de dados relacional usando objetos JavaScript. Ele é amplamente utilizado em aplicações Node.js para simplificar o acesso e a manipulação de dados em um banco de dados.
 
-- [Postman](https://www.postman.com/)
-  - **Descrição:** Postman é uma ferramenta de colaboração para desenvolvimento de APIs que permite criar, testar e compartilhar APIs de forma rápida e fácil. Ele é amplamente utilizado por desenvolvedores para testar e depurar APIs durante o desenvolvimento de aplicações web e móveis.
+- [Postman](https://www.postman.com/): Postman é uma ferramenta de colaboração para desenvolvimento de APIs que permite criar, testar e compartilhar APIs de forma rápida e fácil. Ele é amplamente utilizado por desenvolvedores para testar e depurar APIs durante o desenvolvimento de aplicações web e móveis.
 
-- [TypeScript](https://www.typescriptlang.org/)
-  - **Descrição:** TypeScript é uma linguagem de programação de código aberto desenvolvida pela Microsoft que estende o JavaScript adicionando tipos estáticos opcionais. Ele é amplamente utilizado em aplicações web e móveis para melhorar a produtividade e a qualidade do código.
+- [TypeScript](https://www.typescriptlang.org/): TypeScript é uma linguagem de programação de código aberto desenvolvida pela Microsoft que estende o JavaScript adicionando tipos estáticos opcionais. Ele é amplamente utilizado em aplicações web e móveis para melhorar a produtividade e a qualidade do código.
 
 ## 📋 Estrutura do Projeto
 
@@ -250,6 +246,8 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 
 Instruções sobre como configurar o ambiente de desenvolvimento e realizar a instalação do projeto.
 
+<br>
+
 ### 👀 Requisitos para a instalação
 
 Para executar o projeto, é necessário ter as seguintes ferramentas instaladas e devidamente configuradas no seu sistema:
@@ -262,6 +260,8 @@ Para executar o projeto, é necessário ter as seguintes ferramentas instaladas 
 As versões listadas são as utilizadas durante o desenvolvimento do projeto. Tenha certeza de que as versões instaladas em seu sistema são as mesmas ou superiores.
 
 Certifique-se de que todas as ferramentas estão instaladas corretamente antes de prosseguir com a instalação do projeto.
+
+<br>
 
 ### 📦 Instalação
 
@@ -353,23 +353,23 @@ networks:
 
 **Variáveis de Ambiente**
 
-| Variável        | Descrição                                    | Exemplo                 |
-|-----------------|----------------------------------------------|-------------------------|
-| `PORT`          | Porta do servidor                            | `3000`                  |
-| `HOST`          | Host do servidor                             | `localhost`             |
-| `NODE_ENV`      | Ambiente de execução                         | `development`           |
-| `APP_KEY`       | Chave de aplicativo                          | `gerada pelo comando`   |
-| `DRIVE_DISK`    | Disco de armazenamento                       | `local`                 |
-| `SECRET`        | Chave secreta para JWT                       | `sua_chave_secreta`     |
-| `EXPIRES_IN`    | Tempo de expiração do token                  | `1h`                    |
-| `HASH_DRIVER`   | Driver de hashing                            | `bcrypt`                |
-| `SALT_ROUNDS`   | Número de rounds para hashing                | `10`                    |
-| `DB_CONNECTION` | Tipo de conexão de banco de dados            | `mysql`                 |
-| `MYSQL_HOST`    | Host do banco de dados                       | `localhost`             |
-| `MYSQL_PORT`    | Porta do banco de dados                      | `3306`                  |
-| `MYSQL_DATABASE`| Nome do banco de dados                       | `meu_banco`             |
-| `MYSQL_USER`    | Usuário do banco de dados                    | `root`                  |
-| `MYSQL_PASSWORD`| Senha do banco de dados                      | `senha_secreta`         |
+  | Variável        | Descrição                                    | Exemplo                 |
+  |-----------------|----------------------------------------------|-------------------------|
+  | `PORT`          | Porta do servidor                            | `3000`                  |
+  | `HOST`          | Host do servidor                             | `localhost`             |
+  | `NODE_ENV`      | Ambiente de execução                         | `development`           |
+  | `APP_KEY`       | Chave de aplicativo                          | `gerada pelo comando`   |
+  | `DRIVE_DISK`    | Disco de armazenamento                       | `local`                 |
+  | `SECRET`        | Chave secreta para JWT                       | `sua_chave_secreta`     |
+  | `EXPIRES_IN`    | Tempo de expiração do token                  | `1h`                    |
+  | `HASH_DRIVER`   | Driver de hashing                            | `bcrypt`                |
+  | `SALT_ROUNDS`   | Número de rounds para hashing                | `10`                    |
+  | `DB_CONNECTION` | Tipo de conexão de banco de dados            | `mysql`                 |
+  | `MYSQL_HOST`    | Host do banco de dados                       | `localhost`             |
+  | `MYSQL_PORT`    | Porta do banco de dados                      | `3306`                  |
+  | `MYSQL_DATABASE`| Nome do banco de dados                       | `meu_banco`             |
+  | `MYSQL_USER`    | Usuário do banco de dados                    | `root`                  |
+  | `MYSQL_PASSWORD`| Senha do banco de dados                      | `senha_secreta`         |
 
 
 5. Execute as migrações do banco de dados:
@@ -386,9 +386,16 @@ node ace serve --watch
  ```bash
  docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
  ```
+
+<br>
+
  Após isso, insira a senha do banco de dados e você estará conectado ao banco de dados.
 
+<br>
+
   > OBS: Enquanto você estiver digitando a senha, não aparecerá nada na tela, mas ela está sendo digitada.
+
+<br>
 
  Para certificar que entrou de fato no terminal do banco de dados, utilize as seguintes queries:
  ```bash
@@ -419,6 +426,8 @@ Para sair do terminal do banco de dados, utilize o comando:
 exit;
 ```
 
+<br>
+
 **Dados Iniciais**
 
 Caso deseje criar dados iniciais para testes
@@ -437,6 +446,8 @@ Caso deseje parar o container, utilize o comando:
 docker-compose down
 ```
 
+<br>
+
 #### 🐳 Docker Container
 
 Para instalar e rodar o projeto em um container Docker, siga as instruções abaixo:
@@ -448,7 +459,11 @@ git clone <link_do_projeto>
 ```
 2. Crie um arquivo `.env` na raiz do projeto e adicione as seguintes variáveis de ambiente, [veja um exemplo das variáveis de ambiente](#variáveis-de-ambiente).
 
+<br>
+
     > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+
+<br>
 
 3. Execulte o docker-compose para subir o container do projeto e do banco de dados:
 
@@ -467,6 +482,8 @@ docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
 ```
 
 Todas as dependências do projeto serão instaladas, todas migrações serão feitas e o servidor será iniciado automaticamente. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
+
+<br>
 
 Caso deseje parar o container, utilize o comando:
 
@@ -513,6 +530,10 @@ Tente rodar apenas o container que está com problemas, para isso, comente os ou
 docker-compose up -d
 ```
 
+<br>
+
+<br>
+
 ## 🌐 API e Exemplos de Uso
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
@@ -523,11 +544,13 @@ Os tokens JWT são gerados durante o processo de autenticação e devem ser incl
 
 Os prazos de validade dos tokens JWT são configuráveis e podem ser ajustados conforme necessário. Os tokens expirados são rejeitados pelas rotas protegidas e exigem a geração de um novo token para acesso. Prazo padrão de 1 hora.
 
-### 📚 Rotas
+<br>
+
+## 📚 Rotas
 
 As rotas da API são organizadas em grupos e seguem um padrão de nomenclatura consistente. Cada grupo de rotas corresponde a uma parte específica da aplicação e contém rotas relacionadas a essa parte.
 
-#### 👥 Usuários
+### 👥 Usuários
 
 A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, autenticar um usuário existente, obter informações sobre o usuário, atualizar os dados de usuário e deletar usuário.
 
@@ -535,8 +558,9 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
 A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-mail deve ser único e válido, e a senha deve atender a critérios mínimos de segurança, como ter pelo menos 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial. Ambos são validados por expressões regulares.
 
+<br>
 
-**📋 Cadastrar `METHOD:POST`:**
+### 📋 Cadastrar `METHOD:POST`:
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
@@ -549,14 +573,18 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   - **phone**: Telefone do usuário (string, opcional). Formato de telefone brasileiro válido. É opicional mas se for preenchido, deve ser um telefone válido.
   - **photo**: Foto do usuário (string, opcional). Imagem com tamanho máximo de 2MB.
 
-**👮 Autenticação(login) `METHOD:POST`:**
+<br>
 
-  ***`URL: http://example/api/users`***
+### 👮 Autenticação(login) `METHOD:POST`:
+
+  **`URL: http://example/api/users`**
 
   - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
 
-**🗄️ Obter os dados de um usuário `METHOD:GET`:**
+<br>
+
+### 🗄️ Obter os dados de um usuário `METHOD:GET`:
 
   **`BODY: { }`**
 
@@ -566,13 +594,17 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   Essa consulta não precisa de um corpo, apenas o ID do usuário a ser consultado.
 
-**🗄️ Obter os dados de todos os usuários `METHOD:GET`:**
+<br>
+
+## 🗄️ Obter os dados de todos os usuários `METHOD:GET`:
 
   **`BODY: { }`**
 
   ***`URL: http://example/api/users`***
 
   Essa consulta não precisa de um corpo, apenas o ID do usuário a ser consultado.
+
+<br>
 
 **📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:**
   
@@ -587,6 +619,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   - **role**: Função do usuário (string, opcional).
   - **phone**: Telefone do usuário (string, opcional). Formato de telefone brasileiro válido. É opicional mas se for preenchido, deve ser um telefone válido.
   - **photo**: Foto do usuário (string, opcional). Imagem com tamanho máximo de 2MB.
+
+<br>
 
 **🗑️ Deletar um usuário `METHOD:DELETE`:**
 
@@ -739,6 +773,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "message": "Senha inválida. Deve conter ao menos 6 caracteres e uma letra maiúscula, uma minúscula, um número e um caractere especial."
     }
     ```
+<br>
+
   - **Imagem com tamanho maior que 2MB:**
 
     Requisição:
@@ -1070,10 +1106,14 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
+<br>
+
   - **Método:** `PUT/PATCH`
   - **Endpoint:** `/api/users/:id`
   - **Parâmetros:** `id`, `email`, `password`, `name`, `role`, `phone`, `photo`
   - **Autenticação:**  Não requer autenticação
+
+<br>
 
   **✅ Caso de sucesso:**
  
@@ -1172,12 +1212,16 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 <details> <summary>Ver exemplos de uso</summary>
 
+<br>
+
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
   - **Método:** `DELETE`
   - **Endpoint:** `/api/users/:id`
   - **Parâmetros:** `id`
   - **Autenticação:**  Não requer autenticação
+
+<br>
 
   **✅ Caso de sucesso:**
  
@@ -1231,6 +1275,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 </details>
 
+<br>
+
 ### 🧑‍💼 Clientes
 
   A rota de clientes, `/api/clients`, permite criar um novo cliente no sistema, obter informações sobre o cliente, atualizar os dados do cliente e deletar cliente.
@@ -1247,7 +1293,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  **📋 Cadastrar `METHOD:POST`:**
+  ### 📋 Cadastrar `METHOD:POST`:
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
@@ -1262,7 +1308,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  **🗄️ Obter os dados de um cliente `METHOD:GET`:**
+  ### 🗄️ Obter os dados de um cliente `METHOD:GET`:
    
   **`BODY: {  }`**
   
@@ -1278,7 +1324,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  **🗄️ Obter os dados de todos os clientes `METHOD:GET`:**
+  ### 🗄️ Obter os dados de todos os clientes `METHOD:GET`:
 
   **`BODY: {  }`**
   
@@ -1292,7 +1338,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  **📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:**
+  ### 📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:
 
   >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
   
@@ -1306,7 +1352,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   - **phone**: Telefone do cliente (string, opcional). Formato de telefone brasileiro válido.
   - **cpf**: CPF do cliente (string, opcional). Formato de CPF válido.
 
-  **🗑️ Deletar um cliente `METHOD:DELETE`:**
+  ### 🗑️ Deletar um cliente `METHOD:DELETE`:
 
   **`HEADER: Authorization / Bearer <token>`**
 
@@ -1321,6 +1367,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   <details> <summary>Ver exemplos de uso</summary>
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+<br>
 
   - **Método:** `POST`
   - **Endpoint:** `/api/clients`
@@ -1592,6 +1640,8 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
+<br>
+
 - **Método:** `GET`
 - **Endpoint:** `/api/clients/:id`
 - **Parâmetros:** `id`
@@ -1669,6 +1719,10 @@ Resposta:
     ```
 
 </details>
+
+<br>
+
+<br>
 
 ## 📚 Documentação Adicional
 

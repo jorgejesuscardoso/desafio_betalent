@@ -10,6 +10,7 @@ export default class User extends BaseSchema {
       table.string('password').notNullable()
       table.string('name').notNullable()
       table.string('role').notNullable()
+      table.string('phone').nullable()
       table.string('photo').nullable()
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())

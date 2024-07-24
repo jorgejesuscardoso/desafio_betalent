@@ -5,7 +5,7 @@ import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
 import { CreateUserDTO } from 'App/DTO/Users/CreateUserDTO'
 import { ErrorResponseUserDTO, ResponseUserAllDTO, ResponseUserDTO } from 'App/DTO/Users/ResponseUserDTO'
 import { HandleSaveAndGiveNameToImage } from 'App/Utils/ImageUpload'
-import { ValidateEmail, ValidatePassword } from 'App/Utils/Regex'
+import { ValidateEmail, ValidatePasswordForm, ValidatePhone } from 'App/Utils/Regex'
 
 export default class UserController {
   
@@ -19,13 +19,14 @@ export default class UserController {
     private hashService = Hash,
     private handleImage = HandleSaveAndGiveNameToImage,
     private validateEmail = ValidateEmail,
-    private validatePassword = ValidatePassword,
+    private validatePasswordForm = ValidatePasswordForm,
+    private validatePhone = ValidatePhone,
     private returnDefaultMsg = ReturnDefaultMsg
   ) {  }
 
   public async store({ request, response }: HttpContextContract) {
     try {
-     let { name, photo, email, password, role } = request.body() as CreateUserDTO
+     let { name, photo, email, password, role, phone } = request.body() as CreateUserDTO
         
       // Verifica se os campos obrigatórios foram enviados
       if(!role || !email || !password || !name) return response.badRequest(this.returnDefaultMsg.badRequest)
@@ -33,13 +34,20 @@ export default class UserController {
       // Verifica se o email já está cadastrado
       if(await this.userModel.findBy('email', email)) return response.badRequest(this.returnDefaultMsg.conflictEmail)
 
+      // Valida o tamanho da senha e telefone
+      if(password.length < 6) return response.badRequest(this.returnDefaultMsg.invalidPasswordLength)
+      if(phone && !this.validatePhone(phone)) return response.badRequest(this.returnDefaultMsg.invalidPhone)
+
       // Valida o email e a senha com regex
       if(!this.validateEmail(email)) return response.badRequest(this.returnDefaultMsg.invalidEmail)      
-      if(!this.validatePassword(password)) return response.badRequest(this.returnDefaultMsg.invalidPassword)
+      if(!this.validatePasswordForm(password)) return response.badRequest(this.returnDefaultMsg.invalidPassword)
  
       // Valida o tamanho da imagem
       const validatePhoto = request.file('photo', this.validationOptions)
  
+      if (validatePhoto && validatePhoto.size > 2097152) {
+        return response.badRequest(this.returnDefaultMsg.imageErrorSize)
+      }
       // Processa a imagem e salva no diretório de uploads
       if(validatePhoto) {
         const photoName = await this.handleImage(validatePhoto)      
@@ -82,6 +90,7 @@ export default class UserController {
           id: user.id,
           name: user.name,
           email: user.email,
+          phone: user.phone,
           photo: user.photo,
           role: user.role,
           createdAt: user.createdAt.toLocaleString(),
@@ -109,14 +118,22 @@ export default class UserController {
     try {
 
       // Busca um usuário pelo ID
-      const user = await this.userModel.findOrFail(params.id)
+      const user = await this.userModel.find(params.id)
       response.status(200)
+
+      if(!user) {
+        return {
+          error: this.returnDefaultMsg.notFound.message,
+          ...this.returnDefaultMsg.userNotFound,
+        }
+      }
 
       //  Oculta a senha do usuário
       const hidderPassword = {
         id: user.id,
         name: user.name,
         email: user.email,
+        phone: user.phone,
         photo: user.photo,
         role: user.role,
         createdAt: user.createdAt.toLocaleString(),
@@ -141,27 +158,32 @@ export default class UserController {
    try {
 
     // Extrai os campos obrigatórios do corpo da requisição
-    let { email, name, password, role } = request.body() as CreateUserDTO
+    let { email, name, password, role, phone, photo } = request.body() as CreateUserDTO
     const user = await this.userModel.findOrFail(params.id)
 
+
     // Verifica se o campo de foto foi enviado e salva a foto
-    const hasPhoto = request.file('photo', this.validationOptions)
+    const hasPhoto = request.file(photo, this.validationOptions)
+
     if (hasPhoto) {
       const photoProcess = await this.handleImage(hasPhoto)
       if(!photoProcess) throw new Error(this.returnDefaultMsg.imageError.message)
       user.photo = photoProcess
     }
+
     
     // Verifica se o campo de senha foi enviado e criptografa a senha 
     if (password) {
       password = await this.hashService.make(password)
     }
+
   
     // Atualiza outros campos do usuário
     user.merge({
       name,
       email,
       password,
+      phone,
       role,
     })
   
@@ -174,6 +196,7 @@ export default class UserController {
       id: user.id,
       name: user.name,
       email: user.email,
+      phone: user.phone,
       photo: user.photo,
       role: user.role,
       createdAt: user.createdAt.toLocaleString(),

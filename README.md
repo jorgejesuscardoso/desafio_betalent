@@ -340,7 +340,7 @@ networks:
     > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
 
-###### Variáveis de Ambiente
+**Variáveis de Ambiente**
 
 | Variável        | Descrição                                    | Exemplo                 |
 |-----------------|----------------------------------------------|-------------------------|
@@ -367,7 +367,7 @@ node ace migration:run
 ```
 6. Inicie o servidor:
 ```bash
-node server.ts
+node ace serve --watch
 ```
 7. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
 
@@ -379,14 +379,14 @@ node server.ts
 
   > OBS: Enquanto você estiver digitando a senha, não aparecerá nada na tela, mas ela está sendo digitada.
 
- Para certificar que entro de fato no banco de dados, utilize as seguintes queries:
+ Para certificar que entrou de fato no terminal do banco de dados, utilize as seguintes queries:
  ```bash
   show databases;
   use betalent;
   show tables;
 ```
 
-Se for sua primeira consulta e você não fez nenhuma alteração no banco de dados, o retorno deverá ser algo parecido com isso:
+Se você não fez nenhuma alteração no banco de dados, o retorno deverá ser algo parecido com isso:
 
 ```bash
 +------------------------+
@@ -403,12 +403,13 @@ Se for sua primeira consulta e você não fez nenhuma alteração no banco de da
 | users                  |
 +------------------------+
 ```
-Para sair do banco de dados, utilize o comando:
+Para sair do terminal do banco de dados, utilize o comando:
 ```bash
 exit;
 ```
 
-###### Dados Iniciais
+**Dados Iniciais**
+
 Caso deseje criar dados iniciais para testes
 
 1. Execute o comando `node ace make:seeder` para criar um seeder.
@@ -419,11 +420,15 @@ Todos os dados iniciais contido nos seeders serão inseridos no banco de dados.
 
 Outros comandos disponíveis podem ser visualizados com o comando `node ace`.
 
+Caso deseje parar o container, utilize o comando:
+
+```bash
+docker-compose down
+```
+
 #### 🐳 Docker Container
 
 Para instalar e rodar o projeto em um container Docker, siga as instruções abaixo:
-
-> Obs: Caso deseje criar dados iniciais para testes, siga os passos descritos na instalação [local](#dados-iniciais). E as faças antes das instruções abaixo.
 
 1. Clone o repositório do projeto:
 
@@ -434,12 +439,12 @@ git clone <link_do_projeto>
 
     > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
-3. Execulte o docker-compose para subir o container backend e do banco de dados:
+3. Execulte o docker-compose para subir o container do projeto e do banco de dados:
 
 ```bash
 docker-compose up -d
 ```
-4. Poderá acessar o container do backend pelo terminal com o comando:
+4. Poderá acessar o container do projeto pelo terminal com o comando:
 
 ```bash
 docker exec -it <seu_container_backend> /bin/bash
@@ -471,11 +476,686 @@ docker ps
 
 Confira se o container está rodando e se o nome do container está correto. O nome do container é o nome que você deu ao container no arquivo `docker-compose.yml`.
 
-## 📝 Uso e Exemplos
+Você pode querer ver os logs do container, para isso, utilize o comando:
+
+```bash
+docker logs <seu_container>
+```
+
+Também pode ver os containers que pararam de rodar com o comando:
+
+```bash
+docker ps -a
+```
+
+Se o container parou de rodar, você pode reiniciá-lo com o comando:
+
+```bash
+docker start <seu_container>
+```
+
+Caso tenha problemas com o container, verifique se as portas estão corretas e se não há conflitos com outras aplicações.
+
+Tente rodar apenas o container que está com problemas, para isso, comente os outros containers no arquivo `docker-compose.yml` e rode o comando:
+
+```bash
+docker-compose up -d
+```
+
+## 🌐 API e Exemplos de Uso
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-Exemplos de uso e instruções sobre como interagir com a API ou outras partes do projeto.
+A API é acessada por meio de requisições HTTP e retorna respostas em formato JSON. Algumas das rotas disponíveis são protegidas por autenticação JWT e requerem um token válido para acesso.
+
+Os tokens JWT são gerados durante o processo de autenticação e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas. As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
+
+Os prazos de validade dos tokens JWT são configuráveis e podem ser ajustados conforme necessário. Os tokens expirados são rejeitados pelas rotas protegidas e exigem a geração de um novo token para acesso. Prazo padrão de 1 hora.
+
+## 📚 Rotas
+
+As rotas da API são organizadas em grupos e seguem um padrão de nomenclatura consistente. Cada grupo de rotas corresponde a uma parte específica da aplicação e contém rotas relacionadas a essa parte.
+
+### 👥 Usuários
+
+A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, autenticar um usuário existente, obter informações sobre o usuário, atualizar os dados de usuário e deletar usuário.
+
+Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados no banco de dados. A senha do usuário é criptografada antes de ser armazenada para garantir a segurança dos dados.
+
+**📋 Cadastrar `METHOD:POST`:**
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  ***`URL: http://example/api/users`***
+
+  - **email**: E-mail do usuário (string, obrigatório, único). Formato de e-mail válido.
+  - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
+  - **name**: Nome do usuário (string, obrigatório).
+  - **role**: Função do usuário (string, obrigatório).
+  - **phone**: Telefone do usuário (string, opcional). Formato de telefone brasileiro válido. É opicional mas se for preenchido, deve ser um telefone válido.
+  - **photo**: Foto do usuário (string, opcional). Imagem com tamanho máximo de 2MB.
+
+**👮 Autenticação(login) `METHOD:POST`:**
+
+  ***`URL: http://example/api/users`***
+
+  - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
+  - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
+
+**🗄️ Obter os dados de um usuário `METHOD:GET`:**
+
+  ***`URL: http://example/api/users/:id`***
+
+  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
+
+**🗄️ Obter os dados de todos os usuários `METHOD:GET`:**
+
+  ***`URL: http://example/api/users`***
+
+**📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:**
+  
+  >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+
+  ***`URL: http://example/api/users/:id`***
+
+  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser atualizado.
+  - **email**: E-mail do usuário (string, opcional). Formato de e-mail válido.
+  - **password**: Senha do usuário (string, opcional). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
+  - **name**: Nome do usuário (string, opcional).
+  - **role**: Função do usuário (string, opcional).
+  - **phone**: Telefone do usuário (string, opcional). Formato de telefone brasileiro válido. É opicional mas se for preenchido, deve ser um telefone válido.
+  - **photo**: Foto do usuário (string, opcional). Imagem com tamanho máximo de 2MB.
+
+**🗑️ Deletar um usuário `METHOD:DELETE`:**
+
+  ***`URL: http://example/api/users/:id`***
+
+  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
+
+
+####  📝 Exemplos de requisições para cadastro de um usuário do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `POST`
+  - **Endpoint:** `/api/users`
+  - **Parâmetros:** `email`, `password`, `name`, `role`, `phone`, `photo`
+  - **Autenticação:** Não requer autenticação
+
+  **✅ Caso de sucesso:**
+ 
+  Requisição:
+
+   ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123@",
+      "name": "John Doe",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg"
+    }
+  ```
+  Resposta:
+
+  ```json  
+    {
+      "message": "Criado com sucesso.",
+      "data": {
+        "name": "John Doe",
+        "email": "admin@adm.com",
+        "role": "admin",
+        "password": "$hashFicticio====+-hashFicticiov1nd0DA73rR@d053Lvag3mN1v3lSeisSer10E55e70h@5h3F1ct1c10",
+        "created_at": "2024-07-23T20:05:23.377+00:00",
+        "updated_at": "2024-07-23T20:05:23.377+00:00",
+        "id": 1
+      }
+    }
+  ```
+  
+  **❌ Casos de erro:**
+  <details> <summary>Ver Casos de Erro</summary>
+
+  - **Email já cadastrado:**
+
+    Exemplo de entrada: `POST /api/users`
+  
+    Requisição:
+
+      ```json
+      {
+        "email": "emailExiste@adm.com",
+        "password": "Admin123@",
+        "name": "John Doe",
+        "role": "admin",
+        "phone": "11 1 1111-1111",
+        "photo": "imagem.jpg"
+      }
+      ```
+    Resposta:
+
+      ```json
+      {
+        "message": "Email já cadastrado."
+      }
+      ```
+  - **Email com formato inválido:**
+
+    Requisição:
+    ```json
+    {
+      "email": "adminadm.com",  // ou "admin@adm" ou "admin" ou "admin@.com" ou "admin@adm." ou "admin@.com.",etc...
+      "password": "Admin123@",
+      "name": "John Doe",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg"
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Email inválido."
+    }
+    ```
+  - **Senha com menos de 6 caracteres:**
+
+    Requisição:
+
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Adm3@",
+      "name": "John Doe",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg"
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Senha deve ter no mínimo 6 caracteres."
+    }
+    ```
+  - **Senha com formato inválido:**
+
+    Requisição:
+
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin", // ou "admin123@" ou "Admin123" ou "admin@123" ou "Admin@adm" ou "admin@Adm", etc...
+      "name": "John Doe",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg"
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Senha inválida. Deve conter ao menos 6 caracteres e uma letra maiúscula, uma minúscula, um número e um caractere especial."
+    }
+    ```
+  - **Imagem com tamanho maior que 2MB:**
+
+    Requisição:
+
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123@",
+      "name": "John Doe",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg" // Imagem com mais de 2MB
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro ao salvar a imagem. Tamanho máximo permitido: 2MB."
+    }
+    ```
+  - **Telefone com tamanho inválido:**
+
+    Requisição:
+
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123@",
+      "name": "John Doe",
+      "role": "admin",
+      "phone": " 1 1111-1111", // Sem DD. Mas tambem retorna erro se maior ou menor que 11 caracteres. Ou insira um telefone válido ou deixa em branco.
+      "photo": "imagem.jpg"
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Telefone inválido."
+    }
+    ```
+  - **Error ao salvar no banco de dados ou do servidor:**
+
+    Requisição:
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123@",
+      "name": "John Doe",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg"
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+    </details>
+
+
+</details>
+
+####  📝 Exemplos de requisições para autenticação de um usuário do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `POST`
+  - **Endpoint:** `/api/users`
+  - **Parâmetros:** `email`, `password`
+  - **Autenticação:** Não requer autenticação
+
+  **✅ Caso de sucesso:**
+ 
+  Requisição:
+
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123@"
+    }
+    ```
+  Resposta:
+
+    ```json  
+    {
+      "token": "eyTOKENficticioM3uam160UzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1c2hpZG9AeSS3toKeNvALL1NadAiOjE3MjE3NzE5ODcseFakeJAdiSSEcCI1nT3re554nt3n40EmesMo.qW79H2ZLCEjtJP8yYkuJPSerIoEssETokEnEfAKe"
+    }
+    ```
+  **❌ Casos de erro:**
+  <details> <summary>Ver Casos de Erro</summary>
+
+  - **Email não cadastrado:**
+
+    Exemplo de entrada: `POST /api/users`
+  
+    Requisição:
+
+      ```json
+      {
+        "email": "emailInvalido@fail.com",
+        "password": "Admin123@"
+      }
+      ```
+    
+    Resposta:
+
+      ```json
+      {
+        "message": "Dados inválidos."
+      }
+      ```
+    
+  - **Senha incorreta:**
+
+    Requisição:
+
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123" // Senha incorreta
+    }
+    ```
+    Resposta:
+
+    ```json
+    {
+      "message": "Dados inválidos."
+    }
+    ```
+
+  - **Error ao salvar no banco de dados ou do servidor:**
+
+    Requisição:
+    ```json
+    {
+      "email": "admin@adm.com",
+      "password": "Admin123@"
+    }
+    ```
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+  </details>
+</details>
+
+####  📝 Exemplos de requisições para obter os dados de um usuário do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `GET`
+  - **Endpoint:** `/api/users/:id`
+  - **Parâmetros:** `id`
+  - **Autenticação:**  Não requer autenticação
+
+  **✅ Caso de sucesso:**
+ 
+  Requisição no endpoint: ***<i>htt://www.example.com/api/users/1</i>***
+   
+  Resposta:
+
+  ```json  
+  {
+    "data":{
+      "name": "John Doe",
+      "email": "admin@adm.com",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg",
+      "createdAt": "01/01/2024",
+      "updatedAt": "01/01/2024"
+    }
+  }
+  ```
+
+  **❌ Casos de erro:**
+  <details> <summary>Ver Casos de Erro</summary>
+
+  - **Usuário não encontrado ou id inválido:**
+
+    Exemplo de entrada: `GET /api/users/:id`
+  
+    Requisição: ***<i>htt://www.example.com/api/users/999</i>***
+    
+    Resposta:
+
+      ```json
+      {
+        "error": "Not found.",
+        "message": "Usuário não encontrado."
+      }
+      ```
+    - Error interno do servidor:
+
+    Requisição: ***<i>htt://www.example.com/api/users/1</i>***
+    
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+
+
+  </details>
+
+</details>
+
+####  📝 Exemplos de requisições para obter os dados de todos os usuários do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `GET`
+  - **Endpoint:** `/api/users`
+  - **Parâmetros:** Nenhum
+  - **Autenticação:**  Não requer autenticação
+
+  **✅ Caso de sucesso:**
+ 
+  Requisição no endpoint: **<i>htt://www.example.com/api/users</i>**
+  
+  
+  **<i>Sucesso com retorno:</i>**  
+
+  Resposta:
+
+  ```json  
+    {
+      "data": [
+        {
+          "name": "John Doe",
+          "email": "user1@gmail.com",
+          "role": "admin",
+          "phone": "11 1 1111-1111",
+          "photo": "imagem.jpg",
+          "createdAt": "01/01/2024",
+          "updatedAt": "01/01/2024"
+        },
+        {
+          "name": "Jane Doe",
+          "email": "user2@gmail.com",
+          "role": "user",
+          "phone": "11 1 1111-1111",
+          "photo": "imagem.jpg",
+          "createdAt": "01/01/2024",
+          "updatedAt": "01/01/2024"
+        }
+      ]
+    }
+  ```
+
+  **<i>Sucesso sem retorno:</i>**
+
+  Resposta:
+
+  ```json  
+    {
+      "data": []
+    }
+  ```
+
+  **❌ Caso de erro:**
+
+  - **Error interno do servidor:**
+
+    Requisição: ***<i>htt://www.example.com/api/users</i>***    
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+</details>
+
+####  📝 Exemplos de requisições para atualizar os dados de um usuário do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `PUT/PATCH`
+  - **Endpoint:** `/api/users/:id`
+  - **Parâmetros:** `id`, `email`, `password`, `name`, `role`, `phone`, `photo`
+  - **Autenticação:**  Não requer autenticação
+
+  **✅ Caso de sucesso:**
+ 
+  Requisição `METHOD:PUT`:
+
+  ```json
+  {
+    "email": "emailModificado@test.com",
+    "password": "Admin123@",
+    "name": "John Doe",
+    "role": "admin",
+    "phone": "11 1 1111-1111",
+    "photo": "imagem.jpg"
+  }
+  ```
+   
+  Resposta:
+
+  ```json  
+  {
+    "message": "Atualizado com sucesso.",
+    "data": {
+      "name": "John Doe",
+      "email": "emailModificado@test.com",
+      "role": "admin",
+      "phone": "11 1 1111-1111",
+      "photo": "imagem.jpg",
+      "createdAt": "01/01/2024",
+      "updatedAt": "01/01/2024",
+      "id": 1
+    }
+  }
+  ```
+
+  Requisição `METHOD:PATCH`:
+
+  ```json
+  {
+    "email": "emailModificado@test.com"
+  }
+  ```
+
+  Resposta:
+
+  ```json  
+  {
+    "message": "Atualizado com sucesso.",
+    "data": {
+      "email": "emailModificado@test.com",
+      "id": 1,
+      "createdAt": "01/01/2024",
+      "updatedAt": "01/01/2024"
+    }
+  }
+  ```
+
+  **❌ Casos de erro:**
+
+  **Usuário não encontrado ou id inválido:**
+
+  Exemplo de entrada: `PUT/PATCH /api/users/:id`
+
+  Requisição: ***<i>htt://www.example.com/api/users/999</i>***
+  
+  Resposta:
+
+  ```json
+    {
+      "error": "Not found.",
+      "message": "Usuário não encontrado."
+    }
+  ```
+  **Error interno do servidor:**
+
+  Requisição: ***<i>htt://www.example.com/api/users/1</i>***
+  
+  Resposta:
+
+  ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+  ```
+</details>
+
+
+####  📝 Exemplos de requisições para deletar um usuário do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `DELETE`
+  - **Endpoint:** `/api/users/:id`
+  - **Parâmetros:** `id`
+  - **Autenticação:**  Não requer autenticação
+
+  **✅ Caso de sucesso:**
+ 
+  Requisição no endpoint: ***<i>htt://www.example.com/api/users/1</i>***
+   
+  Resposta: **<i>StatusHTTP: 204 No Content</i>**
+
+  ```json  
+  {
+    
+  }
+  ```
+
+  **❌ Casos de erro:**
+
+  <details> <summary>Ver Casos de Erro</summary>
+
+  - **Usuário não encontrado ou id inválido:**
+
+    Exemplo de entrada: `DELETE /api/users/:id`
+  
+    Requisição: ***<i>htt://www.example.com/api/users/999</i>***
+    
+    Resposta:
+
+      ```json
+      {
+        "error": "Not found.",
+        "message": "Usuário não encontrado."
+      }
+      ```
+  - **Error interno do servidor:**
+
+    Requisição: ***<i>htt://www.example.com/api/users/1</i>***
+    
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+  </details>
+
+
+  ### 🧑‍💼 Clientes
+
+  A rota de clientes, `/api/clients`, permite criar um novo cliente no sistema, obter informações sobre o cliente, atualizar os dados do cliente e deletar cliente.
+
+  Ao cadastrar um novo cliente, os dados do cliente são validados e armazenados no banco de dados.
+
+  **📋 Cadastrar `METHOD:POST`:**
+
 
 ## 📚 Documentação Adicional
 

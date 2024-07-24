@@ -30,13 +30,16 @@ export const ReturnDefaultMsg = {
     "message": "Sem conteúdo."
   },
   "conflictUsername": {
-    "message": "Usuário já existe."
+    "message": "Usuário já cadastrado."
   },
   "conflictEmail": {
-    "message": "Email já existe."
+    "message": "Email já cadastrado."
   },
   "invalidPassword": {
-    "message": "Senha inválida."
+    "message": "Senha inválida. Deve conter ao menos uma letra maiúscula, uma minúscula, um número e um caractere especial."
+  },
+  "invalidPasswordLength": {
+    "message": "Senha deve ter no mínimo 6 caracteres."
   },
   "invalidEmail": {
     "message": "Email inválido."
@@ -44,10 +47,19 @@ export const ReturnDefaultMsg = {
   "invalidToken": {
     "message": "Token inválido."
   },
+  "userNotFound": {
+    "message": "Usuário não encontrado."
+  },
   "conflict": {
     "message": "Conflito."
   },
   "imageError": {
     "message": "Erro ao salvar a imagem."
+  },
+  "imageErrorSize": {
+    "message": "Erro ao salvar a imagem. Tamanho máximo permitido: 2MB."
+  },
+  "invalidPhone": {
+    "message": "Telefone inválido."
   },
 }

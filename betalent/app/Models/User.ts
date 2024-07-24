@@ -13,6 +13,9 @@ export default class User extends BaseModel {
 
   @column()
   public password: string
+
+  @column()
+  public phone: string
   
   @column()
   public photo: string

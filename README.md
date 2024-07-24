@@ -15,7 +15,18 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
   - [🚀 Tecnologias utilizadas](#-tecnologias-utilizadas)
   - [📋 Estrutura do Projeto](#-estrutura-do-projeto)
   - [📦 Instalação e Execução](#-instalação-e-execução)
-  - [📝 Uso e Exemplos](#-uso-e-exemplos)
+  - [🌐 API e Exemplos de Uso](#-api-e-exemplos-de-uso)
+    - [📚 Rotas](#-rotas)
+      - [👥 Usuários](#-usuários)
+      - [📝 Exemplos de requisições para cadastro de um usuário do sistema](#-exemplos-de-requisições-para-cadastro-de-um-usuário-do-sistema)
+      - [📝 Exemplos de requisições para autenticação de um usuário do sistema](#-exemplos-de-requisições-para-autenticação-de-um-usuário-do-sistema)
+      - [📝 Exemplos de requisições para obter os dados de um usuário do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-um-usuário-do-sistema)
+      - [📝 Exemplos de requisições para obter os dados de todos os usuários do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-todos-os-usuários-do-sistema)
+      - [📝 Exemplos de requisições para atualizar os dados de um usuário do sistema](#-exemplos-de-requisições-para-atualizar-os-dados-de-um-usuário-do-sistema)
+      - [📝 Exemplos de requisições para deletar um usuário do sistema](#-exemplos-de-requisições-para-deletar-um-usuário-do-sistema)
+    - [🧑‍💼 Clientes](#-clientes)
+      - [📝 Exemplos de requisições para cadastro de um cliente do sistema](#-exemplos-de-requisições-para-cadastro-de-um-cliente-do-sistema)
+      - [📝 Exemplos de requisições para obter os dados de um cliente do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-um-cliente-do-sistema)
   - [📚 Documentação Adicional](#-documentação-adicional)
 
 
@@ -512,11 +523,11 @@ Os tokens JWT são gerados durante o processo de autenticação e devem ser incl
 
 Os prazos de validade dos tokens JWT são configuráveis e podem ser ajustados conforme necessário. Os tokens expirados são rejeitados pelas rotas protegidas e exigem a geração de um novo token para acesso. Prazo padrão de 1 hora.
 
-## 📚 Rotas
+### 📚 Rotas
 
 As rotas da API são organizadas em grupos e seguem um padrão de nomenclatura consistente. Cada grupo de rotas corresponde a uma parte específica da aplicação e contém rotas relacionadas a essa parte.
 
-### 👥 Usuários
+#### 👥 Usuários
 
 A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, autenticar um usuário existente, obter informações sobre o usuário, atualizar os dados de usuário e deletar usuário.
 

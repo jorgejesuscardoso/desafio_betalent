@@ -3,7 +3,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
 
-export default class Auth {
+export default class LoginMiddleware {
 
   constructor(
     private userModel = User,

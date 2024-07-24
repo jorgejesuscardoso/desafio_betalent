@@ -45,7 +45,10 @@ export const ReturnDefaultMsg = {
     "message": "Email inválido."
   },
   "invalidToken": {
-    "message": "Token inválido."
+    "message": "Token inválido ou expirado."
+  },
+  "tokenNotFound": {
+    "message": "Token não encontrado."
   },
   "userNotFound": {
     "message": "Usuário não encontrado."
@@ -61,5 +64,11 @@ export const ReturnDefaultMsg = {
   },
   "invalidPhone": {
     "message": "Telefone inválido."
+  },
+  "invalidCPF": {
+    "message": "CPF inválido."
+  },
+  "dataClientInvalid": {
+    "message": "Dados inválidos. Verifique os campos obrigatórios."
   },
 }

@@ -1156,6 +1156,84 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   **📋 Cadastrar `METHOD:POST`:**
 
+  [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  ***`URL: http://example/api/clients`***
+
+  - **name**: Nome do cliente (string, obrigatório).
+  - **email**: E-mail do cliente (string, obrigatório, único). Formato de e-mail válido.
+  - **phone**: Telefone do cliente (string, obrigatório). Formato de telefone brasileiro válido.
+  - **cpf**: CPF do cliente (string, obrigatório). Formato de CPF válido.
+
+  **🗄️ Obter os dados de um cliente `METHOD:GET`:**
+   
+  ***`URL: http://example/api/clients/:id`***
+
+  - **id**: ID do cliente (number, obrigatório). ID do cliente a ser consultado.
+
+  **🗄️ Obter os dados de todos os clientes `METHOD:GET`:**
+
+  ***`URL: http://example/api/clients`***
+
+  **📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:**
+
+  >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+
+  ***`URL: http://example/api/clients/:id`***
+
+  - **id**: ID do cliente (number, obrigatório). ID do cliente a ser atualizado.
+  - **name**: Nome do cliente (string, opcional).
+  - **email**: E-mail do cliente (string, opcional). Formato de e-mail válido.
+  - **phone**: Telefone do cliente (string, opcional). Formato de telefone brasileiro válido.
+  - **cpf**: CPF do cliente (string, opcional). Formato de CPF válido.
+
+  **🗑️ Deletar um cliente `METHOD:DELETE`:**
+
+  ***`URL: http://example/api/clients/:id`***
+
+  - **id**: ID do cliente (number, obrigatório). ID do cliente a ser deletado.
+
+  ####  📝 Exemplos de requisições para cadastro de um cliente do sistema
+
+  <details> <summary>Ver exemplos de uso</summary>
+
+  [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  - **Método:** `POST`
+  - **Endpoint:** `/api/clients`
+  - **Parâmetros:** `name`, `email`, `phone`, `cpf`
+
+  **✅ Caso de sucesso:**
+
+  Requisição:
+
+  ```json
+  {
+    "name": "John Doe",
+    "email": "john.doe@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "123.456.789-10"
+  }
+  ```
+  Resposta:
+
+  ```json
+    {
+    "message": "Criado com sucesso.",
+    "data": {
+      "email": "johne.silva@mail.com",
+      "phone": "11 1 1111-1111",
+      "cpf": "088.778.320-10",
+      "name": "João Silva",
+      "created_at": "2024-07-24T02:47:10.706+00:00",
+      "updated_at": "2024-07-24T02:47:10.706+00:00",
+      "id": 1
+      }
+    }
+  ```
+
+  </details>
+
 
 ## 📚 Documentação Adicional
 

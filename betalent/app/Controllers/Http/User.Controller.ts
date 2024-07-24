@@ -5,7 +5,7 @@ import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
 import { CreateUserDTO } from 'App/DTO/Users/CreateUserDTO'
 import { ErrorResponseUserDTO, ResponseUserAllDTO, ResponseUserDTO } from 'App/DTO/Users/ResponseUserDTO'
 import { HandleSaveAndGiveNameToImage } from 'App/Utils/ImageUpload'
-import { ValidateEmail, ValidatePasswordForm, ValidatePhone } from 'App/Utils/Regex'
+import { ValidateEmail, ValidatePasswordForm, ValidatePhone } from 'App/Utils/Validator'
 
 export default class UserController {
   

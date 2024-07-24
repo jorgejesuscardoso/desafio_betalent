@@ -522,6 +522,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados no banco de dados. A senha do usuário é criptografada antes de ser armazenada para garantir a segurança dos dados.
 
+A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-mail deve ser único e válido, e a senha deve atender a critérios mínimos de segurança, como ter pelo menos 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial. Ambos são validados por expressões regulares.
+
+
 **📋 Cadastrar `METHOD:POST`:**
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
@@ -581,6 +584,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
 
 
+  <br>
+  
 ####  📝 Exemplos de requisições para cadastro de um usuário do sistema
 
 <details> <summary>Ver exemplos de uso</summary>
@@ -592,6 +597,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **Parâmetros:** `email`, `password`, `name`, `role`, `phone`, `photo`
   - **Autenticação:** Não requer autenticação
 
+  <br>
+  
   **✅ Caso de sucesso:**
  
   Requisição:
@@ -623,9 +630,13 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
   ```
   
+  <br>
+  
   **❌ Casos de erro:**
   <details> <summary>Ver Casos de Erro</summary>
 
+  <br>
+  
   - **Email já cadastrado:**
 
     Exemplo de entrada: `POST /api/users`
@@ -649,6 +660,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
         "message": "Email já cadastrado."
       }
       ```
+  <br>
+  
   - **Email com formato inválido:**
 
     Requisição:
@@ -669,6 +682,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "message": "Email inválido."
     }
     ```
+  <br>
+  
   - **Senha com menos de 6 caracteres:**
 
     Requisição:
@@ -690,6 +705,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "message": "Senha deve ter no mínimo 6 caracteres."
     }
     ```
+  <br>
+  
   - **Senha com formato inválido:**
 
     Requisição:
@@ -732,6 +749,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "message": "Erro ao salvar a imagem. Tamanho máximo permitido: 2MB."
     }
     ```
+  <br>
+  
   - **Telefone com tamanho inválido:**
 
     Requisição:
@@ -753,6 +772,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "message": "Telefone inválido."
     }
     ```
+  <br>
+  
   - **Error ao salvar no banco de dados ou do servidor:**
 
     Requisição:
@@ -778,6 +799,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
 </details>
 
+  <br>
+  
 ####  📝 Exemplos de requisições para autenticação de um usuário do sistema
 
 <details> <summary>Ver exemplos de uso</summary>
@@ -789,6 +812,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **Parâmetros:** `email`, `password`
   - **Autenticação:** Não requer autenticação
 
+  <br>
+  
   **✅ Caso de sucesso:**
  
   Requisição:
@@ -806,9 +831,13 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "token": "eyTOKENficticioM3uam160UzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1c2hpZG9AeSS3toKeNvALL1NadAiOjE3MjE3NzE5ODcseFakeJAdiSSEcCI1nT3re554nt3n40EmesMo.qW79H2ZLCEjtJP8yYkuJPSerIoEssETokEnEfAKe"
     }
     ```
+  <br>
+  
   **❌ Casos de erro:**
   <details> <summary>Ver Casos de Erro</summary>
 
+  <br>
+  
   - **Email não cadastrado:**
 
     Exemplo de entrada: `POST /api/users`
@@ -829,6 +858,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
         "message": "Dados inválidos."
       }
       ```
+  <br>
+  
     
   - **Senha incorreta:**
 
@@ -848,6 +879,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **Error ao salvar no banco de dados ou do servidor:**
 
     Requisição:
@@ -868,6 +901,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   </details>
 </details>
 
+  <br>
+  
 ####  📝 Exemplos de requisições para obter os dados de um usuário do sistema
 
 <details> <summary>Ver exemplos de uso</summary>
@@ -879,6 +914,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **Parâmetros:** `id`
   - **Autenticação:**  Não requer autenticação
 
+  <br>
+  
   **✅ Caso de sucesso:**
  
   Requisição no endpoint: ***<i>htt://www.example.com/api/users/1</i>***
@@ -899,6 +936,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   }
   ```
 
+  <br>
+  
   **❌ Casos de erro:**
   <details> <summary>Ver Casos de Erro</summary>
 
@@ -928,12 +967,12 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "message": "Erro interno do servidor."
     }
     ```
-
-
   </details>
 
 </details>
 
+  <br>
+  
 ####  📝 Exemplos de requisições para obter os dados de todos os usuários do sistema
 
 <details> <summary>Ver exemplos de uso</summary>
@@ -945,10 +984,14 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **Parâmetros:** Nenhum
   - **Autenticação:**  Não requer autenticação
 
+  <br>
+  
   **✅ Caso de sucesso:**
  
   Requisição no endpoint: **<i>htt://www.example.com/api/users</i>**
   
+  
+  <br>
   
   **<i>Sucesso com retorno:</i>**  
 
@@ -979,6 +1022,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
   ```
 
+  <br>
+  
   **<i>Sucesso sem retorno:</i>**
 
   Resposta:
@@ -989,6 +1034,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
   ```
 
+  <br>
+  
   **❌ Caso de erro:**
 
   - **Error interno do servidor:**
@@ -1004,6 +1051,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     ```
 </details>
 
+  <br>
+  
 ####  📝 Exemplos de requisições para atualizar os dados de um usuário do sistema
 
 <details> <summary>Ver exemplos de uso</summary>
@@ -1070,8 +1119,12 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   }
   ```
 
+  <br>
+  
   **❌ Casos de erro:**
 
+  <br>
+  
   **Usuário não encontrado ou id inválido:**
 
   Exemplo de entrada: `PUT/PATCH /api/users/:id`
@@ -1086,6 +1139,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
       "message": "Usuário não encontrado."
     }
   ```
+  <br>
+  
   **Error interno do servidor:**
 
   Requisição: ***<i>htt://www.example.com/api/users/1</i>***
@@ -1100,6 +1155,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 </details>
 
 
+  <br>
+  
 ####  📝 Exemplos de requisições para deletar um usuário do sistema
 
 <details> <summary>Ver exemplos de uso</summary>
@@ -1122,11 +1179,15 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     
   }
   ```
+  <br>
+  
 
   **❌ Casos de erro:**
 
   <details> <summary>Ver Casos de Erro</summary>
 
+  <br>
+  
   - **Usuário não encontrado ou id inválido:**
 
     Exemplo de entrada: `DELETE /api/users/:id`
@@ -1141,6 +1202,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
         "message": "Usuário não encontrado."
       }
       ```
+  <br>
+  
   - **Error interno do servidor:**
 
     Requisição: ***<i>htt://www.example.com/api/users/1</i>***
@@ -1165,6 +1228,14 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   A rota de clientes é protegida por autenticação JWT e requer um token válido para acesso. Os tokens JWT são gerados durante o processo de autenticação(login) e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas.
 
+  As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
+
+  O CPF do cliente é validado utilizando uma função específica que checa a conformidade do formato e dos dígitos do CPF com as regras padrões de formatação. Essa validação assegura que o CPF siga o formato correto e que os dígitos estejam de acordo com os critérios matemáticos estabelecidos. No entanto, essa validação não inclui a verificação do CPF na Receita Federal, portanto, não garante que o CPF seja válido em termos de existência ou registro oficial.
+
+  O telefone e o email do cliente é validado por meio de expressões regulares que verificam se o formato dos dados está de acordo com os padrões esperados. Essa validação assegura que o telefone e o email sigam os formatos corretos e que sejam válidos para uso no sistema.
+
+  <br>
+  
   **📋 Cadastrar `METHOD:POST`:**
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
@@ -1175,9 +1246,11 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   - **name**: Nome do cliente (string, obrigatório).
   - **email**: E-mail do cliente (string, obrigatório, único). Formato de e-mail válido.
-  - **phone**: Telefone do cliente (string, obrigatório). Formato de telefone brasileiro válido.
-  - **cpf**: CPF do cliente (string, obrigatório). Formato de CPF válido.
+  - **phone**: Telefone do cliente (string, obrigatóriom unico). Formato de telefone brasileiro válido.
+  - **cpf**: CPF do cliente (string, obrigatório, único). Formato de CPF válido.
 
+  <br>
+  
   **🗄️ Obter os dados de um cliente `METHOD:GET`:**
    
   **`BODY: {  }`**
@@ -1192,11 +1265,13 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   É necessário um token de autenticação no cabeçalho.
 
+  <br>
+  
   **🗄️ Obter os dados de todos os clientes `METHOD:GET`:**
 
   **`BODY: {  }`**
   
-  **`URL: http://example/api/clients/:id`**
+  **`URL: http://example/api/clients`**
 
   **`HEADER: Authorization / Bearer <token>`**
 
@@ -1204,10 +1279,12 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   É necessário um token de autenticação no cabeçalho.
 
+  <br>
+  
   **📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:**
 
   >> ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
-
+  
   **`HEADER: Authorization / Bearer <token>`**
 
   **`URL: http://example/api/clients/:id`**
@@ -1226,6 +1303,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser deletado.
 
+  <br>
+  
   ####  📝 Exemplos de requisições para cadastro de um cliente do sistema
 
   <details> <summary>Ver exemplos de uso</summary>
@@ -1237,6 +1316,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
   - **Parâmetros:** `name`, `email`, `phone`, `cpf`
   - **Autenticação:** Requer autenticação
 
+  <br>
+  
   **✅ Caso de sucesso:**
 
   Requisição:
@@ -1249,27 +1330,32 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     "cpf": "123.456.789-10"
   }
   ```
+
   Resposta:
 
   ```json
     {
-    "message": "Criado com sucesso.",
-    "data": {
-      "email": "johne.silva@mail.com",
-      "phone": "11 1 1111-1111",
-      "cpf": "088.778.320-10",
-      "name": "João Silva",
-      "created_at": "2024-07-24T02:47:10.706+00:00",
-      "updated_at": "2024-07-24T02:47:10.706+00:00",
-      "id": 1
-      }
+      "message": "Criado com sucesso.",
+      "data": {
+        "email": "johne.silva@mail.com",
+        "phone": "11 1 1111-1111",
+        "cpf": "088.778.320-10",
+        "name": "João Silva",
+        "created_at": "2024-07-24T02:47:10.706+00:00",
+        "updated_at": "2024-07-24T02:47:10.706+00:00",
+        "id": 1
+        }
     }
   ```
 
+  <br>
+  
   **❌ Casos de erro:**
 
   <details> <summary>Ver Casos de Erro</summary>
 
+  <br>
+  
   - **Sem token ou token inválido:**
 
     Exemplo de entrada: `POST /api/clients`
@@ -1296,6 +1382,9 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
         }
       }
       ```
+
+    <br>
+  
   - **Token expirado:**
 
     Requisição:
@@ -1321,6 +1410,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **Algum campo obrigatório não preenchido:**
 
     Requisição:
@@ -1342,6 +1433,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **CPF já cadastrado:**
 
     Requisição:
@@ -1363,6 +1456,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **CPF com formato inválido:**
 
     Requisição:
@@ -1384,6 +1479,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **Telefone com formato inválido:**
 
     Requisição:
@@ -1405,6 +1502,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **Email já cadastrado:**
 
     Requisição:
@@ -1426,6 +1525,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **Email com formato inválido:**
 
     Requisição:
@@ -1447,6 +1548,8 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
     }
     ```
 
+  <br>
+  
   - **Error ao salvar no banco de dados ou do servidor:**
 
     Requisição:
@@ -1472,6 +1575,89 @@ Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados
 
   </details>
 
+####  📝 Exemplos de requisições para obter os dados de um cliente do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+- **Método:** `GET`
+- **Endpoint:** `/api/clients/:id`
+- **Parâmetros:** `id`
+- **Autenticação:** Requer autenticação
+
+  <br>
+  
+**✅ Caso de sucesso:**
+
+Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1</i>***
+
+**`HEADER: Authorization / Bearer <token>`**
+
+**`BODY: { }`**
+
+  <br>
+  
+Resposta:
+
+```json  
+{
+  "data":{
+    "name": "John Doe",
+    "email": "john.doe@mail.com"
+  }
+}
+```
+
+  <br>
+  
+**❌ Casos de erro:**
+
+<details> <summary>Ver Casos de Erro</summary>
+
+  <br>
+  
+- **Cliente não encontrado ou id inválido:**
+  
+  Exemplo de entrada: `GET /api/clients/:id`
+
+  Requisição: ***<i>htt://www.example.com/api/clients/999</i>***
+
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`BODY: { }`**
+
+  <br>
+  
+  Resposta:
+
+  ```json
+  {
+    "error": "Not found.",
+    "message": "Cliente não encontrado."
+  }
+  ```
+  <br>
+
+- **Error interno do servidor:**
+  
+    Requisição: ***<i>htt://www.example.com/api/clients/1</i>***
+
+    **`HEADER: Authorization / Bearer <token>`**
+
+    **`BODY: { }`**
+
+    <br>
+  
+    Resposta:
+  
+    ```json
+    {
+      "message": "Erro interno do servidor."
+    }
+    ```
+
+</details>
 
 ## 📚 Documentação Adicional
 

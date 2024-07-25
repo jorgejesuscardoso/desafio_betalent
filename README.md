@@ -28,7 +28,18 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
       - [📝 Exemplos de requisições para cadastro de um cliente do sistema](#-exemplos-de-requisições-para-cadastro-de-um-cliente-do-sistema)
       - [📝 Exemplos de requisições para obter os dados de um cliente do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-um-cliente-do-sistema)
       - [📝 Exemplos de requisições para obter os dados de todos os clientes do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-todos-os-clientes-do-sistema)
-  - [📚 Documentação Adicional](#-documentação-adicional)
+      - [📝 Exemplos de requisições para atualizar os dados de um cliente do sistema](#-exemplos-de-requisições-para-atualizar-os-dados-de-um-cliente-do-sistema)
+      - [📝 Exemplos de requisições para deletar um cliente do sistema](#-exemplos-de-requisições-para-deletar-um-cliente-do-sistema)
+    - [📦 Produtos](#-produtos)
+      - [📝 Exemplos de requisições para cadastro de um produto do sistema](#-exemplos-de-requisições-para-cadastro-de-um-produto-do-sistema)
+      - [📝 Exemplos de requisições para obter os dados de um produto do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-um-produto-do-sistema)
+      - [📝 Exemplos de requisições para obter os dados de todos os produtos do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-todos-os-produtos-do-sistema)
+      - [📝 Exemplos de requisições para atualizar os dados de um produto do sistema](#-exemplos-de-requisições-para-atualizar-os-dados-de-um-produto-do-sistema)
+      - [📝 Exemplos de requisições para deletar um produto do sistema](#-exemplos-de-requisições-para-deletar-um-produto-do-sistema)
+    - [📦 Vendas](#-vendas)
+      - [📝 Exemplos de requisições para registrar uma venda no sistema](#-exemplos-de-requisições-para-registrar-uma-venda-no-sistema)
+      
+  - [📚 Links uteis e referência](#-links-uteis-e-referências)
 
 
 
@@ -360,7 +371,7 @@ networks:
 
   | Variável        | Descrição                                    | Exemplo                 |
   |-----------------|----------------------------------------------|-------------------------|
-  | `PORT`          | Porta do servidor                            | `3000`                  |
+  | `PORT`          | Porta do servidor                            | `3333`                  |
   | `HOST`          | Host do servidor                             | `localhost`             |
   | `NODE_ENV`      | Ambiente de execução                         | `development`           |
   | `APP_KEY`       | Chave de aplicativo                          | `gerada pelo comando`   |
@@ -373,7 +384,7 @@ networks:
   | `MYSQL_HOST`    | Host do banco de dados                       | `localhost`             |
   | `MYSQL_PORT`    | Porta do banco de dados                      | `3306`                  |
   | `MYSQL_DATABASE`| Nome do banco de dados                       | `meu_banco`             |
-  | `MYSQL_USER`    | Usuário do banco de dados                    | `root`                  |
+  | `MYSQL_USER`    | Usuário do banco de dados                    | `seuuser`               |
   | `MYSQL_PASSWORD`| Senha do banco de dados                      | `senha_secreta`         |
 
 
@@ -497,15 +508,17 @@ git clone <link_do_projeto>
 
 <br>
 
-    > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+  > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
 <br>
 
 3. Execulte o docker-compose para subir o container do projeto e do banco de dados:
-
+   
 ```bash
 docker-compose up -d
 ```
+ > - Todas as dependências do projeto serão instaladas, todas migrações serão feitas e o servidor será iniciado automaticamente. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
+
 4. Poderá acessar o container do projeto pelo terminal com o comando:
 
 ```bash
@@ -516,9 +529,6 @@ docker exec -it <seu_container_backend> /bin/bash
 ```bash
 docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
 ```
-
-Todas as dependências do projeto serão instaladas, todas migrações serão feitas e o servidor será iniciado automaticamente. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
-
 <br>
 
 Caso deseje parar o container, utilize o comando:
@@ -590,9 +600,7 @@ As rotas da API são organizadas em grupos e seguem um padrão de nomenclatura c
 
 A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, autenticar um usuário existente, obter informações sobre o usuário, atualizar os dados de usuário e deletar usuário.
 
-Ao cadastrar um novo usuário, os dados do usuário são validados e armazenados no banco de dados. A senha do usuário é criptografada antes de ser armazenada para garantir a segurança dos dados.
-
-A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-mail deve ser único e válido, e a senha deve atender a critérios mínimos de segurança, como ter pelo menos 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial. Ambos são validados por expressões regulares.
+A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-mail deve ser único e válido, e a senha deve atender a critérios mínimos de segurança, como ter pelo menos 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
 
 <br>
 
@@ -2378,4 +2386,13 @@ Links e referências para documentação adicional e recursos úteis
 - [Queries SQL - Lucid ORM (doc)](https://lucid.adonisjs.com/docs/select-query-builder)
 - [Gerador de CPF](https://www.4devs.com.br/gerador_de_cpf)
 - [Emojis](https://emojidb.org/node.js-emojis)
-
+- [AdonisJS](https://adonisjs.com/)
+- [Lucid ORM](https://adonisjs.com/docs/5.0/lucid)
+- [Node.js](https://nodejs.org/en/)
+- [GIT](https://git-scm.com/)
+- [TypeScript](https://www.typescriptlang.org/)
+- [JWT](https://jwt.io/)
+- [Bcrypt](https://www.npmjs.com/package/bcrypt)
+- [Docker](https://www.docker.com/)
+- [Docker-compose](https://docs.docker.com/compose/)
+- [UUID - v4](https://www.npmjs.com/package/uuidv4)

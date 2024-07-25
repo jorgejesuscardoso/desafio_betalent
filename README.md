@@ -124,7 +124,7 @@ Serão critérios para avaliação da solução fornecida:
   - Clareza na documentação.
 
 
-# 📚 Documentação Completa do Projeto
+# 📚 Documentação do Projeto
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
@@ -2383,16 +2383,16 @@ Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
 Links e referências para documentação adicional e recursos úteis
 
-- [Queries SQL - Lucid ORM (doc)](https://lucid.adonisjs.com/docs/select-query-builder)
-- [Gerador de CPF](https://www.4devs.com.br/gerador_de_cpf)
-- [Emojis](https://emojidb.org/node.js-emojis)
-- [AdonisJS](https://adonisjs.com/)
-- [Lucid ORM](https://adonisjs.com/docs/5.0/lucid)
-- [Node.js](https://nodejs.org/en/)
-- [GIT](https://git-scm.com/)
-- [TypeScript](https://www.typescriptlang.org/)
-- [JWT](https://jwt.io/)
-- [Bcrypt](https://www.npmjs.com/package/bcrypt)
-- [Docker](https://www.docker.com/)
-- [Docker-compose](https://docs.docker.com/compose/)
-- [UUID - v4](https://www.npmjs.com/package/uuidv4)
+- [Queries SQL - Lucid ORM (doc)](https://lucid.adonisjs.com/docs/select-query-builder): Documentação sobre queries SQL com Lucid ORM.
+- [Gerador de CPF](https://www.4devs.com.br/gerador_de_cpf): Gerador de CPF válido para testes.
+- [Emojis](https://emojidb.org/node.js-emojis): Lista de emojis para usar em documentação.
+- [AdonisJS](https://adonisjs.com/): Documentação oficial do AdonisJS.
+- [Lucid ORM](https://lucid.adonisjs.com/docs/introduction): Documentação oficial do Lucid ORM.
+- [Node.js](https://nodejs.org/en/): Documentação oficial do Node.js.
+- [GIT](https://git-scm.com/): Documentação oficial do GIT.
+- [TypeScript](https://www.typescriptlang.org/): Documentação oficial do TypeScript.
+- [JWT](https://jwt.io/): Documentação oficial do JWT.
+- [Bcrypt](https://www.npmjs.com/package/bcrypt): Documentação oficial do Bcrypt.
+- [Docker](https://www.docker.com/): Documentação oficial do Docker.
+- [Docker-compose](https://docs.docker.com/compose/): Documentação oficial do Docker-compose.
+- [UUID - v4](https://www.npmjs.com/package/uuidv4): Documentação oficial do UUID v4.

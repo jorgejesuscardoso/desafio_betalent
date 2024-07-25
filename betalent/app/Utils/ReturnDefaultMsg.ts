@@ -68,7 +68,13 @@ export const ReturnDefaultMsg = {
   "invalidCPF": {
     "message": "CPF inválido."
   },
-  "dataClientInvalid": {
-    "message": "Dados inválidos. Verifique os campos obrigatórios."
+  "clientAlreadyExists": {
+    "message": "Cliente já cadastrado."
+  },
+  "clientNotFound": {
+    "message": "Cliente não encontrado."
+  },
+  "invalidFields": {
+    "message": "Campos inválidos. Verifique os campos obrigatórios."
   },
 }

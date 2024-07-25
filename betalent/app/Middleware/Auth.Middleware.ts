@@ -8,12 +8,14 @@ export default class AuthMiddleware {
     private returnDefaultMsg = ReturnDefaultMsg,
   ) {}
 
-  async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {
+  async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {    
     try {
+      // Obtém o token do cabeçalho da requisição
       const token = request.headers().authorization;
       const removeBearer = token?.split(' ')[1];
-      const isValidToken = this.tokenVerify(String(removeBearer));
 
+      // Verifica se o token é válido e retorna uma mensagem de erro caso não seja
+      const isValidToken = this.tokenVerify(String(removeBearer));
       if (!token && !isValidToken) return response.status(401).json(this.returnDefaultMsg.unauthorized);
 
       await next()

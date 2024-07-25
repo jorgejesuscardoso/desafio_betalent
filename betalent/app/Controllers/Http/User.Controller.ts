@@ -159,24 +159,24 @@ export default class UserController {
 
     // Extrai os campos obrigatórios do corpo da requisição
     let { email, name, password, role, phone, photo } = request.body() as CreateUserDTO
-    const user = await this.userModel.findOrFail(params.id)
 
+    // Verifica se o usuário é válido
+    const user = await this.userModel.findOrFail(params.id)
+    if(!user) return {...this.returnDefaultMsg.notFound, error: this.returnDefaultMsg.userNotFound.message}
 
     // Verifica se o campo de foto foi enviado e salva a foto
-    const hasPhoto = request.file(photo, this.validationOptions)
-
-    if (hasPhoto) {
+    const hasPhoto = photo && request.file(photo, this.validationOptions)
+    if (photo && hasPhoto) {
       const photoProcess = await this.handleImage(hasPhoto)
       if(!photoProcess) throw new Error(this.returnDefaultMsg.imageError.message)
+        
       user.photo = photoProcess
     }
-
     
     // Verifica se o campo de senha foi enviado e criptografa a senha 
     if (password) {
       password = await this.hashService.make(password)
     }
-
   
     // Atualiza outros campos do usuário
     user.merge({

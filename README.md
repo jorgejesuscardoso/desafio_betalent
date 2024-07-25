@@ -27,6 +27,7 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
     - [🧑‍💼 Clientes](#-clientes)
       - [📝 Exemplos de requisições para cadastro de um cliente do sistema](#-exemplos-de-requisições-para-cadastro-de-um-cliente-do-sistema)
       - [📝 Exemplos de requisições para obter os dados de um cliente do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-um-cliente-do-sistema)
+      - [📝 Exemplos de requisições para obter os dados de todos os clientes do sistema](#-exemplos-de-requisições-para-obter-os-dados-de-todos-os-clientes-do-sistema)
   - [📚 Documentação Adicional](#-documentação-adicional)
 
 
@@ -438,6 +439,37 @@ Caso deseje criar dados iniciais para testes
 
 1. Execute o comando `node ace make:seeder` para criar um seeder.
 2. Navegue até o arquivo criado em `database/seeders` e adicione os dados iniciais.
+
+Exemplo de seeder:
+
+```typescript
+import BaseSeeder from './BaseSeeder';
+import User from 'App/Models/User';
+
+export default class UserSeeder extends BaseSeeder {
+  public async run() {
+    await User.createMany([
+      {
+        name: 'John Doe',
+        email: 'john@mail.com',
+        password: 'Abc123@',
+        phone: '11 9 9999-9999',
+        role: 'admin',
+      },
+      {
+        name: 'Jane Doe',
+        email: 'jane@mail.com',
+        password: 'Abc123@',
+        phone: '11 9 9999-9998',
+        role: 'user',
+      },
+    ]);
+  }
+}
+```
+
+
+
 3. Para executar o seeder, utilize o comando `node ace db:seed`.
 
 Todos os dados iniciais contido nos seeders serão inseridos no banco de dados.
@@ -1052,7 +1084,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   
   <br>
   
-  **<i>Sucesso com retorno:</i>**  
+  **<i>Sucesso com retorno, quando não há usuário cadastrado:</i>**  
 
   Resposta:
 
@@ -1295,7 +1327,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   Ao cadastrar um novo cliente, os dados do cliente são validados e armazenados no banco de dados.
 
-  A rota de clientes é protegida por autenticação JWT e requer um token válido para acesso. Os tokens JWT são gerados durante o processo de autenticação(login) e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas.
+  A rota de clientes é protegida por autenticação JWT e requer um token válido para acesso. Os tokens JWT são gerados durante o processo de autenticação(login) e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas. Um middleware de autenticação verifica a validade do token e permite o acesso apenas a usuários devidamente autenticados.
 
   As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
 
@@ -1303,9 +1335,11 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   O telefone e o email do cliente é validado por meio de expressões regulares que verificam se o formato dos dados está de acordo com os padrões esperados. Essa validação assegura que o telefone e o email sigam os formatos corretos e que sejam válidos para uso no sistema.
 
+  Todas as verificações de validação são feitas no middleware de validação antes de os dados serem processados e armazenados no banco de dados. Essas verificações garantem que os dados inseridos sejam válidos e estejam de acordo com os critérios estabelecidos.
+
   <br>
   
-  ### 📋 Cadastrar `METHOD:POST`:
+### 📋 Cadastrar `METHOD:POST`:
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
@@ -1315,28 +1349,30 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   - **name**: Nome do cliente (string, obrigatório).
   - **email**: E-mail do cliente (string, obrigatório, único). Formato de e-mail válido.
-  - **phone**: Telefone do cliente (string, obrigatóriom unico). Formato de telefone brasileiro válido.
+  - **phone**: Telefone do cliente (string, obrigatório, unico). Formato de telefone brasileiro válido.
   - **cpf**: CPF do cliente (string, obrigatório, único). Formato de CPF válido.
 
   <br>
   
-  ### 🗄️ Obter os dados de um cliente `METHOD:GET`:
+### 🗄️ Obter os dados de um cliente `METHOD:GET`:
+
+  Ao buscar um clientes por ID, o sistema retorna os dados do cliente correspondente ao ID fornecido incluindo as vendas realizadas para esse cliente.
+
+  É possível filtrar as vendas por data inserindo mês e ano na URL. O sistema retorna as vendas realizadas para o cliente no mês e ano especificados.
    
   **`BODY: {  }`**
   
-  **`URL: http://example/api/clients/:id`**
+  **`URL: http://example/api/clients/:id`** Consulta padrão. Retorna os dados do cliente correspondente ao ID fornecido incluindo todas as vendas realizadas para esse cliente.
+
+  **`URL: http://example/api/clients/:id?month=MM&year=YYYY`** Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados.
 
   **`HEADER: Authorization / Bearer <token>`**
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser consultado.
 
-  Essa consulta não precisa de um corpo, apenas o ID do cliente a ser consultado.
-
-  É necessário um token de autenticação no cabeçalho.
-
   <br>
   
-  ### 🗄️ Obter os dados de todos os clientes `METHOD:GET`:
+### 🗄️ Obter os dados de todos os clientes `METHOD:GET`:
 
   **`BODY: {  }`**
   
@@ -1350,7 +1386,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  ### 📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:
+### 📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:
 
   > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
   
@@ -1364,7 +1400,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
   - **phone**: Telefone do cliente (string, opcional). Formato de telefone brasileiro válido.
   - **cpf**: CPF do cliente (string, opcional). Formato de CPF válido.
 
-  ### 🗑️ Deletar um cliente `METHOD:DELETE`:
+### 🗑️ Deletar um cliente `METHOD:DELETE`:
 
   **`HEADER: Authorization / Bearer <token>`**
 
@@ -1374,7 +1410,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  ####  📝 Exemplos de requisições para cadastro de um cliente do sistema
+####  📝 Exemplos de requisições para cadastro de clientes do sistema
 
   <details> <summary>Ver exemplos de uso</summary>
 
@@ -1675,9 +1711,82 @@ Resposta:
 
 ```json  
 {
-  "data":{
-    "name": "John Doe",
-    "email": "john.doe@mail.com"
+  "message": "Sucesso.",
+  "data": {
+    "id": 1,
+    "nome": "Joãozinho da Silva",
+    "cpf": "480.189.770-38",
+    "email": "john.silva@mail.com",
+    "telefone": "11 9 9999-9999",
+    "vendas": [
+      {
+        "venda_id": 2,
+        "quantidade": 3,
+        "valor_unitario": 150,
+        "total": 450,
+        "data_venda": "2020-05-24T20:42:41.000Z",
+        "produto": "Product 2",
+        "descricao": "Description of product 2",
+        "marca": "Brand 2",
+        "imagem": "product2.jpg"
+      },
+      {
+        "venda_id": 8,
+        "quantidade": 2,
+        "valor_unitario": 100,
+        "total": 200,
+        "data_venda": "2024-07-24T20:42:41.000Z",
+        "produto": "Product 5",
+        "descricao": "Description of product 5",
+        "marca": "Brand 5",
+        "imagem": "product5.jpg"
+      },
+      {
+        "venda_id": 3,
+        "quantidade": 1,
+        "valor_unitario": 50,
+        "total": 50,
+        "data_venda": "2024-07-24T20:42:41.000Z",
+        "produto": "Product 2",
+        "descricao": "Description of product 2",
+        "marca": "Brand 2",
+        "imagem": "product2.jpg"
+      }
+    ]
+  }
+}
+```
+
+  <br>
+
+Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&year=2020</i>*** <i>Filtrando as vendas por mês 5 e ano 2020</i>
+
+**`HEADER: Authorization / Bearer <token>`**
+
+**`BODY: { }`**
+
+```json  
+{
+  "message": "Sucesso.",
+  "data": {
+    "id": 1,
+    "nome": "Joãozinho da Silva",
+    "cpf": "480.189.770-38",
+    "email": "john.silva@mail.com",
+    "telefone": "11 9 9999-9999",
+    "vendas": [
+      {
+        "venda_id": 2,
+        "quantidade": 3,
+        "valor_unitario": 150,
+        "total": 450,
+        "data_venda": "2020-05-24T20:42:41.000Z",
+        "produto": "Product 2",
+        "descricao": "Description of product 2",
+        "marca": "Brand 2",
+        "imagem": "product2.jpg"
+      }
+    ]
   }
 }
 ```
@@ -1730,14 +1839,543 @@ Resposta:
     }
     ```
 
+  </details>
 </details>
 
 <br>
 
+####  📝 Exemplos de requisições para obter os dados de todos os clientes do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
 <br>
 
-## 📚 Documentação Adicional
+- **Método:** `GET`
+- **Endpoint:** `/api/clients`
+- **Parâmetros:** Nenhum
+- **Autenticação:** Requer autenticação
+  <br>
+
+**✅ Caso de sucesso:**
+
+Requisição no endpoint: **<i>htt://www.example.com/api/clients</i>**
+
+**`HEADER: Authorization / Bearer <token>`**
+
+**`BODY: { }`**
+
+  <br>
+
+**<i>Sucesso com retorno:</i>**
+
+Resposta:
+```json
+    {
+      "message": "Sucesso.",
+      "data": [
+        {
+          "id": 1,
+          "nome": "Joãozinho da Silva",
+          "email": "john.silva@mail.com"
+        },
+        {
+          "id": 2,
+          "nome": "Mariazinha da Silva",
+          "email": "mary.silva@mail.com"
+        },
+        {
+          "id": 3,
+          "nome": "Zequinha da Silva",
+          "email": "zack.silva@mail.com"
+        },
+        {
+          "id": 5,
+          "nome": "Mateus da Silva",
+          "email": "mat.silva@mail.com"
+        }
+      ]
+    }
+  ```
+  <br>
+
+**<i>Sucesso sem retorno, quando não há clientes cadastrado:</i>**
+
+Resposta:
+
+```json
+    {
+      "message": "Sucesso.",
+      "data": []
+    }
+  ```
+
+  <br>
+
+**❌ Caso de erro:**
+
+- **Sem token ou token inválido:**
+
+  Exemplo de entrada: `GET /api/clients`
+
+  Requisição:
+
+  **`HEADER: Authorization / Bearer `**
+
+  **`BODY: { }`**
+
+  <br>
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor.",
+    "error": {
+        "name": "JsonWebTokenError",
+        "message": "jwt malformed"
+    }
+  }
+  ```
+
+- **Error interno do servidor:**
+
+  Requisição: ***<i>htt://www.example.com/api/clients</i>***
+
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`BODY: { }`**
+
+  <br>
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor."
+  }
+  ```
+</details>
+
+<br>
+
+####  📝 Exemplos de requisições para atualizar os dados de um cliente do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+<br>
+
+  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas. NÃO é possível utilizar um CPF inválido, certifique-se de utilizar um CPF com combinações válidas de números. Se precisar, utilize um gerador de numeros válidos para CPF. Exemplo: [4DEV](https://www.4devs.com.br/gerador_de_cpf)🚀***
+  
+  - **Método:** `PUT/PATCH`
+  - **Endpoint:** `/api/clients/:id`
+  - **Parâmetros:** `id`, `name`, `email`, `phone`, `cpf`
+  - **Autenticação:** Requer autenticação
+
+  <br>
+
+**✅ Caso de sucesso:**
+
+Requisição `METHOD:PUT`:
+
+```json
+{
+  "name": "João Silva",
+  "email": "jack@mail.com",
+  "phone": "11 1 1111-1111",
+  "cpf": "747.946.950-04"
+}
+```
+
+Resposta:
+
+```json
+{
+  "message": "Atualizado com sucesso.",
+  "data": {
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04",
+    "name": "João Silva",
+  }
+}
+```
+
+Requisição `METHOD:PATCH`:
+
+```json
+{
+  "name": "João Silva",
+  "email": "jack@mail.com",
+  "phone": "11 1 1111-1111",
+  "cpf": "747.946.950-04"
+}
+```
+
+Resposta:
+
+```json
+{
+  "message": "Atualizado com sucesso.",
+  "data": {
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04",
+    "name": "João Silva",
+  }
+}
+```
+
+  <br>
+
+**❌ Casos de erro:**
+
+<details> <summary>Ver Casos de Erro</summary>
+
+  <br>
+
+- **Cliente não encontrado ou id inválido:**
+
+  Exemplo de entrada: `PUT/PATCH /api/clients/:id`
+
+  Requisição: ***<i>htt://www.example.com/api/clients/999</i>***
+
+  ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "error": "Not found.",
+    "message": "Cliente não encontrado."
+  }
+  ```
+
+  <br>
+
+- **Sem token ou token inválido:**
+
+  Exemplo de entrada: `PUT/PATCH /api/clients/:id`
+
+  Requisição:
+
+   ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  **`HEADER: Authorization / Bearer `**
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor.",
+    "error": {
+        "name": "JsonWebTokenError",
+        "message": "jwt malformed"
+    }
+  }
+  ```
+
+  <br>
+
+- **Token expirado:**
+
+  Requisição:
+
+   ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor.",
+    "error": {
+        "name": "TokenExpiredError",
+        "message": "jwt expired"
+    }
+  }
+  ```
+
+  <br>
+
+- **CPF com formato inválido:**
+
+  Requisição:
+
+    ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "message": "CPF inválido."
+  }
+  ```
+
+  <br>
+
+- **Telefone com formato inválido:**
+
+  Requisição:
+
+   ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Telefone inválido."
+  }
+  ```
+
+  <br>
+
+- **Email com formato inválido:**
+
+  Requisição:
+
+   ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Email inválido."
+  }
+  ```
+
+  <br>
+
+- **Error ao salvar no banco de dados ou do servidor:**
+
+  Requisição:
+
+    ```json
+  {
+    "name": "João Silva",
+    "email": "jack@mail.com",
+    "phone": "11 1 1111-1111",
+    "cpf": "747.946.950-04"
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor."
+  }
+  ```
+
+  </details>
+
+</details>
+
+<br>
+
+####  📝 Exemplos de requisições para deletar um cliente do sistema
+
+<details> <summary>Ver exemplos de uso</summary>
+
+[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+<br>
+
+- **Método:** `DELETE`
+- **Endpoint:** `/api/clients/:id`
+- **Parâmetros:** `id`
+- **Autenticação:** Requer autenticação
+
+  <br>
+
+**✅ Caso de sucesso:**
+
+Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1</i>***
+
+**`HEADER: Authorization / Bearer <token>`**
+
+**`BODY: { }`**
+
+<br>
+
+Resposta: **<i>StatusHTTP: 204 No Content</i>**
+
+```json  
+{
+  
+}
+```
+
+<br>
+
+**❌ Casos de erro:**
+
+<details> <summary>Ver Casos de Erro</summary>
+
+  <br>
+
+- **Cliente não encontrado ou id inválido:**
+
+  Exemplo de entrada: `DELETE /api/clients/:id`
+
+  Requisição: ***<i>htt://www.example.com/api/clients/999</i>***
+
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`BODY: { }`**
+
+  <br>
+
+  Resposta:
+
+  ```json
+  {
+    "error": "Not found.",
+    "message": "Cliente não encontrado."
+  }
+  ```
+
+  <br>
+
+- **Sem token ou token inválido:**
+
+  Exemplo de entrada: `DELETE /api/clients/:id`
+
+  Requisição: ***<i>htt://www.example.com/api/clients/1</i>***
+
+  **`HEADER: Authorization / Bearer `**
+
+  **`BODY: { }`**
+
+  <br>
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor.",
+    "error": {
+        "name": "JsonWebTokenError",
+        "message": "jwt malformed"
+    }
+  }
+  ```
+
+  <br>
+
+- **Token expirado:**
+
+  Requisição: ***<i>htt://www.example.com/api/clients/1</i>***
+
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`BODY: { }`**
+
+  <br>
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor.",
+    "error": {
+        "name": "TokenExpiredError",
+        "message": "jwt expired"
+    }
+  }
+  ```
+
+  <br>
+
+- **Error interno do servidor:**
+
+  Requisição: ***<i>htt://www.example.com/api/clients/1</i>***
+
+  **`HEADER: Authorization / Bearer <token>`**
+
+  **`BODY: { }`**
+
+  <br>
+
+  Resposta:
+
+  ```json
+  {
+    "message": "Erro interno do servidor."
+  }
+  ```
+
+  </details>
+
+</details>
+
+<br>
+
+### 📦 Produtos
+
+  A rota de produtos, `/api/products`, permite criar um novo produto no sistema, obter informações sobre o produto, atualizar os dados do produto e deletar produto.
+
+  Ao cadastrar um novo produto, os dados do produto são validados e armazenados no banco de dados.
+
+  A rota de produtos é protegida por autenticação JWT e requer um token válido para acesso. Os tokens JWT são gerados durante o processo de autenticação(login) e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas. Um middleware de autenticação verifica a validade do token e permite o acesso apenas a usuários devidamente autenticados.
+
+  As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
+
+  O preço do produto é validado por meio de uma função específica que verifica se o preço é um número válido e se é maior que zero e possue 2 casas decimais. Essa validação assegura que o preço seja um número válido e positivo e que tenha 2 casas decimais para representar centavos.
+
+  <br>
+
+## 📚 Links uteis e referências
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
 Links e referências para documentação adicional e recursos úteis
+
+- [Queries SQL - Lucid ORM (doc)](https://lucid.adonisjs.com/docs/select-query-builder)
+- [Gerador de CPF](https://www.4devs.com.br/gerador_de_cpf)
+- [Emojis](https://emojidb.org/node.js-emojis)
+

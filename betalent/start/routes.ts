@@ -3,9 +3,31 @@ import Route from '@ioc:Adonis/Core/Route'
 Route.post('/login', 'Login.Controller.login').prefix('api').middleware('loginMiddleware')
 
 Route.group(() => {
-  Route.resource('/users', "User.Controller").apiOnly()
+  Route.post('/users', 'User.Controller.store')
+
+  Route.get('/users', 'User.Controller.index').middleware('authMiddleware')
+
+  Route.get('/users/:id', 'User.Controller.show').middleware('authMiddleware')
+
+  Route.put('/users/:id', 'User.Controller.update').middleware('authMiddleware')
+
+  Route.patch('/users/:id', 'User.Controller.update').middleware('authMiddleware')
+
+  Route.delete('users/:id', 'User.Controller.destroy').middleware('authMiddleware')
 }).prefix('api')
 
 Route.group(() => {
-  Route.resource('/clients', "Client.Controller").apiOnly()
-}).prefix('api').middleware('authMiddleware').middleware('clientMiddleware')
+  
+  Route.post('/clients', 'Client.Controller.store').middleware(['authMiddleware', 'clientMiddleware'])
+
+  Route.get('/clients', 'Client.Controller.index').middleware('authMiddleware')
+
+  Route.get('/clients/:id', 'Client.Controller.show').middleware('authMiddleware')
+
+  Route.patch('/clients/:id', 'Client.Controller.update').middleware(['authMiddleware', 'clientMiddleware'])
+
+  Route.put('/clients/:id', 'Client.Controller.update').middleware(['authMiddleware', 'clientMiddleware'])
+
+  Route.delete('/clients/:id', 'Client.Controller.destroy').middleware('authMiddleware')
+}).prefix('api')
+

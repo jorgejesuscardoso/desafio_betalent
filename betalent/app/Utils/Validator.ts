@@ -19,7 +19,7 @@ export const ValidatePhone = (phone: string) => {
   const regexPhone = /^(\d{2})\s?\d{4,5}-?\d{4}$/;
 
   const phoneSplited = phone.split(' ').join('').split('-').join('')
-
+  if(phoneSplited.length < 11) return false
   return regexPhone.test(phoneSplited)
 }
 

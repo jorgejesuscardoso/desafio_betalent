@@ -50,5 +50,6 @@ Server.middleware.registerNamed({
   clientUpdateMiddleware: () => import('App/Middleware/client/ValidatorDataClientUpdate.Middleware'),
   productMiddleware: () => import('App/Middleware/product/ValidatorDataProduct.Middleware'),
   producUpdatetMiddleware: () => import('App/Middleware/product/ValidatorDataProductUpdate.Middleware'),
+  saleMiddleware: () => import('App/Middleware/sale/ValidatorCreateSale.Middleware'),
 })
 

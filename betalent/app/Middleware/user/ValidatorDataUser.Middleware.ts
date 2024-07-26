@@ -15,7 +15,7 @@ export default class UserMiddleware {
   public async handle({request, response}: HttpContextContract, next: () => Promise<void>) {
     try {
 
-      const { role, email, password, name } = request.body()
+      const { role, email, password, name } = request.only(['role', 'email', 'password', 'name'])
 
       // Verifica se os campos obrigatórios foram enviados
       if(!role || !email || !password || !name) return response.badRequest(this.returnDefaultMsg.badRequest)

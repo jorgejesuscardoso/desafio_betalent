@@ -125,4 +125,7 @@ export const ReturnDefaultMsg = {
   "saleNotFound": {
     "message": "Venda não encontrada."
   },
+  "quantityInvalid": {
+    "message": "Quantidade inválida. Deve ser maior que 0."
+  },
 }

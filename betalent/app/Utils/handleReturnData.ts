@@ -51,9 +51,6 @@ export const ReturnDataClientIndex = (data: MainDataClientDTO[] ) => {
       nome: client.name,
       email: client.email,
       telefone: client.number,
-      cpf: client.cpf,
-      cadastro_data: new Date(client.created_at).toLocaleString(),
-      ultima_att: new Date(client.updated_at).toLocaleString(),
     }
   })
 

@@ -23,6 +23,9 @@ export default class Product extends BaseModel {
   @column()
   public brand: string
 
+  @column()
+  public is_deleted: boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

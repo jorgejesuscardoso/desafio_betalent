@@ -83,4 +83,31 @@ export const ReturnDefaultMsg = {
   "invalidFields": {
     "message": "Campos inválidos. Verifique os campos obrigatórios."
   },
+  "productNotFound": {
+    "message": "Produto não encontrado."
+  },
+  "productAlreadyExist": {
+    "message": "Produto já cadastrado."
+  },
+  "invalidStock": {
+    "message": "Estoque inválido. Deve ser maior que 0."
+  },
+  "invalidBrand": {
+    "message": "Marca inválida. Deve conter ao menos 3 caracteres."
+  },
+  "invalidProductName": {
+    "message": "Nome inválido. Deve conter ao menos 3 caracteres."
+  },
+  "invalidProductDescription": {
+    "message": "Descrição inválida. Deve conter ao menos 10 caracteres."
+  },
+  "invalidPrice": {
+    "message": "Preço inválido. Deve ser maior que 0."
+  },
+  "createProductError": {
+    "message": "Erro ao cadastrar produto."
+  },
+  "isProductDeleted": {
+    "message": "Este produto foi deletado."
+  },
 }

@@ -12,6 +12,7 @@ export default class Product extends BaseSchema {
       table.integer('stock').notNullable()
       table.string('image').notNullable()
       table.string('brand').notNullable()
+      table.boolean('is_deleted').defaultTo(false)
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
     })

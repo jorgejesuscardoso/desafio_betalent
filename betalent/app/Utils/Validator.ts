@@ -53,30 +53,42 @@ export const ValidateCPF = (cpf: string) => {
     return true;
 }
 
-export const CheckDuplicateClientEntry = async (email: string, phone: string, cpf: string): Promise< { success: boolean, message: string }> => {
-   // Verifica se já existe um cliente com o email, telefone ou cpf
-   const clientEmail = await Client.findBy('email', email);
-   const clientPhone = await Phone.findBy('number', phone);
-   const clientCpf = await Client.findBy('cpf', cpf);
+export const CheckDuplicateClientEntry = async ({ clientId, email, phone, cpf}): Promise< { success: boolean, message: string }> => {
 
-   // Resposta detalhada com base no campo já existente
-   if (clientEmail || clientPhone || clientCpf) {
-     const message = clientEmail
-       ? ReturnDefaultMsg.conflictEmail.message
-       : clientPhone
-       ? ReturnDefaultMsg.conflictPhone.message
-       : clientCpf
-       ? ReturnDefaultMsg.conflictCPF.message
-       : '';
+  // Verifica se já existe um cliente com o email, telefone ou cpf
+  const clientEmail = email ? await Client.query()
+  .where('clientEmail', email)
+  .whereNot('id', clientId) // Não considerar o próprio cliente
+  .first() : null
 
-     return {
-      success: false,
-      message,
-    };
-   }
+  const clientPhone = phone ? await Phone.query()
+  .where('phone', phone)
+  .whereNot('clientId', clientId) // Não considerar o próprio cliente
+  .first() : null
+
+  const clientCpf = cpf ? await Client.query()
+  .where('clientCpf', cpf)
+  .whereNot('id', clientId) // Não considerar o próprio cliente
+  .first() : null
+
+  // Resposta detalhada com base no campo já existente
+  if (clientEmail || clientPhone || clientCpf) {
+    const message = clientEmail
+    ? ReturnDefaultMsg.conflictEmail.message
+    : clientPhone
+    ? ReturnDefaultMsg.conflictPhone.message
+    : clientCpf
+    ? ReturnDefaultMsg.conflictCPF.message
+    : '';
 
     return {
-      success: true,
-      message: '',
+    success: false,
+    message,
     };
+  }
+
+  return {
+    success: true,
+    message: '',
+  };
 };

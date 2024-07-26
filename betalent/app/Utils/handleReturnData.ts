@@ -1,8 +1,11 @@
 import { CreateClientDTO } from 'App/DTO/Clients/CreateClientDTO';
 import { ResponseCreateClientDTO, MainDataClientDTO } from 'App/DTO/Clients/ResponseClientDTO';
+import { CreateProductDTO } from 'App/DTO/product/CreateProductDTO';
+import { ResponseProductDTO } from 'App/DTO/product/ResponseProduct';
 import { ResponseUserDTO } from 'App/DTO/Users/ResponseUserDTO';
 import User from 'App/Models/User';
 
+// USUÁRIOS
 export const ReturnUserDataWithoutPassword = (user: User): ResponseUserDTO => {
   return {
     data:{
@@ -16,6 +19,8 @@ export const ReturnUserDataWithoutPassword = (user: User): ResponseUserDTO => {
   };
 };
 
+
+// CLIENTES
 export const ReturnDataCLientStore = (id: number, data: CreateClientDTO): ResponseCreateClientDTO => {
   return {
     data:{
@@ -53,4 +58,47 @@ export const ReturnDataClientIndex = (data: MainDataClientDTO[] ) => {
   })
 
   return response;
+}
+
+// PRODUTOS
+export const ReturnDataProductStore = (id: number, data: CreateProductDTO) => {
+  return {
+    data:{
+      id: id,
+      nome: data.name,
+      descricao: data.description,
+      preço: data.price,
+      estoque: data.stock,
+      imagem: data.image,
+      marca: data.brand,
+    }
+  };
+}
+
+export const ReturnDataProductIndex = (data: { id: number, name: string, price: number, stock: number }) => {
+  return {
+    data:{
+      id: data.id,
+      nome: data.name,
+      preço: data.price,
+      estoque: data.stock,
+    }
+  };
+}
+
+export const ReturnDataProductShow = (data): ResponseProductDTO => {
+  return {
+    message: '',
+    data:{
+      id: data.id,
+      nome: data.name,
+      descricao: data.description,
+      preço: data.price,
+      estoque: data.stock,
+      imagem: data.image,
+      marca: data.brand,
+      cadastrado_em: new Date(data.createdAt).toLocaleString(),
+      atualizado_em: new Date(data.updatedAt).toLocaleString(),
+    }
+  };
 }

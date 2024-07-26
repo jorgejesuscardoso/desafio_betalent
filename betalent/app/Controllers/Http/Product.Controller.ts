@@ -169,7 +169,7 @@ export default class ProductController {
 
       response.status(204)
 
-      return
+      return;
     } catch (error) {
       response.status(500)
       return {

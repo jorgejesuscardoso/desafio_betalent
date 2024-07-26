@@ -110,4 +110,19 @@ export const ReturnDefaultMsg = {
   "isProductDeleted": {
     "message": "Este produto foi deletado."
   },
+  "insufficientStock": {
+    "message": "Estoque insuficiente. Verifique a quantidade disponível."
+  },
+  "invalidQuantity": {
+    "message": "Quantidade inválida. Deve ser maior que 0."
+  },
+  "availableStock": {
+    "message": "O estoque disponível é de: "
+  },
+  "salesCreated": {
+    "message": "Venda criada com sucesso."
+  },
+  "saleNotFound": {
+    "message": "Venda não encontrada."
+  },
 }

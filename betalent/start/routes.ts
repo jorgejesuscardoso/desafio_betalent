@@ -48,3 +48,17 @@ Route.group(() => {
   Route.delete('/products/:id', 'Product.Controller.destroy').middleware('authMiddleware')
 }).prefix('api')
 
+// Rotas de vendas
+Route.group(() => {
+  Route.post('/sales', 'Sale.Controller.store').middleware(['authMiddleware'])
+
+  Route.get('/sales', 'Sale.Controller.index').middleware('authMiddleware')
+
+  Route.get('/sales/:id', 'Sale.Controller.show').middleware('authMiddleware')
+
+  Route.patch('/sales/:id', 'Sale.Controller.update').middleware(['authMiddleware'])
+
+  Route.put('/sales/:id', 'Sale.Controller.update').middleware(['authMiddleware'])
+
+  Route.delete('/sales/:id', 'Sale.Controller.destroy').middleware('authMiddleware')
+}).prefix('api')

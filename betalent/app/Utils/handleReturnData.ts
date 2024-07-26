@@ -102,3 +102,30 @@ export const ReturnDataProductShow = (data): ResponseProductDTO => {
     }
   };
 }
+
+// VENDAS
+export const ReturnDataSaleStore = (data) => {
+  return {
+    id: data.id,
+    cliente: data.client_name,
+    produto: data.product_name,
+    quantidade: data.quantity,
+    preço_unidade: data.unity_price,
+    preço_total: data.total_price,
+    data_venda: new Date(data.date).toLocaleString(),
+  }
+}
+
+export const ReturnDataSaleIndex = (data) => {
+  return data.map((sale) => {
+    return {
+      id: sale.id,
+      cliente: sale.client.name,
+      produto: sale.product.name,
+      quantidade: sale.quantity,
+      preço_unidade: sale.unity_price,
+      preço_total: sale.total_price,
+      data_venda: new Date(sale.created_at).toLocaleString(),
+    }
+  })
+}

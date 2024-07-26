@@ -20,6 +20,9 @@ export default class Sale extends BaseModel {
   @column()
   public total_price: number
 
+  @column()
+  public is_deleted: boolean
+
   @column.dateTime({ autoCreate: true })
   public createdAt: DateTime
 

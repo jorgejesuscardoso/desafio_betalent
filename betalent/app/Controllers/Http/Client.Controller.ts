@@ -235,7 +235,6 @@ export default class UserClient {
     }
   }
 
-
   public async destroy({ params, response }: HttpContextContract) {
     try {
       const client = await this.clientModel.find(params.id);

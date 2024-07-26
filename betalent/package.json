@@ -5,8 +5,9 @@
   "scripts": {
     "dev": "node ace serve --watch",
     "build": "node ace build --production",
-    "start": "npm install && npm run db:reset && node ace db:seed && node ace db:seed && node ace serve --watch",
+    "start": "npm install && npm run db:fresh && node ace db:seed &&  node ace serve --watch",
     "test": "node ace test",
+    "db:fresh": "node ace migration:refresh",
     "db:reset": "node ace migration:reset && node ace migration:run && node ace db:seed"
   },
   "devDependencies": {

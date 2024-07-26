@@ -9,7 +9,6 @@ export default class Client extends BaseSchema {
       table.string('name').notNullable()
       table.string('cpf').unique().notNullable()
       table.string('email').unique().notNullable()
-      table.string('phone').notNullable()
       table.timestamp('created_at', { useTz: true }).defaultTo(this.now())
       table.timestamp('updated_at', { useTz: true }).defaultTo(this.now())
     })

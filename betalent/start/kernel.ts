@@ -44,6 +44,9 @@ Server.middleware.register([
 Server.middleware.registerNamed({
   loginMiddleware: () => import('App/Middleware/Login.Middleware'),
   authMiddleware: () => import('App/Middleware/Auth.Middleware'),
-  clientMiddleware: () => import('App/Middleware/ValidateDataClient.Middleware'),
+  clientMiddleware: () => import('App/Middleware/client/ValidatorDataClient.Middleware'),
+  userMiddleware: () => import('App/Middleware/user/ValidatorDataUser.Middleware'),
+  userUpdateMiddleware: () => import('App/Middleware/user/ValidatorDataUserUpdate.Middleware'),
+  clientUpdateMiddleware: () => import('App/Middleware/client/ValidatorDataClientUpdate.Middleware'),
 })
 

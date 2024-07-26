@@ -1,4 +1,6 @@
+import Client from 'App/Models/Client'
 import { ReturnDefaultMsg } from './ReturnDefaultMsg'
+import Phone from 'App/Models/Phone'
 
 export const ValidateEmail = (email: string) => {
   const regexEmail = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/
@@ -50,3 +52,31 @@ export const ValidateCPF = (cpf: string) => {
 
     return true;
 }
+
+export const CheckDuplicateClientEntry = async (email: string, phone: string, cpf: string): Promise< { success: boolean, message: string }> => {
+   // Verifica se já existe um cliente com o email, telefone ou cpf
+   const clientEmail = await Client.findBy('email', email);
+   const clientPhone = await Phone.findBy('number', phone);
+   const clientCpf = await Client.findBy('cpf', cpf);
+
+   // Resposta detalhada com base no campo já existente
+   if (clientEmail || clientPhone || clientCpf) {
+     const message = clientEmail
+       ? ReturnDefaultMsg.conflictEmail.message
+       : clientPhone
+       ? ReturnDefaultMsg.conflictPhone.message
+       : clientCpf
+       ? ReturnDefaultMsg.conflictCPF.message
+       : '';
+
+     return {
+      success: false,
+      message,
+    };
+   }
+
+    return {
+      success: true,
+      message: '',
+    };
+};

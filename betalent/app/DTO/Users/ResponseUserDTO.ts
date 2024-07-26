@@ -3,8 +3,6 @@ export interface ResponseUserDTO {
     id: number
     name: string
     email: string
-    phone: string
-    photo: string
     role: string
     createdAt: string
     updatedAt: string,
@@ -16,8 +14,6 @@ export interface ResponseUserAllDTO {
     id: number
     name: string
     email: string
-    phone: string
-    photo: string
     role: string
     createdAt: string
     updatedAt: string,

@@ -35,6 +35,12 @@ export const ReturnDefaultMsg = {
   "conflictEmail": {
     "message": "Email já cadastrado."
   },
+  "conflictPhone": {
+    "message": "Telefone já cadastrado."
+  },
+  "conflictCPF": {
+    "message": "CPF já cadastrado."
+  },
   "invalidPassword": {
     "message": "Senha inválida. Deve conter ao menos uma letra maiúscula, uma minúscula, um número e um caractere especial."
   },

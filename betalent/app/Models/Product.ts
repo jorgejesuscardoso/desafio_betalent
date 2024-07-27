@@ -2,6 +2,12 @@ import { DateTime } from 'luxon'
 import { BaseModel, column } from '@ioc:Adonis/Lucid/Orm'
 
 export default class Product extends BaseModel {
+
+  constructor() {
+    super()
+    this.thumbnail = 'https://via.placeholder.com/150';
+  }
+
   @column({ isPrimary: true })
   public id: number
 
@@ -18,7 +24,7 @@ export default class Product extends BaseModel {
   public stock: number
 
   @column()
-  public image: string
+  public thumbnail: string 
 
   @column()
   public brand: string

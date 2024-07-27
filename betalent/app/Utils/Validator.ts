@@ -21,7 +21,10 @@ export const ValidatePhone = (phone: string) => {
   const regexPhone = /^(\d{2})\s?\d{4,5}-?\d{4}$/;
 
   const phoneSplited = phone.split(' ').join('').split('-').join('')
-  if(phoneSplited.length < 11) return false
+
+  const numberOnly = phoneSplited.replace(/\D/g, '')
+
+  if(phoneSplited.length < 11 || !numberOnly) return false
   return regexPhone.test(phoneSplited)
 }
 
@@ -74,11 +77,11 @@ export const CheckDuplicateClientEntry = async ({ clientId, email, phone, cpf}):
   // Resposta detalhada com base no campo já existente
   if (clientEmail || clientPhone || clientCpf) {
     const message = clientEmail
-    ? ReturnDefaultMsg.conflictEmail.message
+    ? ReturnDefaultMsg.emailAlreadyExist.message
     : clientPhone
-    ? ReturnDefaultMsg.conflictPhone.message
+    ? ReturnDefaultMsg.PhoneAlreadyExist.message
     : clientCpf
-    ? ReturnDefaultMsg.conflictCPF.message
+    ? ReturnDefaultMsg.cpfAlreadyExist.message
     : '';
 
     return {

@@ -4,7 +4,12 @@ import { ClientDTO, ClientIndexDTO } from 'App/DTO/ClientDTO';
 import Address from 'App/Models/Address';
 import Client from 'App/Models/Client';
 import Phone from 'App/Models/Phone';
-import { FormatDataClientToReturnStore, FormatDataClientToReturnIndex, FormatDataClientToReturnUpdate } from 'App/Utils/handleReturnData';
+import Product from 'App/Models/Product';
+import { FormatDataClientToReturnStore,
+  FormatDataClientToReturnIndex,
+  FormatDataClientToReturnUpdate,
+  FormatDataClientToReturnShow,
+} from 'App/Utils/handleFormatDataToReturn';
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
 
 export default class UserClient {
@@ -12,10 +17,12 @@ export default class UserClient {
     private clientModel = Client,
     private phoneModel = Phone,
     private addressModel = Address,
+    private productModel = Product,
     private returnDefaultMsg = ReturnDefaultMsg,
     private formatDataToReturnUpdate = FormatDataClientToReturnUpdate,
     private formatDataToReturnStore = FormatDataClientToReturnStore,
     private formatDataToReturnIndex = FormatDataClientToReturnIndex,
+    private formatDataToReturnShow = FormatDataClientToReturnShow,
     private db = Database,
   ) {}
 
@@ -57,11 +64,11 @@ export default class UserClient {
       await trx.commit(); // Confirma a transação se todas as operações forem bem-sucedidas
 
       // Formata os dados para retornar      
-      const dataClient = this.formatDataToReturnStore(client.id, data).data;
+      const dataClient = this.formatDataToReturnStore(client, data).data;
       
-      return response.status(201).json({
-        data: dataClient,
-      });
+      response.status(201)
+
+      return { data: dataClient };
   
     } catch (err) {
 
@@ -80,19 +87,16 @@ export default class UserClient {
       
       const clients = await this.db.query().select('*').from('clients').join('phones', 'clients.id', 'phones.client_id');
 
-      if(clients.length === 0) return response.status(200).json([]);
-
       const data = this.formatDataToReturnIndex(clients);
 
-      return response.status(200).json({
-        ...this.returnDefaultMsg.success,
-        data
-      });
+      response.status(200);
+
+      return { data }
 
     } catch(err) {
       return response.internalServerError({
         ...this.returnDefaultMsg.serverError,
-        error: err
+        error: err.message,
       });
     }
   }
@@ -105,79 +109,63 @@ export default class UserClient {
     try {
 
       // Obtém os dados do cliente
-      const dataclient = await this.db
-        .query()
-        .select('id', 'name as nome', 'cpf', 'email', 'created_at as cadastro_data', 'updated_at as ultima_att')
-        .from('clients')
-        .where('id', params.id)
-        .first();
+      const getClient = await this.clientModel.find(params.id);
   
       // Verifica se o cliente existe
-      if (!dataclient) return response.status(404).json(this.returnDefaultMsg.clientNotFound);
+      if (!getClient) return response.status(404).json(this.returnDefaultMsg.clientNotFound);
 
-      const getAddress = await this.db.query().select('id as endereço_id','street as rua', 'number as numero', 'zip_code as cep', 'neighborhood as bairro', 'city as cidade', 'state as estado').from('addresses').where('client_id', params.id).first();
+      const getAddress = await this.addressModel.findBy('client_id', params.id);
 
-      const getPhone = await this.db.query().select('number as telefone').from('phones').where('client_id', params.id).first();
+      const getPhone = await this.phoneModel.findBy('client_id', params.id);
 
-      // Obtém os parâmetros de consulta para filtrar vendas por mês e ano
-      const month = request.input('month');
-      const year = request.input('year');
-  
-      // Constrói a consulta para obter as vendas
-      let salesQuery = this.db
-        .query()
-        .select(
-          'sales.id as venda_id',
-          'sales.quantity as quantidade',
-          'sales.unity_price as valor_unitario',
-          'sales.total_price as total',
-          'sales.created_at as data_venda',
-          'products.name as produto',
-          'products.description as descricao',
-          'products.brand as marca',
-          'products.image as imagem',
-        )
-        .from('sales')
-        .where('sales.client_id', params.id)
-        .join('products', 'sales.product_id', 'products.id')
-        .orderBy('sales.created_at', 'desc');
-  
-      // Aplica o filtro por mês e ano, se fornecido
+      // Parâmetros para buscar as vendas do cliente por mês e ano
+      const { month, year } = request.qs();
+
+      // Adiciona o filtro de mês e ano se existir
+      const salesFilter = this.db.query().select('*').from('sales').where('client_id', params.id);
+
       if (month && year) {
-        salesQuery = salesQuery
-          .whereRaw('EXTRACT(MONTH FROM sales.created_at) = ?', [month])
-          .whereRaw('EXTRACT(YEAR FROM sales.created_at) = ?', [year]);
+        salesFilter.whereRaw('MONTH(created_at) = ? AND YEAR(created_at) = ?', [month, year]);
+      } else if (month) {
+        salesFilter.whereRaw('MONTH(created_at) = ?', [month]);
+      } else if (year) {
+        salesFilter.whereRaw('YEAR(created_at) = ?', [year]);
       }
 
-      // Executa a consulta das vendas
-      const sales = await salesQuery;
-  
-      // Tratamento das datas
-      dataclient.cadastro_data = new Date(dataclient.cadastro_data).toLocaleString();
-      dataclient.ultima_att = new Date(dataclient.ultima_att).toLocaleString();
-      
-      sales.forEach((sale) => {
-        sale.data_venda = new Date(sale.data_venda).toLocaleString();
-      });
+      const getSales = await Promise.all(
+        (await salesFilter).map(async (sale) => {
+          const product = await this.productModel.find(sale.product_id);
+          return {
+            productName: product?.name,
+            description: product?.description,
+            brand: product?.brand,
+            quantity: sale.quantity,
+            unityPrice: sale.unity_price,
+            totalPrice: sale.total_price,
+            saleDate: new Date(sale.created_at).toLocaleString('pt-BR', {
+              timeZone: 'America/Sao_Paulo',
+             }
+            ),
+            thumbnail: product?.thumbnail,
+          };
+        })
+      );
 
-      // Adiciona as vendas, telefone e endereço ao objeto do cliente
-      dataclient.telefone = getPhone.telefone;
-      dataclient.endereco = getAddress;
-      dataclient.vendas = sales;
-  
-      // Retorna a resposta com os dados do cliente e suas vendas
-      return response.status(200).json({
-        ...this.returnDefaultMsg.success,
-        data: dataclient,
-      });
+      // Formata os dados para retornar
+      const data = this.formatDataToReturnShow({ getClient, getAddress, getPhone, getSales }).data;
       
+      response.status(200);    
+      
+      return {
+        data
+      };
     } catch (err) {
       return response.internalServerError({
         ...this.returnDefaultMsg.serverError,
-        error: err,
+        error: err.message,
       });
     }
-  }   
+  }
 
   public async update({
     request,
@@ -195,7 +183,6 @@ export default class UserClient {
       const client = await this.clientModel.find(params.id);
       const addressClient = await this.addressModel.findBy('client_id', params.id);
       const phoneClient = await this.phoneModel.findBy('client_id', params.id);
-
      
       if (!client || !addressClient || !phoneClient) {
         await trx.rollback();  // Reverte a transação se não encontrar
@@ -238,20 +225,23 @@ export default class UserClient {
 
       const responseData = this.formatDataToReturnUpdate({ client: client , phone: phoneClient, address: addressClient });
 
-      return response.status(200).json({
-        data: responseData,
-      });
+      response.status(200);
+
+      return { data: responseData };
 
     } catch (err) {
       await trx.rollback();  // Reverte a transação em caso de erro
       return response.internalServerError({
         ...this.returnDefaultMsg.serverError,
-        error: err,
+        error: err.message,
       });
     }
   }
 
-  public async destroy({ params, response }: HttpContextContract): Promise<void> {
+  public async destroy({
+    params,
+    response
+  }: HttpContextContract): Promise<void> {
     try {
       const client = await this.clientModel.find(params.id);
 
@@ -265,7 +255,7 @@ export default class UserClient {
     } catch(err) {
       return response.internalServerError({
         ...this.returnDefaultMsg.serverError,
-        error: err
+        error: err.message,
       });
     }
   }

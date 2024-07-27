@@ -3,10 +3,18 @@ import { MergeSaleDTO } from 'App/DTO/SaleDTO';
 import { UserDTO } from 'App/DTO/UserDTO';
 import Product from 'App/Models/Product';
 import User from 'App/Models/User';
+import moment from 'moment-timezone';
 
-// Lida com retorno de datas UTC-3
-export const FormatDate = (date: string): string => {
-  return new Date(date.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'});
+// Manipular as datas para retornar no formato padrão
+export const FormatDate = (date): string => {
+ 
+  const momentDate = moment(date.toISO());
+
+  if (!momentDate.isValid()) {
+    throw new Error('Invalid date');
+  }
+
+  return momentDate.utc().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
 }
 
 // USUÁRIOS
@@ -17,28 +25,28 @@ export const FormatDataUserToReturn = (user: User): UserDTO => {
       name: user.name,
       email: user.email,
       role: user.role,
-      created_at: FormatDate(user.created_at.toLocaleString()),
-      updated_at: FormatDate(user.updated_at.toLocaleString()),
+      created_at: FormatDate(user.created_at),
+      updated_at: FormatDate(user.updated_at),
     }
   };
 };
 
 // CLIENTES
-export const FormatDataClientToReturnStore = (id: number, data: ResponseCreateClientDTO): ClientDTO => {
+export const FormatDataClientToReturnStore = (client , data: ResponseCreateClientDTO): ClientDTO => {
   return {
     data:{
-      id: id,
+      id: client.id,
       name: data.name,
       email: data.email,
       phone: data.phone,
       cpf: data.cpf,
-      created_at: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
-      updated_at: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+      created_at: FormatDate(client.created_at),
+      updated_at: FormatDate(client.updated_at),
       address: {
         id: data.address.id,
         street: data.address.street,
         number: data.address.number,
-        zip_code: data.address.zip_code,
+        zipCode: data.address.zip_code,
         neighborhood: data.address.neighborhood,
         city: data.address.city,
         state: data.address.state,
@@ -72,12 +80,42 @@ export const FormatDataClientToReturnUpdate = ({ client, phone, address }): ICli
       id: address.id,
       street: address.street,
       number: address.number,
-      zip_code: address.zip_code,
+      zipCode: address.zip_code,
       neighborhood: address.neighborhood,
       city: address.city,
       state: address.state,      
     }
   }
+}
+
+export const FormatDataClientToReturnShow = ({
+  getClient,
+  getAddress,
+  getPhone,
+  getSales,
+}) => {
+ 
+  const data = {
+    id: getClient.id,
+    name: getClient.name,
+    email: getClient.email,
+    phone: getPhone.number,
+    cpf: getClient.cpf,
+    createdAt: FormatDate(getClient.created_at),
+    updatedAt: FormatDate(getClient.updated_at),
+    address: {
+      id: getAddress.id,
+      street: getAddress.street,
+      number: Number(getAddress.number),
+      neighborhood: getAddress.neighborhood,
+      city: getAddress.city,
+      state: getAddress.state,
+      zipCode: getAddress.zip_code,
+    },
+    sales: getSales,
+  };
+  
+  return { data };
 }
 
 // PRODUTOS
@@ -89,10 +127,10 @@ export const FormatDataProductToReturn = ( product: Product) => {
       description: product.description,
       price: product.price,
       stock: product.stock,
-      image: product.image,
+      thumbnail: product.thumbnail,
       brand: product.brand,
-      created_at: new Date(product.created_at.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
-      updated_at: new Date(product.updated_at.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+      created_at: FormatDate(product.created_at),
+      updated_at: FormatDate(product.updated_at),
     }
   };
 }
@@ -117,7 +155,7 @@ export const FormatDataSaleToReturn = (data: MergeSaleDTO): MergeSaleDTO => {
     quantity: data.quantity,
     unity_price: data.unity_price,
     total_price: data.total_price,
-    sale_date: new Date(data.sale_date.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+    sale_date: data.sale_date,
   }
 }
 
@@ -129,6 +167,6 @@ export const FormatDataSaleToReturnShow = ({sale, client, product}): MergeSaleDT
     quantity: sale.quantity,
     unity_price: sale.unity_price,
     total_price: sale.total_price,
-    sale_date: new Date(sale.created_at.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+    sale_date: FormatDate(sale.created_at),
   }
 }

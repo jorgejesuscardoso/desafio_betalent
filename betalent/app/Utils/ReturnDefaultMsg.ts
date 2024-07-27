@@ -92,9 +92,21 @@ export const ReturnDefaultMsg = {
     "message": "Invalid client email",
     "status": 400
   },
+  "invalidClientCpf": {
+    "message": "Invalid client cpf",
+    "status": 400
+  },
+  "PhoneAlreadyExist": {
+    "message": "Phone already exists",
+    "status": 409
+  },
   "invalidClientPhone": {
     "message": "Invalid client phone",
     "status": 400
+  },
+  "cpfAlreadyExist": {
+    "message": "CPF already exists",
+    "status": 409
   },
   "clientAlreadyExist": {
     "message": "Client already exists",

@@ -9,7 +9,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'High-performance laptop for gaming and professional use.',
         price: 1200,
         stock: 15,
-        image: 'gaming_laptop.jpg',
+        thumbnail: 'gaming_laptop.jpg',
         brand: 'TechGuru',
       },
       {
@@ -17,7 +17,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Ergonomic wireless mouse with adjustable DPI settings.',
         price: 50,
         stock: 50,
-        image: 'wireless_mouse.jpg',
+        thumbnail: 'wireless_mouse.jpg',
         brand: 'ClickMaster',
       },
       {
@@ -25,7 +25,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Noise-canceling Bluetooth headphones with long battery life.',
         price: 150,
         stock: 30,
-        image: 'bluetooth_headphones.jpg',
+        thumbnail: 'bluetooth_headphones.jpg',
         brand: 'SoundWave',
       },
       {
@@ -33,7 +33,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Ultra-high-definition monitor with accurate color reproduction.',
         price: 450,
         stock: 25,
-        image: '4k_monitor.jpg',
+        thumbnail: '4k_monitor.jpg',
         brand: 'VisionPro',
       },
       {
@@ -41,7 +41,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Durable mechanical keyboard with customizable RGB backlighting.',
         price: 100,
         stock: 40,
-        image: 'mechanical_keyboard.jpg',
+        thumbnail: 'mechanical_keyboard.jpg',
         brand: 'KeyForge',
       },
       {
@@ -49,7 +49,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Feature-packed smartwatch with fitness tracking and notifications.',
         price: 200,
         stock: 20,
-        image: 'smartwatch.jpg',
+        thumbnail: 'smartwatch.jpg',
         brand: 'TimeMaster',
       },
       {
@@ -57,7 +57,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'High-speed external SSD for data storage and transfer.',
         price: 250,
         stock: 35,
-        image: 'external_ssd.jpg',
+        thumbnail: 'external_ssd.jpg',
         brand: 'DataDrive',
       },
       {
@@ -65,7 +65,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Adjustable desk lamp with multiple light settings and USB port.',
         price: 60,
         stock: 45,
-        image: 'desk_lamp.jpg',
+        thumbnail: 'desk_lamp.jpg',
         brand: 'LightUp',
       },
       {
@@ -73,7 +73,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Comfortable ergonomic chair with lumbar support and adjustable height.',
         price: 300,
         stock: 10,
-        image: 'ergonomic_chair.jpg',
+        thumbnail: 'ergonomic_chair.jpg',
         brand: 'ComfortSeater',
       },
       {
@@ -81,7 +81,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Compact USB hub with multiple ports for easy connectivity.',
         price: 30,
         stock: 60,
-        image: 'usb_hub.jpg',
+        thumbnail: 'usb_hub.jpg',
         brand: 'HubLink',
       },
       {
@@ -89,7 +89,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Compact portable speaker with powerful sound and Bluetooth connectivity.',
         price: 80,
         stock: 55,
-        image: 'portable_speaker.jpg',
+        thumbnail: 'portable_speaker.jpg',
         brand: 'SoundBlast',
       },
       {
@@ -97,7 +97,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'High-definition webcam for clear video calls and streaming.',
         price: 70,
         stock: 70,
-        image: 'webcam_hd.jpg',
+        thumbnail: 'webcam_hd.jpg',
         brand: 'ClearView',
       },
       {
@@ -105,7 +105,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Adjustable laptop stand to improve ergonomics and cooling.',
         price: 40,
         stock: 65,
-        image: 'laptop_stand.jpg',
+        thumbnail: 'laptop_stand.jpg',
         brand: 'ElevateTech',
       },
       {
@@ -113,7 +113,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Silicone keyboard cover to protect against spills and dust.',
         price: 20,
         stock: 80,
-        image: 'keyboard_cover.jpg',
+        thumbnail: 'keyboard_cover.jpg',
         brand: 'ShieldGuard',
       },
       {
@@ -121,7 +121,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'High-back gaming chair with reclining feature and adjustable armrests.',
         price: 350,
         stock: 5,
-        image: 'gaming_chair.jpg',
+        thumbnail: 'gaming_chair.jpg',
         brand: 'GameKing',
       },
       {
@@ -129,7 +129,7 @@ export default class ProductSeeder extends BaseSeeder {
         description: 'Fast wireless charger for smartphones and other devices.',
         price: 25,
         stock: 75,
-        image: 'wireless_charger.jpg',
+        thumbnail: 'wireless_charger.jpg',
         brand: 'ChargePro',
         is_deleted: true,
       }

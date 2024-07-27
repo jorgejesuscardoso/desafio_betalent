@@ -1,7 +1,10 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { ProductDTO, ProductIndexDTO  } from 'App/DTO/ProductDTO';
 import Product from 'App/Models/Product';
-import { FormatDataProductToReturnIndex, FormatDataProductToReturn } from 'App/Utils/handleReturnData';
+import {
+  FormatDataProductToReturnIndex,
+  FormatDataProductToReturn,
+} from 'App/Utils/handleFormatDataToReturn';
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
 
 export default class ProductController {
@@ -63,7 +66,11 @@ export default class ProductController {
     try {
 
       // Busca o produto pelo id retornando apenas se não foi marcado como deletado
-      const product = await this.productModel.query().where('id', params.id).andWhere('is_deleted', false).first();
+      const product = await this.productModel
+      .query()
+      .where('id', params.id)
+      .andWhere('is_deleted', false)
+      .first();
 
       if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
 
@@ -89,7 +96,11 @@ export default class ProductController {
       const data = request.only(['name', 'description', 'price', 'stock', 'image', 'brand']);
 
       // Busca o produto pelo id retornando apenas se não foi marcado como deletado
-      const product = await this.productModel.query().where('id', params.id).andWhere('is_deleted', false).first();
+      const product = await this.productModel
+      .query()
+      .where('id', params.id)
+      .andWhere('is_deleted', false)
+      .first();
 
       if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
 
@@ -117,7 +128,11 @@ export default class ProductController {
     try {
 
       // Busca o produto pelo id
-      const product = await this.productModel.query().where('id', params.id).andWhere('is_deleted', false).first();
+      const product = await this.productModel
+      .query()
+      .where('id', params.id)
+      .andWhere('is_deleted', false)
+      .first();
 
       if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
 

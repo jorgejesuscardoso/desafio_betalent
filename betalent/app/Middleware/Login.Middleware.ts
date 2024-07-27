@@ -16,18 +16,18 @@ export default class LoginMiddleware {
       // Verifica se o email e a senha foram enviados
       const { email, password } = request.only(['email', 'password'])
       if (!email || !password) {
-        return response.badRequest(this.returnDefaultMsg.badRequest)
+        return response.badRequest(this.returnDefaultMsg.invalidData)
       }
       
       // Verifica se o usuário existe
       const user = await this.userModel.findBy('email', email)
       if (!user) {
-        return response.badRequest(this.returnDefaultMsg.badRequest)
+        return response.badRequest(this.returnDefaultMsg.userNotFound)
       }      
 
       await next()
     } catch (error) {
-      return response.internalServerError({...this.returnDefaultMsg.internalServerError, error})
+      return response.internalServerError({...this.returnDefaultMsg.serverError, error})
     }
   }
 }

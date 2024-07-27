@@ -1,16 +1,16 @@
-import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import User from 'App/Models/User'
-import Hash from '@ioc:Adonis/Core/Hash'
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
-import { FormatDataUserToReturn } from 'App/Utils/handleReturnData'
-import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO'
+import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import User from 'App/Models/User';
+import Hash from '@ioc:Adonis/Core/Hash';
+import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
+import { FormatDataUserToReturn } from 'App/Utils/handleFormatDataToReturn';
+import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO';
 
 export default class UserController {
 
   constructor(
     private userModel = User,
     private hashService = Hash,
-    private returnUserData = FormatDataUserToReturn,
+    private formatDataUserToReturn = FormatDataUserToReturn,
     private returnDefaultMsg = ReturnDefaultMsg
   ) {  }
 
@@ -20,9 +20,14 @@ export default class UserController {
    
       // Criptografa a senha e cria um novo usuário
       const hashed = await this.hashService.make(password)  
-      const user = await this.userModel.create({name, email, role, password: hashed})
+      const user = await this.userModel.create({
+        name,
+        email,
+        role,
+        password: hashed,
+      })
   
-      const data = this.returnUserData(user);
+      const data = this.formatDataUserToReturn(user);
 
       response.status(201)
       return data;  
@@ -45,7 +50,7 @@ export default class UserController {
 
       // Oculta a senha dos usuários
       const data = user.map((user) => {
-        const passRemoving = this.returnUserData(user).data;
+        const passRemoving = this.formatDataUserToReturn(user).data;
         return passRemoving;
       })
 
@@ -72,7 +77,7 @@ export default class UserController {
         
 
       //  Oculta a senha do usuário
-      const data = this.returnUserData(user).data;
+      const data = this.formatDataUserToReturn(user).data;
 
       response.status(200)
       return {
@@ -110,7 +115,7 @@ export default class UserController {
 
       await user.save()
 
-      const data = this.returnUserData(user).data;
+      const data = this.formatDataUserToReturn(user).data;
 
       response.status(200);
 

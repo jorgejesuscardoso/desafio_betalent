@@ -29,15 +29,15 @@ export default class ClientUpdateMiddleware {
       const checkData = await this.checkDuplicateEntry({ clientId, email, phone, cpf})
       if (!checkData.success) return response.badRequest(checkData)
 
-      if (email && !this.validateEmail(email)) return response.badRequest(this.returnDefaultMsg.invalidEmail)
-      if (phone && !this.validatePhone(phone)) return response.badRequest(this.returnDefaultMsg.invalidPhone)
-      if (cpf && !this.validateCPF(cpf)) return response.badRequest(this.returnDefaultMsg.invalidCPF)
+      if (email && !this.validateEmail(email)) return response.badRequest(this.returnDefaultMsg.invalidEmailFormat)
+      if (phone && !this.validatePhone(phone)) return response.badRequest(this.returnDefaultMsg.invalidClientPhone)
+      if (cpf && !this.validateCPF(cpf)) return response.badRequest(this.returnDefaultMsg.invalidClientCpf)
 
       await next()
     } catch (error) {
       response.status(500)
       return response.json({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
       })
     }

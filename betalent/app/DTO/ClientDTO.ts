@@ -3,12 +3,12 @@ export interface IClientDTO {
   name: string;
   email: string;
   cpf?: string;
-  phone: string;
+  phone?: string;
   address?: {
     id?: number;
     street: string;
     number: number;
-    zip_code: string;
+    zipCode: string;
     neighborhood: string;
     city: string;
     state: string;

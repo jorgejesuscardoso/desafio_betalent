@@ -1,4 +1,4 @@
-import { ClientDTO, ResponseCreateClientDTO, IClientDTO } from 'App/DTO/ClientDTO';
+import { ClientDTO, ResponseCreateClientDTO, IClientDTO, ClientToIndex } from 'App/DTO/ClientDTO';
 import { MergeSaleDTO } from 'App/DTO/SaleDTO';
 import { UserDTO } from 'App/DTO/UserDTO';
 import Product from 'App/Models/Product';
@@ -55,13 +55,13 @@ export const FormatDataClientToReturnStore = (client , data: ResponseCreateClien
   };
 }
 
-export const FormatDataClientToReturnIndex = (data: { id: number, name: string, email: string, number: string }[] ): IClientDTO[] => {
+export const FormatDataClientToReturnIndex = (data: ClientToIndex[] ): IClientDTO[] => {
   const response = data.map((client) => {
     return {
       id: client.id,
       name: client.name,
       email: client.email,
-      phone: client.number,
+      phone: client.phones.number,
     }
   })
 

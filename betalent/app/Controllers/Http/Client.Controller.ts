@@ -34,41 +34,42 @@ export default class UserClient {
     const trx = await Database.transaction(); // Inicia uma nova transação
   
     try {
-      const data = request.only(['email', 'phone', 'cpf', 'name', 'address']);
+      // Validações e tratamento dos dados são feitos no middleware.
+      const requestData = request.only(['email', 'phone', 'cpf', 'name', 'address']);
   
-      const dataToTableClient = {
-        name: data.name,
-        email: data.email,
-        cpf: data.cpf,
+      const toClientTable = {
+        name: requestData.name,
+        email: requestData.email,
+        cpf: requestData.cpf,
       };
   
       // Cria um novo cliente usando a transação
-      const client = await this.clientModel.create(dataToTableClient, { client: trx });
+      const clientMainData = await this.clientModel.create(toClientTable, { client: trx });
   
-      const dataToTablePhone = {
-        number: data.phone,
-        client_id: client.id,
+      const toPhoneTable = {
+        number: requestData.phone,
+        client_id: clientMainData.id,
       };
   
       // Cria um novo telefone usando a transação
-      await this.phoneModel.create(dataToTablePhone, { client: trx });
+      await this.phoneModel.create(toPhoneTable, { client: trx });
   
-      const dataToTableAddress = {
-        ...data.address,
-        client_id: client.id,
+      const toAddressTable = {
+        ...requestData.address,
+        client_id: clientMainData.id,
       };
   
       // Cria um novo endereço usando a transação
-      await this.addressModel.create(dataToTableAddress, { client: trx });
+      await this.addressModel.create(toAddressTable, { client: trx });
   
       await trx.commit(); // Confirma a transação se todas as operações forem bem-sucedidas
 
       // Formata os dados para retornar      
-      const dataClient = this.formatDataToReturnStore(client, data).data;
+      const clientDataFormated = this.formatDataToReturnStore(clientMainData, requestData).data;
       
-      response.status(201)
+      response.status(201);
 
-      return { data: dataClient };
+      return { data: clientDataFormated };
   
     } catch (err) {
 
@@ -84,14 +85,17 @@ export default class UserClient {
     response,
   }: HttpContextContract): Promise<void | ClientIndexDTO> {
     try {
-      
-      const clients = await this.db.query().select('*').from('clients').join('phones', 'clients.id', 'phones.client_id');
+
+      // Aplicando eager loading para trazer os telefones      
+      const clients = await this.clientModel
+      .query()
+      .preload('phones')
+      .orderBy('id', 'asc');
 
       const data = this.formatDataToReturnIndex(clients);
 
       response.status(200);
-
-      return { data }
+      return { data };
 
     } catch(err) {
       return response.internalServerError({
@@ -121,8 +125,8 @@ export default class UserClient {
       // Parâmetros para buscar as vendas do cliente por mês e ano
       const { month, year } = request.qs();
 
-      // Adiciona o filtro de mês e ano se existir
-      const salesFilter = this.db.query().select('*').from('sales').where('client_id', params.id);
+      // Adiciona o filtro de mês e ano se existir as query params
+      const salesFilter = this.db.query().select('*').from('sales').where('client_id', +params.id).orderBy('created_at', 'desc');
 
       if (month && year) {
         salesFilter.whereRaw('MONTH(created_at) = ? AND YEAR(created_at) = ?', [month, year]);
@@ -134,7 +138,7 @@ export default class UserClient {
 
       const getSales = await Promise.all(
         (await salesFilter).map(async (sale) => {
-          const product = await this.productModel.find(sale.product_id);
+          const product = await this.productModel.find(sale.product_id)
           return {
             saleId: sale.id,
             productId: product?.id,
@@ -145,7 +149,7 @@ export default class UserClient {
             unityPrice: sale.unity_price,
             totalPrice: sale.total_price,
             saleDate: sale.created_at
-            .toLocaleString({ locale: 'pt-br', timeZone: 'America/Sao_Paulo' }),
+            .toLocaleString('pt-br', { timeZone: 'America/Sao_Paulo', dateStyle: 'short', timeStyle: 'long' }),
             thumbnail: product?.thumbnail,
           };
         })
@@ -156,9 +160,7 @@ export default class UserClient {
       
       response.status(200);    
       
-      return {
-        data
-      };
+      return { data };
     } catch (err) {
       return response.internalServerError({
         ...this.returnDefaultMsg.serverError,
@@ -176,54 +178,55 @@ export default class UserClient {
     const trx = await this.db.transaction();
 
     try {
+      // Validações e tratamento dos dados são feitos no middleware.
       
       const { name, email, phone, cpf, address } = request.body();
 
       // Busca o cliente, endereço e telefone no banco de dados
-      const client = await this.clientModel.find(params.id);
-      const addressClient = await this.addressModel.findBy('client_id', params.id);
-      const phoneClient = await this.phoneModel.findBy('client_id', params.id);
+      const getClient = await this.clientModel.find(params.id);
+      const getClientAddress = await this.addressModel.findBy('client_id', params.id);
+      const getClientPhone = await this.phoneModel.findBy('client_id', params.id);
      
-      if (!client || !addressClient || !phoneClient) {
+      if (!getClient || !getClientAddress || !getClientPhone) {
         await trx.rollback();  // Reverte a transação se não encontrar
         return response.status(404).json(this.returnDefaultMsg.clientNotFound);
       }
 
       // Dados a serem atualizados na tabela de clientes
-      const dataToClientTable = {
+      const clientMainData = {
         name,
         email,
         cpf,    
       };
 
       // Dados a serem atualizados na tabela de endereços
-      const dataToAddress = {
-        street: address?.street ?? addressClient.street,
-        number: address?.number ?? addressClient.number,
-        zip_code: address?.zip_code ?? addressClient.zip_code,
-        neighborhood: address?.neighborhood ?? addressClient.neighborhood,
-        city: address?.city ?? addressClient.city,
-        state: address?.state ?? addressClient.state,
+      const addressData = {
+        street: address?.street ?? getClientAddress.street,
+        number: address?.number ?? getClientAddress.number,
+        zip_code: address?.zip_code ?? getClientAddress.zip_code,
+        neighborhood: address?.neighborhood ?? getClientAddress.neighborhood,
+        city: address?.city ?? getClientAddress.city,
+        state: address?.state ?? getClientAddress.state,
       };
       
       // Vincula a transação às operações dos modelos
-      client.useTransaction(trx);
-      addressClient.useTransaction(trx);
-      phoneClient.useTransaction(trx);
+      getClient.useTransaction(trx);
+      getClientAddress.useTransaction(trx);
+      getClientPhone.useTransaction(trx);
 
-      client.merge(dataToClientTable);
-      await client.save();
+      getClient.merge(clientMainData);
+      await getClient.save();
 
-      addressClient.merge(dataToAddress);
-      await addressClient.save();
+      getClientAddress.merge(addressData);
+      await getClientAddress.save();
 
-      phoneClient.merge({ number: phone || phoneClient.number });
-      await phoneClient.save();
+      getClientPhone.merge({ number: phone || getClientPhone.number });
+      await getClientPhone.save();
 
       // Confirma a transação
       await trx.commit();
 
-      const responseData = this.formatDataToReturnUpdate({ client: client , phone: phoneClient, address: addressClient });
+      const responseData = this.formatDataToReturnUpdate({ client: getClient , phone: getClientPhone, address: getClientAddress });
 
       response.status(200);
 

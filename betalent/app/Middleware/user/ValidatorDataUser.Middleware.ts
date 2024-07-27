@@ -18,7 +18,7 @@ export default class UserMiddleware {
       const { role, email, password, name } = request.only(['role', 'email', 'password', 'name'])
 
       // Verifica se os campos obrigatórios foram enviados
-      if(!role || !email || !password || !name) return response.badRequest(this.returnDefaultMsg.userNotFound)
+      if(!role || !email || !password || !name) return response.badRequest(this.returnDefaultMsg.invalidData)
 
       // Verifica se o email já está cadastrado
       if(await this.userModel.findBy('email', email)) return response.badRequest(this.returnDefaultMsg.emailAlreadyExist)

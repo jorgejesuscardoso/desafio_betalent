@@ -14,7 +14,7 @@ export default class ValidatorCreateSale {
     try {
       const { client_id, product_id, quantity } = request.only(['client_id', 'product_id', 'quantity', 'unity_price']);
 
-      if (!client_id || !product_id ) return response.status(400).json(this.returnDefaultResponse.invalidData);
+      if (!client_id || !product_id || !quantity ) return response.status(400).json(this.returnDefaultResponse.invalidData);
       
       // Verificar se o cliente existe
       const client = await this.clientModel.findBy('id', +client_id)

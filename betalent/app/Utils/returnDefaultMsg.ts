@@ -93,7 +93,7 @@ export const ReturnDefaultMsg = {
     "status": 400
   },
   "invalidClientCpf": {
-    "message": "Invalid client cpf",
+    "message": "Invalid client cpf format",
     "status": 400
   },
   "PhoneAlreadyExist": {

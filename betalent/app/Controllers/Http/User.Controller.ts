@@ -19,42 +19,42 @@ export default class UserController {
      let { name, email, password, role } = request.body();     
    
       // Criptografa a senha e cria um novo usuário
-      const hashed = await this.hashService.make(password)  
+      const hashed = await this.hashService.make(password)  ;
       const user = await this.userModel.create({
         name,
         email,
         role,
         password: hashed,
-      })
+      });
   
       const data = this.formatDataUserToReturn(user);
 
-      response.status(201)
+      response.status(201);
       return data;  
 
     } catch (error) {
      return response.status(500).json({
       ...this.returnDefaultMsg.serverError,
       error: error.message,
-     })
+     });
     }   
   }
 
   public async index({ response }: HttpContextContract): Promise<void | UserIndexDTO> {
     try {
       
-      const user = await this.userModel.all()
+      const user = await this.userModel.all();
 
       // Ordena os usuários pelo ID
-      user.sort((a, b) => a.id - b.id)
+      user.sort((a, b) => a.id - b.id);
 
       // Oculta a senha dos usuários
       const data = user.map((user) => {
         const passRemoving = this.formatDataUserToReturn(user).data;
         return passRemoving;
-      })
+      });
 
-      response.status(200)
+      response.status(200);
 
       return { data };      
       
@@ -62,7 +62,7 @@ export default class UserController {
       return response.status(500).json({
         ...this.returnDefaultMsg.serverError,
         error: error.message,
-      })
+      });
     }
   }
 
@@ -70,8 +70,8 @@ export default class UserController {
     try {
 
       // Busca um usuário pelo ID
-      const user = await this.userModel.find(params.id)
-      response.status(200)
+      const user = await this.userModel.find(params.id);
+      response.status(200);
 
       if(!user) return response.status(404).json(this.returnDefaultMsg.userNotFound);
         
@@ -79,16 +79,13 @@ export default class UserController {
       //  Oculta a senha do usuário
       const data = this.formatDataUserToReturn(user).data;
 
-      response.status(200)
-      return {
-        data
-      }
-
+      response.status(200);
+      return { data };
     } catch (error) {
       response.status(500).json({
         ...this.returnDefaultMsg.serverError,
         error: error.message,
-      })
+      });
     }
   }
 
@@ -111,39 +108,40 @@ export default class UserController {
         email,
         password,
         role,
-      })
+      });
 
-      await user.save()
+      await user.save();
 
       const data = this.formatDataUserToReturn(user).data;
 
       response.status(200);
 
-      return {
-        data
-      }
+      return { data };
 
     } catch (error) {
       return response.status(500).json({
         ...this.returnDefaultMsg.serverError,
         error: error.message,
-      })
+      });
     }
   }
 
   public async destroy({ params, response }: HttpContextContract): Promise<void> {
     try {
-      const user = await this.userModel.findOrFail(+params.id)
-      await user.delete()
+      const user = await this.userModel.findBy('id', +params.id);
 
-      response.status(204)
+      if(!user) return response.status(404).json(this.returnDefaultMsg.userNotFound);
+
+      await user.delete();
+
+      response.status(204);
 
       return;
     } catch (error) {
       return response.status(500).json({
         ...this.returnDefaultMsg.serverError,
         error: error.message,
-      })
+      });
     }
   }
 }

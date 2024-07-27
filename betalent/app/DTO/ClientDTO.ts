@@ -42,3 +42,5 @@ export interface ClientDTO {
 export interface ClientIndexDTO {
   data: IClientDTO[];
 }
+
+export interface ClientToIndex { id: number, name: string, email: string, phones: { number: string } }

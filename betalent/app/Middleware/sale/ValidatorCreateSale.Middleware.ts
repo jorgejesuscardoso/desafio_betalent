@@ -14,7 +14,7 @@ export default class ValidatorCreateSale {
     try {
       const { client_id, product_id, quantity } = request.only(['client_id', 'product_id', 'quantity', 'unity_price']);
 
-      if (!client_id || !product_id ) return response.status(400).json(this.returnDefaultResponse.badRequest);
+      if (!client_id || !product_id ) return response.status(400).json(this.returnDefaultResponse.invalidData);
       
       // Verificar se o cliente existe
       const client = await this.clientModel.findBy('id', +client_id)
@@ -28,14 +28,17 @@ export default class ValidatorCreateSale {
       : quantity <= 0
       ? this.returnDefaultResponse.quantityInvalid
       : quantity > product.stock
-      ? {error: this.returnDefaultResponse.insufficientStock.message, message: this.returnDefaultResponse.availableStock.message + product.stock + ' unidades'}
+      ? {error: this.returnDefaultResponse.insufficientStock.message, message: this.returnDefaultResponse.stockAvailable.message + product.stock + ' units'}
       : null
 
       if (ValidateInput) return response.status(400).json(ValidateInput);
 
       await next()
     } catch (error) {
-      return this.returnDefaultResponse.internalServerError
+      return response.status(500).json({
+        ...this.returnDefaultResponse.errorCreatingSale,
+        error: error.message
+      })
     }
   }
 }

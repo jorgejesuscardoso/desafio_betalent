@@ -2396,3 +2396,4 @@ Links e referências para documentação adicional e recursos úteis
 - [Docker](https://www.docker.com/): Documentação oficial do Docker.
 - [Docker-compose](https://docs.docker.com/compose/): Documentação oficial do Docker-compose.
 - [UUID - v4](https://www.npmjs.com/package/uuidv4): Documentação oficial do UUID v4.
+- [Moment.js](https://momentjs.com/docs/): Documentação oficial do Moment.js.

@@ -2,46 +2,40 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
 import Hash from '@ioc:Adonis/Core/Hash'
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
-import { CreateUserDTO } from 'App/DTO/Users/CreateUserDTO'
-import { ErrorResponseUserDTO, ResponseUserAllDTO, ResponseUserDTO } from 'App/DTO/Users/ResponseUserDTO'
-import { ReturnUserDataWithoutPassword } from 'App/Utils/handleReturnData'
+import { FormatDataUserToReturn } from 'App/Utils/handleReturnData'
+import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO'
 
 export default class UserController {
 
   constructor(
     private userModel = User,
     private hashService = Hash,
-    private returnUserData = ReturnUserDataWithoutPassword,
+    private returnUserData = FormatDataUserToReturn,
     private returnDefaultMsg = ReturnDefaultMsg
   ) {  }
 
-  public async store({ request, response }: HttpContextContract): Promise<ResponseUserDTO | ErrorResponseUserDTO> {
+  public async store({ request, response }: HttpContextContract): Promise<void |UserDTO> {
     try {
-     let { name, email, password, role } = request.body() as CreateUserDTO;     
+     let { name, email, password, role } = request.body();     
    
-      // Criptografa a senha
-      const hashed = await this.hashService.make(password)
-  
+      // Criptografa a senha e cria um novo usuário
+      const hashed = await this.hashService.make(password)  
       const user = await this.userModel.create({name, email, role, password: hashed})
   
+      const data = this.returnUserData(user);
+
       response.status(201)
-      const data = this.returnUserData(user).data;
-      return {
-        ...this.returnDefaultMsg.created,
-        data
-      } 
+      return data;  
 
     } catch (error) {
-     response.status(500)
+     return response.status(500).json({
+      ...this.returnDefaultMsg.serverError,
+      error: error.message,
+     })
+    }   
+  }
 
-     return {
-       ...this.returnDefaultMsg.internalServerError,
-       error: error.message,
-     }
-    }
-   }
-
-  public async index({ response }: HttpContextContract): Promise<ResponseUserAllDTO | ErrorResponseUserDTO> {
+  public async index({ response }: HttpContextContract): Promise<void | UserIndexDTO> {
     try {
       
       const user = await this.userModel.all()
@@ -50,113 +44,101 @@ export default class UserController {
       user.sort((a, b) => a.id - b.id)
 
       // Oculta a senha dos usuários
-      const hidderAllPassword = user.map((user) => {
-        const data = this.returnUserData(user).data;
-        return data;
+      const data = user.map((user) => {
+        const passRemoving = this.returnUserData(user).data;
+        return passRemoving;
       })
 
       response.status(200)
 
-      return {
-        data: hidderAllPassword,
-      }
+      return { data };      
       
     } catch (error) {
-      response.status(500)
-
-      return {
-        ...this.returnDefaultMsg.internalServerError,
+      response.status(500).json({
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async show({ params, response }: HttpContextContract): Promise<ResponseUserDTO | ErrorResponseUserDTO> {
+  public async show({ params, response }: HttpContextContract): Promise<void | UserDTO> {
     try {
 
       // Busca um usuário pelo ID
       const user = await this.userModel.find(params.id)
       response.status(200)
 
-      if(!user) {
-        return {
-          error: this.returnDefaultMsg.notFound.message,
-          ...this.returnDefaultMsg.userNotFound,
-        }
-      }
+      if(!user) return response.status(404).json(this.returnDefaultMsg.userNotFound);
+        
 
       //  Oculta a senha do usuário
-      const hidderPassword = this.returnUserData(user).data;
+      const data = this.returnUserData(user).data;
 
+      response.status(200)
       return {
-        data: hidderPassword,
+        data
       }
 
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultMsg.internalServerError,
+      response.status(500).json({
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async update({ request, response, params }: HttpContextContract): Promise<ResponseUserDTO | ErrorResponseUserDTO> {
+  public async update({ request, response, params }: HttpContextContract): Promise<void | UserDTO> {
     try {
 
-      let { email, name, password, role } = request.body() as CreateUserDTO
+      let { email, name, password, role } = request.body();
 
       // Verifica se o usuário é válido
-      const user = await this.userModel.findOrFail(+params.id)
-      if(!user) return {...this.returnDefaultMsg.notFound, error: this.returnDefaultMsg.userNotFound.message}    
+      const user = await this.userModel.findBy('id', +params.id);
+      if(!user) return  response.status(404).json(this.returnDefaultMsg.userNotFound);   
 
       if (password) {
-      password = await this.hashService.make(password)
-      }
+       password = await this.hashService.make(password)
+      };
 
       // Atualiza outros campos do usuário
       user.merge({
-      name,
-      email,
-      password,
-      role,
+        name,
+        email,
+        password,
+        role,
       })
 
       await user.save()
 
-      response.status(200)
+      const data = this.returnUserData(user).data;
 
-      const responseData = this.returnUserData(user).data;
+      response.status(200);
 
       return {
-      ...this.returnDefaultMsg.updated,
-      data: responseData,
+        data
       }
+
     } catch (error) {
-      response.status(500)
-      return {
-      error: error.message,
-      }
+      return response.status(500).json({
+        ...this.returnDefaultMsg.serverError,
+        error: error.message,
+      })
     }
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
+  public async destroy({ params, response }: HttpContextContract): Promise<void> {
     try {
       const user = await this.userModel.findOrFail(+params.id)
       await user.delete()
 
       response.status(204)
 
-      return { 
-        ...this.returnDefaultMsg.deleted,
-      }
+      return;
     } catch (error) {
-      response.status(500)
-
-      return {
-        ...this.returnDefaultMsg.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
-      }
+      })
     }
   }
 }

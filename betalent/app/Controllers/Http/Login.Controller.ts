@@ -26,10 +26,10 @@ export default class AuthController {
         return response.ok({ token })
       }
 
-      return response.badRequest(this.returnDefaultMsg.badRequest)
+      return response.badRequest(this.returnDefaultMsg.invalidData)
     } catch (err) {
       return response.internalServerError({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: err.message,
       })
     }

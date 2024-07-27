@@ -1,111 +1,89 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
-import { ResponseProductDTO, ResponseProductStoreDTO } from 'App/DTO/product/ResponseProduct';
+import { ProductDTO, ProductIndexDTO  } from 'App/DTO/ProductDTO';
 import Product from 'App/Models/Product';
-import { ReturnDataProductIndex, ReturnDataProductShow, ReturnDataProductStore } from 'App/Utils/handleReturnData';
+import { FormatDataProductToReturnIndex, FormatDataProductToReturn } from 'App/Utils/handleReturnData';
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
 
 export default class ProductController {
   constructor(
     private productModel = Product,
     private returnDefaultResponse = ReturnDefaultMsg,
-    private returnDataProductStore = ReturnDataProductStore,
-    private returnDataProductIndex = ReturnDataProductIndex,
-    private returnDataProductShow = ReturnDataProductShow,
+    private formatDataToReturnProducts = FormatDataProductToReturn,
+    private formatDataToReturnProductsIndex = FormatDataProductToReturnIndex,
   ) {}
 
-  public async store ({ request, response }: HttpContextContract): Promise<ResponseProductStoreDTO | { message: string, error: string }> {
+  public async store ({ request, response }: HttpContextContract): Promise<void | ProductDTO> {
     try {
       const data = request.only(['name', 'description', 'price', 'stock', 'image', 'brand']);
 
       // Cria um novo produto
       const product = await this.productModel.create(data);
 
-      if (!product) {
-        response.status(400)
-        return{
-          ...this.returnDefaultResponse.badRequest,
-          error: this.returnDefaultResponse.createProductError.message,
-        };
-      }
-
-      // Formata os dados para serem retornados
-      const dataProduct =  this.returnDataProductStore(product.id, product).data;
-
+      if (!product) return response.status(500).json(this.returnDefaultResponse.errorCreatingProduct);
 
       response.status(201)
 
+      // Formata as datas para serem retornadas
+      const dataFormatted = this.formatDataToReturnProducts(product).data;
+
       return {
-        ...this.returnDefaultResponse.created,
-        data: dataProduct,
+        data: dataFormatted,
       }
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+     return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async index ({ response }: HttpContextContract) {
+  public async index ({ response }: HttpContextContract): Promise<void | ProductIndexDTO> {
     try {
 
       // Busca todos os produtos que não foram marcados como deletados
       const products = await this.productModel.query().where('is_deleted', false).orderBy('name', 'asc');
 
-      if (!products) return response.status(200).json([]);
-
       // Formata os dados para serem retornados
-      const dataProduct = products.map(product => this.returnDataProductIndex(product).data );
+      const dataFormatted = products.map(product => this.formatDataToReturnProductsIndex(product).data );
 
       response.status(200)
 
       return {
-        ...this.returnDefaultResponse.ok,
-        data: dataProduct,
+        data: dataFormatted,
       }
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async show ({ response, params }: HttpContextContract): Promise<{ message: string, error: string } | ResponseProductDTO> {
+  public async show ({ response, params }: HttpContextContract): Promise<void | ProductDTO> {
     try {
 
       // Busca o produto pelo id retornando apenas se não foi marcado como deletado
       const product = await this.productModel.query().where('id', params.id).andWhere('is_deleted', false).first();
 
-      if (!product) {
-        response.status(404)
-        return{
-          ...this.returnDefaultResponse.notFound,
-          error: this.returnDefaultResponse.productNotFound.message,
-        };
-      }
+      if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
 
       // Formata os dados para serem retornados
-      const dataProduct =  this.returnDataProductShow(product).data;
+      const dataFormatted =  this.formatDataToReturnProducts(product).data;
 
       response.status(200)
 
       return {
-        ...this.returnDefaultResponse.ok,
-        data: dataProduct,
+        data: dataFormatted,
       }
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async update ({ request, response, params }: HttpContextContract): Promise<{ message: string, error: string } | ResponseProductDTO> {
+  public async update ({ request, response, params }: HttpContextContract): Promise<void | ProductDTO> {
     try {
 
       const data = request.only(['name', 'description', 'price', 'stock', 'image', 'brand']);
@@ -113,69 +91,48 @@ export default class ProductController {
       // Busca o produto pelo id retornando apenas se não foi marcado como deletado
       const product = await this.productModel.query().where('id', params.id).andWhere('is_deleted', false).first();
 
-      if (!product) {
-        response.status(404)
-        return{
-          ...this.returnDefaultResponse.notFound,
-          error: this.returnDefaultResponse.productNotFound.message,
-        };
-      }
+      if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
 
       // Atualiza os dados do produto
       product.merge(data);
       await product.save();
 
-      const dataProduct = this.returnDataProductShow(product).data;
+      // Formata os dados para serem retornados
+      const dataFormatted = this.formatDataToReturnProducts(product).data;
 
       response.status(200)
 
       return {
-        ...this.returnDefaultResponse.ok,
-        data: dataProduct,
+        data: dataFormatted,
       }
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async destroy ({ response, params }: HttpContextContract): Promise<void | { message: string, error: string }> {
+  public async destroy ({ response, params }: HttpContextContract): Promise<void> {
     try {
+
       // Busca o produto pelo id
-      const getProduct = await this.productModel.findBy('id', params.id);
+      const product = await this.productModel.query().where('id', params.id).andWhere('is_deleted', false).first();
 
-      if (!getProduct) {
-        response.status(404)
-        return{
-          ...this.returnDefaultResponse.notFound,
-          error: this.returnDefaultResponse.productNotFound.message,
-        };
-      }
-
-      // Verifica se o produto não está marcado como deletado
-      if (getProduct?.is_deleted ) {
-        response.status(404)
-        return{
-          ...this.returnDefaultResponse.notFound,
-          error: this.returnDefaultResponse.productNotFound.message,
-        };
-      }
+      if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
 
       // Marca o produto como deletado sem excluir do banco
-      await this.productModel.query().where('id', params.id).update({ is_deleted: true });
+      product.merge({ is_deleted: true });
+      await product.save();
 
       response.status(204)
 
       return;
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   } 
 }

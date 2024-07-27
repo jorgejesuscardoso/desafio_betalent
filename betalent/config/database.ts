@@ -41,6 +41,7 @@ const databaseConfig: DatabaseConfig = {
         user: Env.get('MYSQL_USER') || 'root',
         database: Env.get('MYSQL_DATABASE'),
         password: Env.get('MYSQL_PASSWORD', ''),
+        timezone: 'UTC-3',
       },
       migrations: {
         naturalSort: true,

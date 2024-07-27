@@ -16,7 +16,7 @@ export default class ValidatorUpdateDataCreateProduct {
       const productId = params.id
 
       if (!name && !description && !price && !stock && !image && !brand) {
-        return response.badRequest(this.returnDefaultMsg.badRequest)
+        return response.badRequest(this.returnDefaultMsg.invalidData)
       }
 
       const validator =
@@ -45,9 +45,8 @@ export default class ValidatorUpdateDataCreateProduct {
 
       await next()
     } catch (error) {
-      response.status(500)
-      return response.json({
-        ...this.returnDefaultMsg.internalServerError,
+      return response.internalServerError({
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
       })
     }

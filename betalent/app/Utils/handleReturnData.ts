@@ -1,128 +1,134 @@
-import { CreateClientDTO } from 'App/DTO/Clients/CreateClientDTO';
-import { ResponseCreateClientDTO, MainDataClientDTO } from 'App/DTO/Clients/ResponseClientDTO';
-import { CreateProductDTO } from 'App/DTO/product/CreateProductDTO';
-import { ResponseProductDTO } from 'App/DTO/product/ResponseProduct';
-import { ResponseUserDTO } from 'App/DTO/Users/ResponseUserDTO';
+import { ClientDTO, ResponseCreateClientDTO, IClientDTO } from 'App/DTO/ClientDTO';
+import { MergeSaleDTO } from 'App/DTO/SaleDTO';
+import { UserDTO } from 'App/DTO/UserDTO';
+import Product from 'App/Models/Product';
 import User from 'App/Models/User';
 
+// Lida com retorno de datas UTC-3
+export const FormatDate = (date: string): string => {
+  return new Date(date.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'});
+}
+
 // USUÁRIOS
-export const ReturnUserDataWithoutPassword = (user: User): ResponseUserDTO => {
+export const FormatDataUserToReturn = (user: User): UserDTO => {
   return {
     data:{
       id: user.id,
       name: user.name,
       email: user.email,
       role: user.role,
-      createdAt: user.createdAt.toLocaleString(),
-      updatedAt: user.updatedAt.toLocaleString(),
+      created_at: FormatDate(user.created_at.toLocaleString()),
+      updated_at: FormatDate(user.updated_at.toLocaleString()),
     }
   };
 };
 
-
 // CLIENTES
-export const ReturnDataCLientStore = (id: number, data: CreateClientDTO): ResponseCreateClientDTO => {
+export const FormatDataClientToReturnStore = (id: number, data: ResponseCreateClientDTO): ClientDTO => {
   return {
     data:{
       id: id,
-      nome: data.name,
+      name: data.name,
       email: data.email,
-      telefone: data.phone,
+      phone: data.phone,
       cpf: data.cpf,
-      cadastro_data: new Date().toLocaleString(),
-      ultima_att: new Date().toLocaleString(),
-      endereco: {
-        endereco_id: data.address.id,
-        rua: data.address.street,
-        numero: data.address.number,
-        cep: data.address.zip_code,
-        bairro: data.address.neighborhood,
-        cidade: data.address.city,
-        estado: data.address.state,
+      created_at: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+      updated_at: new Date().toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+      address: {
+        id: data.address.id,
+        street: data.address.street,
+        number: data.address.number,
+        zip_code: data.address.zip_code,
+        neighborhood: data.address.neighborhood,
+        city: data.address.city,
+        state: data.address.state,
+
       }
     }
   };
 }
 
-export const ReturnDataClientIndex = (data: MainDataClientDTO[] ) => {
+export const FormatDataClientToReturnIndex = (data: { id: number, name: string, email: string, number: string }[] ): IClientDTO[] => {
   const response = data.map((client) => {
     return {
       id: client.id,
-      nome: client.name,
+      name: client.name,
       email: client.email,
-      telefone: client.number,
+      phone: client.number,
     }
   })
 
   return response;
 }
 
+export const FormatDataClientToReturnUpdate = ({ client, phone, address }): IClientDTO => {
+  return {
+    id: client.id,
+    name: client.name,
+    email: client.email,
+    phone: phone.number,
+    cpf: client.cpf,
+    address: {
+      id: address.id,
+      street: address.street,
+      number: address.number,
+      zip_code: address.zip_code,
+      neighborhood: address.neighborhood,
+      city: address.city,
+      state: address.state,      
+    }
+  }
+}
+
 // PRODUTOS
-export const ReturnDataProductStore = (id: number, data: CreateProductDTO) => {
+export const FormatDataProductToReturn = ( product: Product) => {
   return {
     data:{
-      id: id,
-      nome: data.name,
-      descricao: data.description,
-      preço: data.price,
-      estoque: data.stock,
-      imagem: data.image,
-      marca: data.brand,
+      id: product.id,
+      name: product.name,
+      description: product.description,
+      price: product.price,
+      stock: product.stock,
+      image: product.image,
+      brand: product.brand,
+      created_at: new Date(product.created_at.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+      updated_at: new Date(product.updated_at.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
     }
   };
 }
 
-export const ReturnDataProductIndex = (data: { id: number, name: string, price: number, stock: number }) => {
+export const FormatDataProductToReturnIndex = (data: Product) => {
   return {
     data:{
       id: data.id,
-      nome: data.name,
-      preço: data.price,
-      estoque: data.stock,
-    }
-  };
-}
-
-export const ReturnDataProductShow = (data): ResponseProductDTO => {
-  return {
-    message: '',
-    data:{
-      id: data.id,
-      nome: data.name,
-      descricao: data.description,
-      preço: data.price,
-      estoque: data.stock,
-      imagem: data.image,
-      marca: data.brand,
-      cadastrado_em: new Date(data.createdAt).toLocaleString(),
-      atualizado_em: new Date(data.updatedAt).toLocaleString(),
+      name: data.name,
+      price: data.price,
+      stock: data.stock,
     }
   };
 }
 
 // VENDAS
-export const ReturnDataSaleStore = (data) => {
+export const FormatDataSaleToReturn = (data: MergeSaleDTO): MergeSaleDTO => {
   return {
     id: data.id,
-    cliente: data.client_name,
-    produto: data.product_name,
-    quantidade: data.quantity,
-    preço_unidade: data.unity_price,
-    preço_total: data.total_price,
-    data_venda: new Date(data.date).toLocaleString(),
+    client_name: data.client_name,
+    product_name: data.product_name,
+    quantity: data.quantity,
+    unity_price: data.unity_price,
+    total_price: data.total_price,
+    sale_date: new Date(data.sale_date.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
   }
 }
 
-export const ReturnDataSaleIndex = (data) => {
-  return data.map((sale) => {
-    return {
-      id: sale.id,
-      cliente: sale.client.name,
-      produto: sale.product.name,
-      quantidade: sale.quantity,
-      preço_unidade: sale.unity_price,
-      preço_total: sale.total_price,
-      data_venda: new Date(sale.created_at).toLocaleString(),
-    }
-  })
+export const FormatDataSaleToReturnShow = ({sale, client, product}): MergeSaleDTO => {
+  return {
+    id: sale.id,
+    client_name: client.name,
+    product_name: product.name,
+    quantity: sale.quantity,
+    unity_price: sale.unity_price,
+    total_price: sale.total_price,
+    sale_date: new Date(sale.created_at.toLocaleString()).toLocaleString('pt-BR', {timeZone: 'America/Sao_Paulo'}),
+  }
 }

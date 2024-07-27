@@ -25,9 +25,9 @@ export default class UserUpdateMiddleware {
       if(password && password.length < 6) return response.badRequest(this.returnDefaultMsg.invalidPasswordLength)
 
       // Valida o email e a senha com regex se eles existirem no corpo da requisição
-      if(email && !this.validateEmail(email)) return response.badRequest(this.returnDefaultMsg.invalidEmail)
+      if(email && !this.validateEmail(email)) return response.badRequest(this.returnDefaultMsg.invalidEmailFormat)
         
-      if(password && !this.validatePasswordForm(password)) return response.badRequest(this.returnDefaultMsg.invalidPassword)
+      if(password && !this.validatePasswordForm(password)) return response.badRequest(this.returnDefaultMsg.invalidEmailFormat)
       
       await next()
 
@@ -35,7 +35,7 @@ export default class UserUpdateMiddleware {
       response.status(500)
 
       return {
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
       }
     }

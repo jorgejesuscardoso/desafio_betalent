@@ -1,9 +1,10 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import Database from '@ioc:Adonis/Lucid/Database';
+import { ClientDTO, ClientIndexDTO } from 'App/DTO/ClientDTO';
 import Address from 'App/Models/Address';
 import Client from 'App/Models/Client';
 import Phone from 'App/Models/Phone';
-import { ReturnDataCLientStore, ReturnDataClientIndex } from 'App/Utils/handleReturnData';
+import { FormatDataClientToReturnStore, FormatDataClientToReturnIndex, FormatDataClientToReturnUpdate } from 'App/Utils/handleReturnData';
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
 
 export default class UserClient {
@@ -12,12 +13,17 @@ export default class UserClient {
     private phoneModel = Phone,
     private addressModel = Address,
     private returnDefaultMsg = ReturnDefaultMsg,
-    private returnDataCLientStore = ReturnDataCLientStore,
-    private returnDataClientIndex = ReturnDataClientIndex,
+    private formatDataToReturnUpdate = FormatDataClientToReturnUpdate,
+    private formatDataToReturnStore = FormatDataClientToReturnStore,
+    private formatDataToReturnIndex = FormatDataClientToReturnIndex,
     private db = Database,
   ) {}
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({
+    request,
+    response,
+  }: HttpContextContract): Promise<void | ClientDTO> {
+
     const trx = await Database.transaction(); // Inicia uma nova transação
   
     try {
@@ -49,11 +55,11 @@ export default class UserClient {
       await this.addressModel.create(dataToTableAddress, { client: trx });
   
       await trx.commit(); // Confirma a transação se todas as operações forem bem-sucedidas
-      
-      const dataClient = this.returnDataCLientStore(client.id, data).data;
+
+      // Formata os dados para retornar      
+      const dataClient = this.formatDataToReturnStore(client.id, data).data;
       
       return response.status(201).json({
-        ...this.returnDefaultMsg.created,
         data: dataClient,
       });
   
@@ -61,35 +67,41 @@ export default class UserClient {
 
       await trx.rollback(); // Reverte a transação em caso de erro
       return response.internalServerError({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: err.message,
       });
     }
   }
 
-  public async index({ response }: HttpContextContract) {
+  public async index({
+    response,
+  }: HttpContextContract): Promise<void | ClientIndexDTO> {
     try {
       
       const clients = await this.db.query().select('*').from('clients').join('phones', 'clients.id', 'phones.client_id');
 
       if(clients.length === 0) return response.status(200).json([]);
 
-      const data = this.returnDataClientIndex(clients);
+      const data = this.formatDataToReturnIndex(clients);
 
       return response.status(200).json({
-        ...this.returnDefaultMsg.ok,
+        ...this.returnDefaultMsg.success,
         data
       });
 
     } catch(err) {
       return response.internalServerError({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: err
       });
     }
   }
 
-  public async show({ params, request, response }: HttpContextContract) {
+  public async show({
+    params,
+    request,
+    response
+  }: HttpContextContract): Promise<void | ClientDTO> {
     try {
 
       // Obtém os dados do cliente
@@ -101,12 +113,7 @@ export default class UserClient {
         .first();
   
       // Verifica se o cliente existe
-      if (!dataclient) {
-        return response.notFound({
-          ...this.returnDefaultMsg.notFound,
-          error: this.returnDefaultMsg.clientNotFound,
-        });
-      }
+      if (!dataclient) return response.status(404).json(this.returnDefaultMsg.clientNotFound);
 
       const getAddress = await this.db.query().select('id as endereço_id','street as rua', 'number as numero', 'zip_code as cep', 'neighborhood as bairro', 'city as cidade', 'state as estado').from('addresses').where('client_id', params.id).first();
 
@@ -145,6 +152,14 @@ export default class UserClient {
       // Executa a consulta das vendas
       const sales = await salesQuery;
   
+      // Tratamento das datas
+      dataclient.cadastro_data = new Date(dataclient.cadastro_data).toLocaleString();
+      dataclient.ultima_att = new Date(dataclient.ultima_att).toLocaleString();
+      
+      sales.forEach((sale) => {
+        sale.data_venda = new Date(sale.data_venda).toLocaleString();
+      });
+
       // Adiciona as vendas, telefone e endereço ao objeto do cliente
       dataclient.telefone = getPhone.telefone;
       dataclient.endereco = getAddress;
@@ -152,19 +167,23 @@ export default class UserClient {
   
       // Retorna a resposta com os dados do cliente e suas vendas
       return response.status(200).json({
-        ...this.returnDefaultMsg.ok,
+        ...this.returnDefaultMsg.success,
         data: dataclient,
       });
       
     } catch (err) {
       return response.internalServerError({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: err,
       });
     }
   }   
 
-  public async update({ request, params, response }: HttpContextContract) {
+  public async update({
+    request,
+    params,
+    response,
+  }: HttpContextContract): Promise<void | ClientDTO> {
     // Inicia uma nova transação
     const trx = await this.db.transaction();
 
@@ -180,10 +199,7 @@ export default class UserClient {
      
       if (!client || !addressClient || !phoneClient) {
         await trx.rollback();  // Reverte a transação se não encontrar
-        return response.notFound({
-          ...this.returnDefaultMsg.notFound,
-          error: this.returnDefaultMsg.clientNotFound,
-        });
+        return response.status(404).json(this.returnDefaultMsg.clientNotFound);
       }
 
       // Dados a serem atualizados na tabela de clientes
@@ -220,42 +236,35 @@ export default class UserClient {
       // Confirma a transação
       await trx.commit();
 
+      const responseData = this.formatDataToReturnUpdate({ client: client , phone: phoneClient, address: addressClient });
+
       return response.status(200).json({
-        ...this.returnDefaultMsg.updated,
-        data: request.body(),
-        address: addressClient,
+        data: responseData,
       });
 
     } catch (err) {
       await trx.rollback();  // Reverte a transação em caso de erro
       return response.internalServerError({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: err,
       });
     }
   }
 
-  public async destroy({ params, response }: HttpContextContract) {
+  public async destroy({ params, response }: HttpContextContract): Promise<void> {
     try {
       const client = await this.clientModel.find(params.id);
 
-      if (!client) {
-        return response.notFound({
-          ...this.returnDefaultMsg.notFound,
-          error: this.returnDefaultMsg.clientNotFound,
-        });
-      }
+      if (!client) return response.status(404).json(this.returnDefaultMsg.clientNotFound);
 
       await client.delete();
 
-      return response.status(200).json({
-        ...this.returnDefaultMsg.deleted,
-        data: client,
-      });
+      response.status(204);
+      return;
 
     } catch(err) {
       return response.internalServerError({
-        ...this.returnDefaultMsg.internalServerError,
+        ...this.returnDefaultMsg.serverError,
         error: err
       });
     }

@@ -1,9 +1,10 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Database from '@ioc:Adonis/Lucid/Database'
+import { SaleDTO, SaleIndexDTO } from 'App/DTO/SaleDTO'
 import Client from 'App/Models/Client'
 import Product from 'App/Models/Product'
 import Sale from 'App/Models/Sale'
-import { ReturnDataSaleStore } from 'App/Utils/handleReturnData'
+import { FormatDataSaleToReturnShow, FormatDataSaleToReturn } from 'App/Utils/handleReturnData'
 import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
 
 export default class SaleController {
@@ -12,10 +13,15 @@ export default class SaleController {
     private productModel = Product,
     private clientModel = Client,
     private returnDefaultResponse = ReturnDefaultMsg,
-    private returnDataSaleStore = ReturnDataSaleStore,
+    private returnDataSaleStore = FormatDataSaleToReturn,
+    private formatDataSaleToReturnShow = FormatDataSaleToReturnShow
   ) {}
 
-  public async store({ request, response }: HttpContextContract) {
+  public async store({
+    request,
+    response,
+  }: HttpContextContract): Promise<void | SaleDTO> {
+
     const trx = await Database.transaction() // Iniciar uma transação
 
     try {
@@ -49,10 +55,11 @@ export default class SaleController {
         ...dataToDB,
         client_name: client.name,
         product_name: product.name,
-        date: sale.createdAt,
+        sale_date: new Date(sale.created_at.toLocaleString()).toLocaleString()
       }
+      
       // Retornar a venda criada com os dados formatados
-      const dataResponse = this.returnDataSaleStore(dataToReturn);
+      const data = this.returnDataSaleStore(dataToReturn);
 
 
       await trx.commit()
@@ -60,62 +67,79 @@ export default class SaleController {
       response.status(200);
 
       return {
-        ...this.returnDefaultResponse.salesCreated,
-        data: dataResponse,
+        data
       }
     } catch (error) {
       await trx.rollback()
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async index({ response }: HttpContextContract) {
+  public async index({
+    response,
+  }: HttpContextContract): Promise<void | SaleIndexDTO> {
     try {
       const sales = await this.saleModel.query().orderBy('id', 'desc').where('is_deleted', false);
 
-      if (!sales) return response.status(200).json([])
+      const mappingSales = await Promise.all(sales.map(async (sale) => {
+        const product = await this.productModel.findOrFail(sale.product_id)
+        const client = await this.clientModel.findOrFail(sale.client_id)
+
+        const dataToReturn = this.formatDataSaleToReturnShow({
+          sale,
+          client,
+          product
+        })
+
+        return dataToReturn
+      }));      
 
       response.status(200)
 
       return {
-        ...this.returnDefaultResponse.ok,
-        data: sales,
+        data: mappingSales
       }
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async show({ params, response }: HttpContextContract) {
+  public async show({
+    params,
+    response,
+  }: HttpContextContract): Promise<void | SaleDTO> {
     try {
       const sale = await this.saleModel.query().where('id', params.id).andWhere('is_deleted', false).first();
 
-      if (!sale) return response.status(404).json(this.returnDefaultResponse.saleNotFound)
+      if (!sale) return response.status(404).json(this.returnDefaultResponse.stockAvailable);
 
+      const client = await this.clientModel.findOrFail(sale.client_id)
+      const product = await this.productModel.findOrFail(sale.product_id)
+
+      const data = this.formatDataSaleToReturnShow({ sale, client, product })
       response.status(200)
 
       return {
-        ...this.returnDefaultResponse.ok,
-        data: sale,
+        data,
       }
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   }
 
-  public async destroy ({ response, params }: HttpContextContract): Promise<void | { message: string, error: string }> {
+  public async destroy ({
+    response,
+    params,
+  }: HttpContextContract): Promise<void> {
 
     const trx = await Database.transaction() // Iniciar uma transação
 
@@ -124,36 +148,22 @@ export default class SaleController {
       const getSales = await this.saleModel.query().where('id', params.id).andWhere('is_deleted', false).first();
       getSales?.useTransaction(trx)
 
-      const getStock = await this.productModel.findBy('id', getSales?.product_id);
-      getStock?.useTransaction(trx)
+      const getProduct = await this.productModel.findBy('id', getSales?.product_id);
+      getProduct?.useTransaction(trx)
 
-      // Verifica se a venda existe
-      if (!getSales) {
+      // Verifica se a venda e o produto existe
+      if (!getSales || !getProduct) {
         await trx.rollback()
-        response.status(404)
-        return{
-          ...this.returnDefaultResponse.notFound,
-          error: this.returnDefaultResponse.saleNotFound.message,
-        };
-      }
-
-      // Verifica se o produto existe
-      if (!getStock) {
-        await trx.rollback()
-        response.status(404)
-        return{
-          ...this.returnDefaultResponse.notFound,
-          error: this.returnDefaultResponse.productNotFound.message,
-        };
-      }
+        return response.status(404).json(this.returnDefaultResponse.saleNotFound)
+      };      
 
       // Atualiza a venda para deletada
       getSales.is_deleted = true;
       await getSales.save()
 
       // Atualiza o estoque do produto
-      getStock.stock += getSales?.quantity;
-      await getStock.save()
+      getProduct.stock += getSales?.quantity;
+      await getProduct.save()
 
       await trx.commit()
 
@@ -162,11 +172,10 @@ export default class SaleController {
       return;
     } catch (error) {
       await trx.rollback()
-      response.status(500)
-      return {
-        ...this.returnDefaultResponse.internalServerError,
+      return response.status(500).json({
+        ...this.returnDefaultResponse.serverError,
         error: error.message,
-      }
+      })
     }
   } 
 }

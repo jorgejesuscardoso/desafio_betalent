@@ -14,7 +14,7 @@ export default class ValidatorDataCreateProduct {
 
       const { name, description, price, stock, image, brand } = request.body()
 
-      if(!name || !description || price < 0 || stock < 0 || !image || !brand) return response.badRequest(this.returnDefaultMsg.badRequest)
+      if(!name || !description || price < 0 || stock < 0 || !image || !brand) return response.badRequest(this.returnDefaultMsg.invalidData)
 
       const validator =
       name.length < 3 ? this.returnDefaultMsg.invalidProductName
@@ -31,11 +31,10 @@ export default class ValidatorDataCreateProduct {
 
       await next()  
     } catch (error) {
-      response.status(500)
-      return {
-        ...this.returnDefaultMsg.internalServerError,
+      return response.internalServerError({
+        ...this.returnDefaultMsg.serverError,
         error: error.message,
-      }
+      })
     }
   }
 }

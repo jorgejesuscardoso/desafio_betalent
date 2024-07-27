@@ -57,17 +57,17 @@ export const CheckDuplicateClientEntry = async ({ clientId, email, phone, cpf}):
 
   // Verifica se já existe um cliente com o email, telefone ou cpf
   const clientEmail = email ? await Client.query()
-  .where('clientEmail', email)
+  .where('email', email)
   .whereNot('id', clientId) // Não considerar o próprio cliente
   .first() : null
 
   const clientPhone = phone ? await Phone.query()
-  .where('phone', phone)
-  .whereNot('clientId', clientId) // Não considerar o próprio cliente
+  .where('number', phone)
+  .whereNot('client_id', clientId) // Não considerar o próprio cliente
   .first() : null
 
   const clientCpf = cpf ? await Client.query()
-  .where('clientCpf', cpf)
+  .where('cpf', cpf)
   .whereNot('id', clientId) // Não considerar o próprio cliente
   .first() : null
 

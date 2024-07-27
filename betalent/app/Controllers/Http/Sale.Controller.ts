@@ -9,7 +9,7 @@ import {
   FormatDataSaleToReturn,
   FormatDate,
 } from 'App/Utils/handleFormatDataToReturn';
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
 import { DateTime } from 'luxon';
 
 export default class SaleController {

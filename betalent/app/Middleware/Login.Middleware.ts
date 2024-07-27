@@ -1,7 +1,7 @@
 // app/Middleware/Auth.ts
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import User from 'App/Models/User'
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg'
 
 export default class LoginMiddleware {
 

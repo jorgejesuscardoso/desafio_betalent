@@ -142,4 +142,10 @@ export const ReturnDefaultMsg = {
     "message": "Stock available: ",
     "status": 400
   },
+
+  // Image messages
+  "errorSavingImage": {
+    "message": "Error saving image",
+    "status": 500
+  },
 }

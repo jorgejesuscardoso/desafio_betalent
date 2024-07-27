@@ -9,12 +9,11 @@ import moment from 'moment-timezone';
 export const FormatDate = (date): string => {
  
   const momentDate = moment(date.toISO());
-
   if (!momentDate.isValid()) {
     throw new Error('Invalid date');
   }
 
-  return momentDate.utc().tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
+  return momentDate.tz('America/Sao_Paulo').format('DD/MM/YYYY HH:mm:ss');
 }
 
 // USUÁRIOS
@@ -163,7 +162,9 @@ export const FormatDataSaleToReturnShow = ({sale, client, product}): MergeSaleDT
   return {
     id: sale.id,
     client_name: client.name,
+    client_id: client.id,
     product_name: product.name,
+    product_id: product.id,
     quantity: sale.quantity,
     unity_price: sale.unity_price,
     total_price: sale.total_price,

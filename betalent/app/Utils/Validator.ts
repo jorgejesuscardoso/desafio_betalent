@@ -1,5 +1,5 @@
 import Client from 'App/Models/Client'
-import { ReturnDefaultMsg } from './ReturnDefaultMsg'
+import { ReturnDefaultMsg } from './returnDefaultMsg'
 import Phone from 'App/Models/Phone'
 
 export const ValidateEmail = (email: string) => {

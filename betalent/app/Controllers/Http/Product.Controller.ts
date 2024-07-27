@@ -5,7 +5,8 @@ import {
   FormatDataProductToReturnIndex,
   FormatDataProductToReturn,
 } from 'App/Utils/handleFormatDataToReturn';
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
+import { HandleSaveAndGiveNameToImage } from 'App/Utils/handleImageUpload';
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
 
 export default class ProductController {
   constructor(
@@ -17,7 +18,17 @@ export default class ProductController {
 
   public async store ({ request, response }: HttpContextContract): Promise<void | ProductDTO> {
     try {
-      const data = request.only(['name', 'description', 'price', 'stock', 'image', 'brand']);
+      const data = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
+
+      const thumbnail = request.file('thumbnail');
+
+      if (thumbnail) {
+        const handleImage = await HandleSaveAndGiveNameToImage(thumbnail, data.name); // Utiliza a função para salvar a imagem e retornar o nome da mesma
+        
+        if (!handleImage) return response.status(500).json(this.returnDefaultResponse.errorSavingImage);
+
+        data.thumbnail = handleImage.thumbName; // Adiciona o nome da imagem ao objeto de dados
+      }
 
       // Cria um novo produto
       const product = await this.productModel.create(data);

@@ -1,6 +1,6 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { TokenVerify } from 'App/Utils/JWT';
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
 
 export default class AuthMiddleware {
   constructor(

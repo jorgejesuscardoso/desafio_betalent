@@ -10,7 +10,7 @@ import { FormatDataClientToReturnStore,
   FormatDataClientToReturnUpdate,
   FormatDataClientToReturnShow,
 } from 'App/Utils/handleFormatDataToReturn';
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
 
 export default class UserClient {
   constructor(
@@ -136,16 +136,16 @@ export default class UserClient {
         (await salesFilter).map(async (sale) => {
           const product = await this.productModel.find(sale.product_id);
           return {
+            saleId: sale.id,
+            productId: product?.id,
             productName: product?.name,
             description: product?.description,
             brand: product?.brand,
             quantity: sale.quantity,
             unityPrice: sale.unity_price,
             totalPrice: sale.total_price,
-            saleDate: new Date(sale.created_at).toLocaleString('pt-BR', {
-              timeZone: 'America/Sao_Paulo',
-             }
-            ),
+            saleDate: sale.created_at
+            .toLocaleString({ locale: 'pt-br', timeZone: 'America/Sao_Paulo' }),
             thumbnail: product?.thumbnail,
           };
         })

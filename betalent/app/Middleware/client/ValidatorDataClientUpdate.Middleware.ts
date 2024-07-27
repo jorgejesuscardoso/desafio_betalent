@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Client from 'App/Models/Client'
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg'
 import { ValidateCPF, ValidateEmail, ValidatePhone, CheckDuplicateClientEntry } from 'App/Utils/Validator'
 
 export default class ClientUpdateMiddleware {

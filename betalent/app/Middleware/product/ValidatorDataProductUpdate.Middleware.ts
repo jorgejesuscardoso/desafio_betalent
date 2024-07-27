@@ -1,6 +1,6 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Product from 'App/Models/Product'
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg'
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg'
 
 export default class ValidatorUpdateDataCreateProduct {
 

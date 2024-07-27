@@ -1,7 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 import Hash from '@ioc:Adonis/Core/Hash';
-import { ReturnDefaultMsg } from 'App/Utils/ReturnDefaultMsg';
+import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
 import { FormatDataUserToReturn } from 'App/Utils/handleFormatDataToReturn';
 import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO';
 
@@ -59,7 +59,7 @@ export default class UserController {
       return { data };      
       
     } catch (error) {
-      response.status(500).json({
+      return response.status(500).json({
         ...this.returnDefaultMsg.serverError,
         error: error.message,
       })

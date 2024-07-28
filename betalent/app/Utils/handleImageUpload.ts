@@ -1,11 +1,13 @@
 import { v4 as uuidv4 } from 'uuid'
 import Application from '@ioc:Adonis/Core/Application'
 
-export const HandleSaveAndGiveNameToImage = async (request, productName) => {
+export const HandleSaveImage = async (request, productName) => {
   try {
     if (request) {
 
-      const name = productName.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove acentos do nome do produto
+      const sanitizedProductName = productName.split(' ').join('-').toLowerCase()
+
+      const name = sanitizedProductName.normalize('NFD').replace(/[\u0300-\u036f]/g, '') // Remove acentos do nome do produto
       
       // Gera um nome único para a imagem
       const photoName = `${uuidv4()}.${name}.${request.extname}`

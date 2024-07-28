@@ -1,12 +1,12 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Client from 'App/Models/Client'
 import Product from 'App/Models/Product'
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg'
+import { DefaultMsg } from 'App/Utils/defaultMsg'
 
 export default class ValidatorCreateSale {
 
   constructor(
-    private returnDefaultResponse = ReturnDefaultMsg,
+    private defaultMsg = DefaultMsg,
     private clientModel = Client,
     private productModel = Product,
   ) {}
@@ -14,7 +14,7 @@ export default class ValidatorCreateSale {
     try {
       const { client_id, product_id, quantity } = request.only(['client_id', 'product_id', 'quantity', 'unity_price']);
 
-      if (!client_id || !product_id || !quantity ) return response.status(400).json(this.returnDefaultResponse.invalidData);
+      if (!client_id || !product_id || !quantity ) return response.status(400).json(this.defaultMsg.invalidData);
       
       // Verificar se o cliente existe
       const client = await this.clientModel.findBy('id', +client_id)
@@ -22,13 +22,13 @@ export default class ValidatorCreateSale {
       const product = await this.productModel.findBy('id', +product_id)
 
       const ValidateInput = !client
-      ? this.returnDefaultResponse.clientNotFound
+      ? this.defaultMsg.clientNotFound
       : !product
-      ? this.returnDefaultResponse.productNotFound
+      ? this.defaultMsg.productNotFound
       : quantity <= 0
-      ? this.returnDefaultResponse.quantityInvalid
+      ? this.defaultMsg.quantityInvalid
       : quantity > product.stock
-      ? {error: this.returnDefaultResponse.insufficientStock.message, message: this.returnDefaultResponse.stockAvailable.message + product.stock + ' units'}
+      ? {error: this.defaultMsg.insufficientStock.message, message: this.defaultMsg.stockAvailable.message + product.stock + ' units'}
       : null
 
       if (ValidateInput) return response.status(400).json(ValidateInput);
@@ -36,7 +36,7 @@ export default class ValidatorCreateSale {
       await next()
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.errorCreatingSale,
+        ...this.defaultMsg.errorCreatingSale,
         error: error.message
       })
     }

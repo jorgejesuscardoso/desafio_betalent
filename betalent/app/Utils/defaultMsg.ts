@@ -1,4 +1,4 @@
-export const ReturnDefaultMsg = {
+export const DefaultMsg = {
   // Default messages
   "created": {
     "message": "Created",

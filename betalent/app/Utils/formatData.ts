@@ -1,5 +1,6 @@
 import { ClientDTO, ResponseCreateClientDTO, IClientDTO, ClientToIndex } from 'App/DTO/ClientDTO';
-import { MergeSaleDTO } from 'App/DTO/SaleDTO';
+import { ProductDTO } from 'App/DTO/ProductDTO';
+import { MergeSaleDTO, MergeSaleIndexDTO } from 'App/DTO/SaleDTO';
 import { UserDTO } from 'App/DTO/UserDTO';
 import Product from 'App/Models/Product';
 import User from 'App/Models/User';
@@ -17,7 +18,7 @@ export const FormatDate = (date): string => {
 }
 
 // USUÁRIOS
-export const FormatDataUserToReturn = (user: User): UserDTO => {
+export const FormatDataUser = (user: User): UserDTO => {
   return {
     data:{
       id: user.id,
@@ -31,7 +32,7 @@ export const FormatDataUserToReturn = (user: User): UserDTO => {
 };
 
 // CLIENTES
-export const FormatDataClientToReturnStore = (client , data: ResponseCreateClientDTO): ClientDTO => {
+export const FormatDataClientStore = (client , data: ResponseCreateClientDTO): ClientDTO => {
   return {
     data:{
       id: client.id,
@@ -55,7 +56,7 @@ export const FormatDataClientToReturnStore = (client , data: ResponseCreateClien
   };
 }
 
-export const FormatDataClientToReturnIndex = (data: ClientToIndex[] ): IClientDTO[] => {
+export const FormatDataClientIndex = (data: ClientToIndex[] ): IClientDTO[] => {
   const response = data.map((client) => {
     return {
       id: client.id,
@@ -68,7 +69,7 @@ export const FormatDataClientToReturnIndex = (data: ClientToIndex[] ): IClientDT
   return response;
 }
 
-export const FormatDataClientToReturnUpdate = ({ client, phone, address }): IClientDTO => {
+export const FormatDataClientUpdate = ({ client, phone, address }): IClientDTO => {
   return {
     id: client.id,
     name: client.name,
@@ -87,38 +88,49 @@ export const FormatDataClientToReturnUpdate = ({ client, phone, address }): ICli
   }
 }
 
-export const FormatDataClientToReturnShow = ({
-  getClient,
-  getAddress,
-  getPhone,
-  getSales,
-}) => {
+export const FormatDataClientShow = (getClient): ClientDTO => {
+
+  // Formata os dados de vendas
+  const sales = getClient.sales.map((sale) => {
+    return {
+      id: sale.id,
+      productId: sale.product.id,
+      productName: sale.product.name,
+      quantity: sale.quantity,
+      unityPrice: sale.unity_price,
+      totaLPrice: sale.total_price,
+      saleDate: FormatDate(sale.created_at),
+    }
+  });
+
+  // Formata os dados do endereço
+  const address = {
+      id: getClient.addresses.id,
+      street: getClient.addresses.street,
+      number: getClient.addresses.number,
+      zipCode: getClient.addresses.zip_code,
+      neighborhood: getClient.addresses.neighborhood,
+      city: getClient.addresses.city,
+      state: getClient.addresses.state,
+    }
  
   const data = {
     id: getClient.id,
     name: getClient.name,
     email: getClient.email,
-    phone: getPhone.number,
+    phone: getClient.phones.number,
     cpf: getClient.cpf,
     createdAt: FormatDate(getClient.created_at),
     updatedAt: FormatDate(getClient.updated_at),
-    address: {
-      id: getAddress.id,
-      street: getAddress.street,
-      number: Number(getAddress.number),
-      neighborhood: getAddress.neighborhood,
-      city: getAddress.city,
-      state: getAddress.state,
-      zipCode: getAddress.zip_code,
-    },
-    sales: getSales,
+    address,
+    sales,
   };
   
   return { data };
 }
 
 // PRODUTOS
-export const FormatDataProductToReturn = ( product: Product) => {
+export const FormatDataProduct = ( product: Product): ProductDTO => {
   return {
     data:{
       id: product.id,
@@ -134,7 +146,7 @@ export const FormatDataProductToReturn = ( product: Product) => {
   };
 }
 
-export const FormatDataProductToReturnIndex = (data: Product) => {
+export const FormatDataProductIndex = (data: Product) => {
   return {
     data:{
       id: data.id,
@@ -146,7 +158,7 @@ export const FormatDataProductToReturnIndex = (data: Product) => {
 }
 
 // VENDAS
-export const FormatDataSaleToReturn = (data: MergeSaleDTO): MergeSaleDTO => {
+export const FormatDataSale = (data: MergeSaleDTO): MergeSaleDTO => {
   return {
     id: data.id,
     client_name: data.client_name,
@@ -158,7 +170,18 @@ export const FormatDataSaleToReturn = (data: MergeSaleDTO): MergeSaleDTO => {
   }
 }
 
-export const FormatDataSaleToReturnShow = ({sale, client, product}): MergeSaleDTO => {
+export const FormatDataSaleIndex = ({sale, client, product}): MergeSaleIndexDTO => {
+  return {
+    id: sale.id,
+    client_name: client.name,
+    product_name: product.name,
+    quantity: sale.quantity,
+    total_price: sale.total_price,
+    sale_date: FormatDate(sale.created_at),
+  }
+}
+
+export const FormatDataSaleShow = ({sale, client, product}): MergeSaleDTO => {
   return {
     id: sale.id,
     client_name: client.name,

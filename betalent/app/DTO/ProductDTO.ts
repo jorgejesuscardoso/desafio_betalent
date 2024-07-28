@@ -4,7 +4,7 @@ export interface IProductDTO {
   description?: string;
   price: number;
   stock: number;
-  image?: string;
+  thumbnail?: string;
   brand?: string;
   created_at?: string;
   updated_at?: string;

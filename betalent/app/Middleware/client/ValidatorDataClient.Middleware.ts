@@ -1,10 +1,10 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
-import { CheckDuplicateClientEntry, ValidateCPF, ValidateEmail, ValidatePhone } from 'App/Utils/Validator';
+import { DefaultMsg } from 'App/Utils/defaultMsg';
+import { CheckDuplicateClientEntry, ValidateCPF, ValidateEmail, ValidatePhone } from 'App/Utils/validator';
 
 export default class ClientsMiddleware {
   constructor(
-    private returnDefaultMsg = ReturnDefaultMsg,
+    private defaultMsg = DefaultMsg,
     private validateCpf = ValidateCPF,
     private validateEmail = ValidateEmail,
     private validatePhone = ValidatePhone,
@@ -16,16 +16,16 @@ export default class ClientsMiddleware {
       const { email, phone, cpf, name } = request.only(['email', 'phone', 'cpf', 'name']);
 
       if (!email || !phone || !cpf || !name) {
-        return response.status(400).json(this.returnDefaultMsg.invalidData);
+        return response.status(400).json(this.defaultMsg.invalidData);
       }     
 
       // Valida os campos com regex
       if (!this.validateEmail(email)) {
-        return response.status(400).json(this.returnDefaultMsg.invalidEmailFormat);
+        return response.status(400).json(this.defaultMsg.invalidEmailFormat);
       } else if (!this.validatePhone(phone)) {
-        return response.status(400).json(this.returnDefaultMsg.invalidClientPhone);
+        return response.status(400).json(this.defaultMsg.invalidClientPhone);
       } else if (!this.validateCpf(cpf)) {
-        return response.status(400).json(this.returnDefaultMsg.invalidClientCpf);
+        return response.status(400).json(this.defaultMsg.invalidClientCpf);
       }
 
       const checkData = await this.checkDuplicateEntry({ clientId: null, email, phone, cpf });

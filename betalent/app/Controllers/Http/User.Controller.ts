@@ -1,8 +1,8 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 import Hash from '@ioc:Adonis/Core/Hash';
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
-import { FormatDataUserToReturn } from 'App/Utils/handleFormatDataToReturn';
+import { DefaultMsg } from 'App/Utils/defaultMsg';
+import { FormatDataUser } from 'App/Utils/formatData';
 import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO';
 
 export default class UserController {
@@ -10,8 +10,8 @@ export default class UserController {
   constructor(
     private userModel = User,
     private hashService = Hash,
-    private formatDataUserToReturn = FormatDataUserToReturn,
-    private returnDefaultMsg = ReturnDefaultMsg
+    private formatDataUser = FormatDataUser,
+    private defaultMsg = DefaultMsg
   ) {  }
 
   public async store({ request, response }: HttpContextContract): Promise<void |UserDTO> {
@@ -27,14 +27,14 @@ export default class UserController {
         password: hashed,
       });
   
-      const data = this.formatDataUserToReturn(user);
+      const data = this.formatDataUser(user);
 
       response.status(201);
       return data;  
 
     } catch (error) {
      return response.status(500).json({
-      ...this.returnDefaultMsg.serverError,
+      ...this.defaultMsg.serverError,
       error: error.message,
      });
     }   
@@ -50,7 +50,7 @@ export default class UserController {
 
       // Oculta a senha dos usuários
       const data = user.map((user) => {
-        const passRemoving = this.formatDataUserToReturn(user).data;
+        const passRemoving = this.formatDataUser(user).data;
         return passRemoving;
       });
 
@@ -60,7 +60,7 @@ export default class UserController {
       
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultMsg.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       });
     }
@@ -73,17 +73,17 @@ export default class UserController {
       const user = await this.userModel.find(params.id);
       response.status(200);
 
-      if(!user) return response.status(404).json(this.returnDefaultMsg.userNotFound);
+      if(!user) return response.status(404).json(this.defaultMsg.userNotFound);
         
 
       //  Oculta a senha do usuário
-      const data = this.formatDataUserToReturn(user).data;
+      const data = this.formatDataUser(user).data;
 
       response.status(200);
       return { data };
     } catch (error) {
       response.status(500).json({
-        ...this.returnDefaultMsg.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       });
     }
@@ -96,7 +96,7 @@ export default class UserController {
 
       // Verifica se o usuário é válido
       const user = await this.userModel.findBy('id', +params.id);
-      if(!user) return  response.status(404).json(this.returnDefaultMsg.userNotFound);   
+      if(!user) return  response.status(404).json(this.defaultMsg.userNotFound);   
 
       if (password) {
        password = await this.hashService.make(password)
@@ -112,7 +112,7 @@ export default class UserController {
 
       await user.save();
 
-      const data = this.formatDataUserToReturn(user).data;
+      const data = this.formatDataUser(user).data;
 
       response.status(200);
 
@@ -120,7 +120,7 @@ export default class UserController {
 
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultMsg.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       });
     }
@@ -130,7 +130,7 @@ export default class UserController {
     try {
       const user = await this.userModel.findBy('id', +params.id);
 
-      if(!user) return response.status(404).json(this.returnDefaultMsg.userNotFound);
+      if(!user) return response.status(404).json(this.defaultMsg.userNotFound);
 
       await user.delete();
 
@@ -139,7 +139,7 @@ export default class UserController {
       return;
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultMsg.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       });
     }

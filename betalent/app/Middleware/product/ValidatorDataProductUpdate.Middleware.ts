@@ -1,30 +1,32 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
 import Product from 'App/Models/Product'
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg'
+import { DefaultMsg } from 'App/Utils/defaultMsg'
 
 export default class ValidatorUpdateDataCreateProduct {
 
   constructor(
     private productModel = Product,
-    private returnDefaultMsg = ReturnDefaultMsg,
+    private defaultMsg = DefaultMsg,
   ) {  }  
 
   public async handle({ request, response, params }: HttpContextContract, next: () => Promise<void>) {
     
     try {
-      const { name, description, price, stock, image, brand } = request.body()
+      const { name, description, price, stock, brand } = request.body()
       const productId = params.id
 
-      if (!name && !description && !price && !stock && !image && !brand) {
-        return response.badRequest(this.returnDefaultMsg.invalidData)
+      const thumb = request.file('thumbnail')
+
+      if (!name && !description && !price && !stock && !thumb && !brand) {
+        return response.badRequest(this.defaultMsg.invalidData)
       }
 
       const validator =
-        (name && name.length < 3) ? this.returnDefaultMsg.invalidProductName
-        : (description && description.length < 10) ? this.returnDefaultMsg.invalidProductDescription
-        : (brand && brand.length < 3) ? this.returnDefaultMsg.invalidBrand
-        : (stock !== null && stock < 1) ? this.returnDefaultMsg.invalidStock
-        : (price !== null && price < 1) ? this.returnDefaultMsg.invalidPrice
+        (name && name.length < 3) ? this.defaultMsg.invalidProductName
+        : (description && description.length < 10) ? this.defaultMsg.invalidProductDescription
+        : (brand && brand.length < 3) ? this.defaultMsg.invalidBrand
+        : (stock !== null && stock < 1) ? this.defaultMsg.invalidStock
+        : (price !== null && price < 1) ? this.defaultMsg.invalidPrice
         : null
 
       if (validator) {
@@ -39,14 +41,14 @@ export default class ValidatorUpdateDataCreateProduct {
           .first()
         
         if (existingProduct) {
-          return response.badRequest(this.returnDefaultMsg.productAlreadyExist)
+          return response.badRequest(this.defaultMsg.productAlreadyExist)
         }
       }
 
       await next()
     } catch (error) {
       return response.internalServerError({
-        ...this.returnDefaultMsg.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       })
     }

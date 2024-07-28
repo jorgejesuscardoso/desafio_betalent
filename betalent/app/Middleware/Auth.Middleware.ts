@@ -1,11 +1,11 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { TokenVerify } from 'App/Utils/JWT';
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
+import { DefaultMsg } from 'App/Utils/defaultMsg';
 
 export default class AuthMiddleware {
   constructor(
     private tokenVerify = TokenVerify,
-    private returnDefaultMsg = ReturnDefaultMsg,
+    private defaultMsg = DefaultMsg,
   ) {}
 
   async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {    
@@ -18,12 +18,12 @@ export default class AuthMiddleware {
       // Verifica se o token é válido e retorna uma mensagem de erro caso não seja
       const isValidToken = this.tokenVerify(String(removeBearer));
 
-      if (!token && !isValidToken) return response.status(401).json(this.returnDefaultMsg.unauthorized);
+      if (!token && !isValidToken) return response.status(401).json(this.defaultMsg.unauthorized);
       
       await next()
 
     } catch (error) {
-      return response.internalServerError({ ...this.returnDefaultMsg.serverError, error })
+      return response.internalServerError({ ...this.defaultMsg.serverError, error })
     }
   }
 };

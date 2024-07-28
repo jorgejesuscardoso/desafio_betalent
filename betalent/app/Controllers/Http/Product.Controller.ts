@@ -2,50 +2,51 @@ import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import { ProductDTO, ProductIndexDTO  } from 'App/DTO/ProductDTO';
 import Product from 'App/Models/Product';
 import {
-  FormatDataProductToReturnIndex,
-  FormatDataProductToReturn,
-} from 'App/Utils/handleFormatDataToReturn';
-import { HandleSaveAndGiveNameToImage } from 'App/Utils/handleImageUpload';
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
+  FormatDataProductIndex,
+  FormatDataProduct,
+} from 'App/Utils/formatData';
+import { HandleSaveImage } from 'App/Utils/handleImageUpload';
+import { DefaultMsg } from 'App/Utils/defaultMsg';
 
 export default class ProductController {
   constructor(
     private productModel = Product,
-    private returnDefaultResponse = ReturnDefaultMsg,
-    private formatDataToReturnProducts = FormatDataProductToReturn,
-    private formatDataToReturnProductsIndex = FormatDataProductToReturnIndex,
+    private handleSaveimage = HandleSaveImage,
+    private defaultMsg = DefaultMsg,
+    private formatDataProducts = FormatDataProduct,
+    private formatDataProductsIndex = FormatDataProductIndex,
   ) {}
 
   public async store ({ request, response }: HttpContextContract): Promise<void | ProductDTO> {
     try {
-      const data = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
+      const requestData = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
 
       const thumbnail = request.file('thumbnail');
 
       if (thumbnail) {
-        const handleImage = await HandleSaveAndGiveNameToImage(thumbnail, data.name); // Utiliza a função para salvar a imagem e retornar o nome da mesma
+        const handleImage = await this.handleSaveimage(thumbnail, requestData.name); // Utiliza a função para salvar a imagem e retornar o nome da mesma
         
-        if (!handleImage) return response.status(500).json(this.returnDefaultResponse.errorSavingImage);
+        if (!handleImage) return response.status(500).json(this.defaultMsg.errorSavingImage);
 
-        data.thumbnail = handleImage.thumbName; // Adiciona o nome da imagem ao objeto de dados
+        requestData.thumbnail = handleImage.thumbName; // Adiciona o nome da imagem ao objeto de dados
       }
 
       // Cria um novo produto
-      const product = await this.productModel.create(data);
+      const product = await this.productModel.create(requestData);
 
-      if (!product) return response.status(500).json(this.returnDefaultResponse.errorCreatingProduct);
+      if (!product) return response.status(500).json(this.defaultMsg.errorCreatingProduct);
 
       response.status(201)
 
       // Formata as datas para serem retornadas
-      const dataFormatted = this.formatDataToReturnProducts(product).data;
+      const data = this.formatDataProducts(product).data;
 
       return {
-        data: dataFormatted,
+        data,
       }
     } catch (error) {
      return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       })
     }
@@ -58,16 +59,16 @@ export default class ProductController {
       const products = await this.productModel.query().where('is_deleted', false).orderBy('name', 'asc');
 
       // Formata os dados para serem retornados
-      const dataFormatted = products.map(product => this.formatDataToReturnProductsIndex(product).data );
+      const data = products.map(product => this.formatDataProductsIndex(product).data );
 
       response.status(200)
 
       return {
-        data: dataFormatted,
+        data,
       }
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       })
     }
@@ -83,19 +84,19 @@ export default class ProductController {
       .andWhere('is_deleted', false)
       .first();
 
-      if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
+      if (!product) return response.status(404).json(this.defaultMsg.productNotFound);
 
       // Formata os dados para serem retornados
-      const dataFormatted =  this.formatDataToReturnProducts(product).data;
+      const data =  this.formatDataProducts(product).data;
 
       response.status(200)
 
       return {
-        data: dataFormatted,
+        data,
       }
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       })
     }
@@ -104,7 +105,9 @@ export default class ProductController {
   public async update ({ request, response, params }: HttpContextContract): Promise<void | ProductDTO> {
     try {
 
-      const data = request.only(['name', 'description', 'price', 'stock', 'image', 'brand']);
+      const requestData = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
+
+      const thumbnail = request.file('thumbnail');      
 
       // Busca o produto pelo id retornando apenas se não foi marcado como deletado
       const product = await this.productModel
@@ -113,23 +116,31 @@ export default class ProductController {
       .andWhere('is_deleted', false)
       .first();
 
-      if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
+      if (!product) return response.status(404).json(this.defaultMsg.productNotFound);
+
+      if (thumbnail) {
+        const handleImage = await this.handleSaveimage(thumbnail, product.name);
+
+        if (!handleImage) return response.status(500).json(this.defaultMsg.errorSavingImage);
+
+        requestData.thumbnail = handleImage.thumbName;
+      }
 
       // Atualiza os dados do produto
-      product.merge(data);
+      product.merge(requestData);
       await product.save();
 
       // Formata os dados para serem retornados
-      const dataFormatted = this.formatDataToReturnProducts(product).data;
+      const data = this.formatDataProducts(product).data;
 
       response.status(200)
 
       return {
-        data: dataFormatted,
+        data,
       }
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       })
     }
@@ -145,7 +156,7 @@ export default class ProductController {
       .andWhere('is_deleted', false)
       .first();
 
-      if (!product) return response.status(404).json(this.returnDefaultResponse.productNotFound);
+      if (!product) return response.status(404).json(this.defaultMsg.productNotFound);
 
       // Marca o produto como deletado sem excluir do banco
       product.merge({ is_deleted: true });
@@ -156,7 +167,7 @@ export default class ProductController {
       return;
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultMsg.serverError,
         error: error.message,
       })
     }

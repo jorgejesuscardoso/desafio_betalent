@@ -5,11 +5,12 @@ import Client from 'App/Models/Client';
 import Product from 'App/Models/Product';
 import Sale from 'App/Models/Sale';
 import {
-  FormatDataSaleToReturnShow,
-  FormatDataSaleToReturn,
+  FormatDataSaleShow,
+  FormatDataSale,
   FormatDate,
-} from 'App/Utils/handleFormatDataToReturn';
-import { ReturnDefaultMsg } from 'App/Utils/returnDefaultMsg';
+  FormatDataSaleIndex,
+} from 'App/Utils/formatData';
+import { DefaultMsg } from 'App/Utils/defaultMsg';
 import { DateTime } from 'luxon';
 
 export default class SaleController {
@@ -17,9 +18,10 @@ export default class SaleController {
     private saleModel = Sale,
     private productModel = Product,
     private clientModel = Client,
-    private returnDefaultResponse = ReturnDefaultMsg,
-    private returnDataSaleStore = FormatDataSaleToReturn,
-    private formatDataSaleToReturnShow = FormatDataSaleToReturnShow,
+    private defaultResponse = DefaultMsg,
+    private formatDataSaleStore = FormatDataSale,
+    private formatDataSaleIndex = FormatDataSaleIndex,
+    private formatDataSaleShow = FormatDataSaleShow,
   ) {}
 
   public async store({
@@ -36,6 +38,7 @@ export default class SaleController {
       const product = await this.productModel.findOrFail(product_id);
       product.useTransaction(trx);
 
+      // Verificar se o cliente existe
       const client = await this.clientModel.findOrFail(client_id);
 
       // Calcular o preço total
@@ -46,7 +49,7 @@ export default class SaleController {
       await product.save();
 
       // Criar a venda com a transação
-      const dataToDB = {
+      const saleData = {
         client_id,
         product_id,
         quantity,
@@ -55,17 +58,17 @@ export default class SaleController {
         created_at: DateTime.now(),
       }
 
-      const sale = await this.saleModel.create(dataToDB, { client: trx });
+      const sale = await this.saleModel.create(saleData, { client: trx });
       
-      const dataToReturn = {
-        ...dataToDB,
+      const FormatSaleData = {
+        ...saleData,
         client_name: client.name,
         product_name: product.name,
         sale_date: FormatDate(sale.created_at),
       };
       
       // Retornar a venda criada com os dados formatados
-      const data = this.returnDataSaleStore(dataToReturn);
+      const data = this.formatDataSaleStore(FormatSaleData);
 
 
       await trx.commit();
@@ -78,7 +81,7 @@ export default class SaleController {
     } catch (error) {
       await trx.rollback();
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultResponse.serverError,
         error: error.message,
       });
     }
@@ -91,27 +94,27 @@ export default class SaleController {
       .orderBy('id', 'desc')
       .where('is_deleted', false);
 
-      const mappingSales = await Promise.all(sales.map(async (sale) => {
-        const product = await this.productModel.findOrFail(sale.product_id);
-        const client = await this.clientModel.findOrFail(sale.client_id);
+      const data = await Promise.all(sales.map(async (sale) => {
+        const product = await this.productModel.findOrFail(sale.productId);
+        const client = await this.clientModel.findOrFail(sale.clientId);
 
-        const dataToReturn = this.formatDataSaleToReturnShow({
+        const saleData = this.formatDataSaleIndex({
           sale,
           client,
           product
         });
 
-        return dataToReturn;
+        return saleData;
       }));      
 
       response.status(200);
 
       return {
-        data: mappingSales
+        data
       };
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultResponse.serverError,
         error: error.message,
       });
     }
@@ -129,12 +132,12 @@ export default class SaleController {
       .andWhere('is_deleted', false)
       .first();
 
-      if (!sale) return response.status(404).json(this.returnDefaultResponse.saleNotFound);
+      if (!sale) return response.status(404).json(this.defaultResponse.saleNotFound);
 
-      const client = await this.clientModel.findOrFail(sale.client_id);
-      const product = await this.productModel.findOrFail(sale.product_id);
+      const client = await this.clientModel.findOrFail(sale.clientId);
+      const product = await this.productModel.findOrFail(sale.productId);
 
-      const data = this.formatDataSaleToReturnShow({ sale, client, product });
+      const data = this.formatDataSaleShow({ sale, client, product });
       response.status(200);
 
       return {
@@ -142,7 +145,7 @@ export default class SaleController {
       };
     } catch (error) {
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultResponse.serverError,
         error: error.message,
       });
     }
@@ -165,18 +168,18 @@ export default class SaleController {
 
       if (!getSales) {
         await trx.rollback();
-        return response.status(404).json(this.returnDefaultResponse.saleNotFound);
+        return response.status(404).json(this.defaultResponse.saleNotFound);
       }
 
       getSales.useTransaction(trx);
 
-      const getProduct = await this.productModel.findBy('id', getSales.product_id);
+      const getProduct = await this.productModel.findBy('id', getSales.productId);
       getProduct?.useTransaction(trx);
 
       // Verifica se a venda e o produto existe
       if (!getSales || !getProduct) {
         await trx.rollback();
-        return response.status(404).json(this.returnDefaultResponse.saleNotFound);
+        return response.status(404).json(this.defaultResponse.saleNotFound);
       };      
 
       // Atualiza a venda para deletada
@@ -195,7 +198,7 @@ export default class SaleController {
     } catch (error) {
       await trx.rollback();
       return response.status(500).json({
-        ...this.returnDefaultResponse.serverError,
+        ...this.defaultResponse.serverError,
         error: error.message,
       });
     }

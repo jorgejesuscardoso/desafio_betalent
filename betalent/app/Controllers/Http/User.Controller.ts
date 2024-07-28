@@ -2,7 +2,7 @@ import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
 import User from 'App/Models/User';
 import Hash from '@ioc:Adonis/Core/Hash';
 import { DefaultMsg } from 'App/Utils/defaultMsg';
-import { FormatDataUser } from 'App/Utils/formatData';
+import { FormatDataUser, FormatDataUserShow } from 'App/Utils/formatData';
 import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO';
 
 export default class UserController {
@@ -11,6 +11,7 @@ export default class UserController {
     private userModel = User,
     private hashService = Hash,
     private formatDataUser = FormatDataUser,
+    private formatDataUserShow = FormatDataUserShow,
     private defaultMsg = DefaultMsg
   ) {  }
 
@@ -40,13 +41,24 @@ export default class UserController {
     }   
   }
 
-  public async index({ response }: HttpContextContract): Promise<void | UserIndexDTO> {
+  public async index({ request, response }: HttpContextContract): Promise<void | UserIndexDTO> {
     try {
       
-      const user = await this.userModel.all();
+      const { role } = request.qs();
 
-      // Ordena os usuários pelo ID
-      user.sort((a, b) => a.id - b.id);
+      let user;
+
+      if (role) {
+        user = await this.userModel
+        .query()
+        .where('role', role)
+        .orderBy('id', 'asc');
+      } else {
+        user = await this.userModel
+        .query()
+        .select('*')
+        .orderBy('id', 'asc');
+      }
 
       // Oculta a senha dos usuários
       const data = user.map((user) => {
@@ -77,7 +89,7 @@ export default class UserController {
         
 
       //  Oculta a senha do usuário
-      const data = this.formatDataUser(user).data;
+      const data = this.formatDataUserShow(user).data;
 
       response.status(200);
       return { data };
@@ -96,6 +108,7 @@ export default class UserController {
 
       // Verifica se o usuário é válido
       const user = await this.userModel.findBy('id', +params.id);
+      
       if(!user) return  response.status(404).json(this.defaultMsg.userNotFound);   
 
       if (password) {
@@ -128,7 +141,7 @@ export default class UserController {
 
   public async destroy({ params, response }: HttpContextContract): Promise<void> {
     try {
-      const user = await this.userModel.findBy('id', +params.id);
+      const user = await this.userModel.findBy('id', params.id);
 
       if(!user) return response.status(404).json(this.defaultMsg.userNotFound);
 

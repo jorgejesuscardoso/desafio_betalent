@@ -20,6 +20,10 @@ export const DefaultMsg = {
     "message": "Internal server error",
     "status": 500
   },
+  "methodNotAllowed": {
+    "message": "Method not allowed. Check the request method and try again",
+    "status": 405
+  },
 
 
   // Users messages

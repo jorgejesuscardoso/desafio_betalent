@@ -19,20 +19,20 @@ export default class ProductController {
 
   public async store ({ request, response }: HttpContextContract): Promise<void | ProductDTO> {
     try {
-      const requestData = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
+      const dataRequest = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
 
       const thumbnail = request.file('thumbnail');
 
       if (thumbnail) {
-        const handleImage = await this.handleSaveimage(thumbnail, requestData.name); // Utiliza a função para salvar a imagem e retornar o nome da mesma
+        const handleImage = await this.handleSaveimage(thumbnail, dataRequest.name); // Utiliza a função para salvar a imagem e retornar o nome da mesma
         
         if (!handleImage) return response.status(500).json(this.defaultMsg.errorSavingImage);
 
-        requestData.thumbnail = handleImage.thumbName; // Adiciona o nome da imagem ao objeto de dados
+        dataRequest.thumbnail = handleImage.thumbName; // Adiciona o nome da imagem ao objeto de dados
       }
 
       // Cria um novo produto
-      const product = await this.productModel.create(requestData);
+      const product = await this.productModel.create(dataRequest);
 
       if (!product) return response.status(500).json(this.defaultMsg.errorCreatingProduct);
 
@@ -54,8 +54,7 @@ export default class ProductController {
 
   public async index ({ response }: HttpContextContract): Promise<void | ProductIndexDTO> {
     try {
-
-      // Busca todos os produtos que não foram marcados como deletados
+      // Busca todos os produtos que não foram marcados como deletados 
       const products = await this.productModel.query().where('is_deleted', false).orderBy('name', 'asc');
 
       // Formata os dados para serem retornados
@@ -76,7 +75,6 @@ export default class ProductController {
 
   public async show ({ response, params }: HttpContextContract): Promise<void | ProductDTO> {
     try {
-
       // Busca o produto pelo id retornando apenas se não foi marcado como deletado
       const product = await this.productModel
       .query()
@@ -105,7 +103,7 @@ export default class ProductController {
   public async update ({ request, response, params }: HttpContextContract): Promise<void | ProductDTO> {
     try {
 
-      const requestData = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
+      const dataRequest = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
 
       const thumbnail = request.file('thumbnail');      
 
@@ -123,11 +121,11 @@ export default class ProductController {
 
         if (!handleImage) return response.status(500).json(this.defaultMsg.errorSavingImage);
 
-        requestData.thumbnail = handleImage.thumbName;
+        dataRequest.thumbnail = handleImage.thumbName;
       }
 
       // Atualiza os dados do produto
-      product.merge(requestData);
+      product.merge(dataRequest);
       await product.save();
 
       // Formata os dados para serem retornados
@@ -161,6 +159,9 @@ export default class ProductController {
       // Marca o produto como deletado sem excluir do banco
       product.merge({ is_deleted: true });
       await product.save();
+
+      /* await client.del(`products:${params.id}`); // Deleta o cache do produto
+      await client.del('products:list'); // Deleta o cache */
 
       response.status(204)
 

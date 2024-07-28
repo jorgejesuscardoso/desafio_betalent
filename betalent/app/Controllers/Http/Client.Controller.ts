@@ -33,19 +33,19 @@ export default class UserClient {
   
     try {
       // Validações e tratamento dos dados são feitos no middleware.
-      const requestData = request.only(['email', 'phone', 'cpf', 'name', 'address']);
+      const dataRequest = request.only(['email', 'phone', 'cpf', 'name', 'address']);
   
       const client = {
-        name: requestData.name,
-        email: requestData.email,
-        cpf: requestData.cpf,
+        name: dataRequest.name,
+        email: dataRequest.email,
+        cpf: dataRequest.cpf,
       };
   
       // Cria um novo cliente usando a transação
       const clientData = await this.clientModel.create(client, { client: trx });
   
       const phone = {
-        number: requestData.phone,
+        number: dataRequest.phone,
         client_id: clientData.id,
       };
   
@@ -53,7 +53,7 @@ export default class UserClient {
       await this.phoneModel.create(phone, { client: trx });
   
       const address = {
-        ...requestData.address,
+        ...dataRequest.address,
         client_id: clientData.id,
       };
   
@@ -62,7 +62,7 @@ export default class UserClient {
   
       await trx.commit(); // Confirma a transação se todas as operações forem bem-sucedidas
    
-      const data = this.formatDataStore(clientData, requestData).data;
+      const data = this.formatDataStore(clientData, dataRequest).data;
       
       response.status(201);
 
@@ -132,13 +132,13 @@ export default class UserClient {
           } else if (year) {
             saleQuery.whereRaw(`extract(year from created_at) = ${year}`);
           }
-        });
+        }).first();
       
       if (!client) {
         return response.status(404).json(this.defaultMsg.clientNotFound);
       }
 
-      const data = this.formatDataShow(client[0]);  
+      const data = this.formatDataShow(client);  
       
       response.status(200);
       return data;
@@ -161,58 +161,60 @@ export default class UserClient {
     try {
       // Validações e tratamento dos dados são feitos no middleware.
       
-      const { name, email, phone, cpf, address } = request.body();
-
-      // Busca o cliente, endereço e telefone no banco de dados
-      const getClient = await this.clientModel.find(params.id);
-      const getClientAddress = await this.addressModel.findBy('client_id', params.id);
-      const getClientPhone = await this.phoneModel.findBy('client_id', params.id);
-     
-      if (!getClient || !getClientAddress || !getClientPhone) {
-        await trx.rollback();  // Reverte a transação se não encontrar
+      const dataRequest = request.only(['email', 'phone', 'cpf', 'name', 'address']);
+      const clientId = params.id;
+  
+      // Aplicando eager loading para trazer os dados relacionados
+      const client = await this.clientModel
+        .query()
+        .where('id', clientId)
+        .preload('phones')
+        .preload('addresses')
+        .first();
+  
+      if (!client) {
+        await trx.rollback();
         return response.status(404).json(this.defaultMsg.clientNotFound);
       }
-
-      // Dados a serem atualizados na tabela de clientes
-      const clientData = {
-        name,
-        email,
-        cpf,    
-      };
-
-      // Dados a serem atualizados na tabela de endereços
-      const addressData = {
-        street: address?.street ?? getClientAddress.street,
-        number: address?.number ?? getClientAddress.number,
-        zip_code: address?.zip_code ?? getClientAddress.zip_code,
-        neighborhood: address?.neighborhood ?? getClientAddress.neighborhood,
-        city: address?.city ?? getClientAddress.city,
-        state: address?.state ?? getClientAddress.state,
-      };
-      
+      client.useTransaction(trx);
+  
       // Vincula a transação às operações dos modelos
-      getClient.useTransaction(trx);
-      getClientAddress.useTransaction(trx);
-      getClientPhone.useTransaction(trx);
+      const phone = client.phones;
+      const address = client.addresses;
 
-      getClient.merge(clientData);
-      await getClient.save();
+      if (!phone || !address) {
+        await trx.rollback();
+        return response.status(404).json(this.defaultMsg.clientNotFound);
+      }
+    
+      phone.useTransaction(trx);
+      address.useTransaction(trx);
+  
+      // Atualiza o telefone
+      phone.merge({ number: dataRequest.phone });
+      await phone.save();
+      
+      // Atualiza o endereço
+      address.merge(dataRequest.address ? dataRequest.address : address);
+      await address.save();
+  
+      // Atualiza o cliente
+      client.merge({
+        name: dataRequest.name,
+        email: dataRequest.email,
+        cpf: dataRequest.cpf,
+      });
 
-      getClientAddress.merge(addressData);
-      await getClientAddress.save();
-
-      getClientPhone.merge({ number: phone || getClientPhone.number });
-      await getClientPhone.save();
-
-      // Confirma a transação
+      await client.save();
+  
+      // Confirma a transação se todas as operações forem bem-sucedidas
       await trx.commit();
-
-      const data = this.formatDataUpdate({ client: getClient , phone: getClientPhone, address: getClientAddress });
-
       response.status(200);
-
+  
+      // Formata os dados de atualização
+      const data = this.formatDataUpdate(client, dataRequest);
+  
       return { data };
-
     } catch (err) {
       await trx.rollback();  // Reverte a transação em caso de erro
       return response.internalServerError({
@@ -220,14 +222,14 @@ export default class UserClient {
         error: err.message,
       });
     }
-  }
+  }  
 
   public async destroy({
     params,
     response
   }: HttpContextContract): Promise<void> {
     try {
-      const client = await this.clientModel.find(params.id);
+      const client = await this.clientModel.findBy('id',params.id);
 
       if (!client) return response.status(404).json(this.defaultMsg.clientNotFound);
 

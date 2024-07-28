@@ -11,6 +11,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 15,
         thumbnail: 'gaming_laptop.jpg',
         brand: 'TechGuru',
+        sold_quantity: 100, // Adicionando campo sold_quantity
+        category: 'Computers', // Adicionando campo category
+        specifications: 'Intel i7, 16GB RAM, 512GB SSD', // Adicionando campo specifications
+        manufacturer: 'TechGuru Inc.', // Adicionando campo manufacturer
+        status: 'Available' // Adicionando campo status
       },
       {
         name: 'Wireless Mouse',
@@ -19,6 +24,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 50,
         thumbnail: 'wireless_mouse.jpg',
         brand: 'ClickMaster',
+        sold_quantity: 200,
+        category: 'Accessories',
+        specifications: 'Adjustable DPI, Wireless, 2 AAA batteries',
+        manufacturer: 'ClickMaster Ltd.',
+        status: 'Available'
       },
       {
         name: 'Bluetooth Headphones',
@@ -27,6 +37,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 30,
         thumbnail: 'bluetooth_headphones.jpg',
         brand: 'SoundWave',
+        sold_quantity: 150,
+        category: 'Audio',
+        specifications: 'Noise-canceling, Bluetooth 5.0, 20 hours battery life',
+        manufacturer: 'SoundWave Audio',
+        status: 'Available'
       },
       {
         name: '4K Monitor',
@@ -35,6 +50,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 25,
         thumbnail: '4k_monitor.jpg',
         brand: 'VisionPro',
+        sold_quantity: 80,
+        category: 'Monitors',
+        specifications: '3840x2160 resolution, 60Hz refresh rate',
+        manufacturer: 'VisionPro Electronics',
+        status: 'Available'
       },
       {
         name: 'Mechanical Keyboard',
@@ -43,6 +63,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 40,
         thumbnail: 'mechanical_keyboard.jpg',
         brand: 'KeyForge',
+        sold_quantity: 120,
+        category: 'Accessories',
+        specifications: 'Mechanical switches, RGB backlighting, Full-size layout',
+        manufacturer: 'KeyForge Tech',
+        status: 'Available'
       },
       {
         name: 'Smartwatch',
@@ -51,6 +76,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 20,
         thumbnail: 'smartwatch.jpg',
         brand: 'TimeMaster',
+        sold_quantity: 60,
+        category: 'Wearables',
+        specifications: 'Fitness tracking, Heart rate monitor, Notifications',
+        manufacturer: 'TimeMaster Innovations',
+        status: 'Available'
       },
       {
         name: 'External SSD',
@@ -59,6 +89,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 35,
         thumbnail: 'external_ssd.jpg',
         brand: 'DataDrive',
+        sold_quantity: 90,
+        category: 'Storage',
+        specifications: '1TB capacity, USB 3.1, 500MB/s read speed',
+        manufacturer: 'DataDrive Corp.',
+        status: 'Available'
       },
       {
         name: 'Desk Lamp',
@@ -67,6 +102,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 45,
         thumbnail: 'desk_lamp.jpg',
         brand: 'LightUp',
+        sold_quantity: 110,
+        category: 'Furniture',
+        specifications: 'Adjustable brightness, USB charging port',
+        manufacturer: 'LightUp Home',
+        status: 'Available'
       },
       {
         name: 'Ergonomic Chair',
@@ -75,6 +115,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 10,
         thumbnail: 'ergonomic_chair.jpg',
         brand: 'ComfortSeater',
+        sold_quantity: 40,
+        category: 'Furniture',
+        specifications: 'Lumbar support, Adjustable height, Reclining feature',
+        manufacturer: 'ComfortSeater Ltd.',
+        status: 'Available'
       },
       {
         name: 'USB Hub',
@@ -83,6 +128,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 60,
         thumbnail: 'usb_hub.jpg',
         brand: 'HubLink',
+        sold_quantity: 180,
+        category: 'Accessories',
+        specifications: '4 USB ports, Compact design',
+        manufacturer: 'HubLink Electronics',
+        status: 'Available'
       },
       {
         name: 'Portable Speaker',
@@ -91,6 +141,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 55,
         thumbnail: 'portable_speaker.jpg',
         brand: 'SoundBlast',
+        sold_quantity: 140,
+        category: 'Audio',
+        specifications: 'Bluetooth 4.2, 10 hours battery life, Waterproof',
+        manufacturer: 'SoundBlast Audio',
+        status: 'Available'
       },
       {
         name: 'Webcam HD',
@@ -99,6 +154,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 70,
         thumbnail: 'webcam_hd.jpg',
         brand: 'ClearView',
+        sold_quantity: 220,
+        category: 'Accessories',
+        specifications: '1080p HD resolution, Built-in microphone',
+        manufacturer: 'ClearView Tech',
+        status: 'Available'
       },
       {
         name: 'Laptop Stand',
@@ -107,6 +167,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 65,
         thumbnail: 'laptop_stand.jpg',
         brand: 'ElevateTech',
+        sold_quantity: 130,
+        category: 'Accessories',
+        specifications: 'Adjustable height, Ergonomic design',
+        manufacturer: 'ElevateTech Solutions',
+        status: 'Available'
       },
       {
         name: 'Keyboard Cover',
@@ -115,6 +180,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 80,
         thumbnail: 'keyboard_cover.jpg',
         brand: 'ShieldGuard',
+        sold_quantity: 250,
+        category: 'Accessories',
+        specifications: 'Silicone material, Easy to clean',
+        manufacturer: 'ShieldGuard Inc.',
+        status: 'Available'
       },
       {
         name: 'Gaming Chair',
@@ -123,6 +193,11 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 5,
         thumbnail: 'gaming_chair.jpg',
         brand: 'GameKing',
+        sold_quantity: 15,
+        category: 'Furniture',
+        specifications: 'Reclining feature, Adjustable armrests, High-back design',
+        manufacturer: 'GameKing Chairs',
+        status: 'Available'
       },
       {
         name: 'Wireless Charger',
@@ -131,7 +206,12 @@ export default class ProductSeeder extends BaseSeeder {
         stock: 75,
         thumbnail: 'wireless_charger.jpg',
         brand: 'ChargePro',
-        is_deleted: true,
+        sold_quantity: 200,
+        category: 'Accessories',
+        specifications: 'Fast charging, Compatible with Qi-enabled devices',
+        manufacturer: 'ChargePro Tech',
+        status: 'Discontinued', // Adicionado status como descontinuado
+        is_deleted: true // Marcado como excluído
       }
     ])
   }

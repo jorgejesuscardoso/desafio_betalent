@@ -9,7 +9,7 @@ export default class Address extends BaseSchema {
       table.string('street').notNullable()
       table.string('zip_code', 9).notNullable() // Considerando o CEP com hífen
       table.string('number').notNullable()
-      table.string('neighborhood').notNullable()
+      table.string('neighborhoods').notNullable()
       table.string('city').notNullable()
       table.string('state', 2).notNullable()
       table.integer('client_id').unsigned().references('id').inTable('clients').onDelete('CASCADE')

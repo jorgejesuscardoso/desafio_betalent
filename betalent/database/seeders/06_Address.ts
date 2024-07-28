@@ -5,94 +5,94 @@ export default class AddressSeeder extends BaseSeeder {
   public async run () {
     await Address.createMany([
       {
-        zip_code: '12345-678',
+        zipCode: '12345-678',
         street: 'Rua 1',
         number: '123',        
-        neighborhood: 'Centro',
+        neighborhoods: 'Centro',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 1
+        clientId: 1
       },
       {
-        zip_code: '54321-876',
+        zipCode: '54321-876',
         street: 'Rua 1',
         number: '456',        
-        neighborhood: 'Jardim',
+        neighborhoods: 'Jardim',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 2
+        clientId: 2
       },
       {
-        zip_code: '98765-432',
+        zipCode: '98765-432',
         street: 'Rua 1',
         number: '789',        
-        neighborhood: 'Centro',
+        neighborhoods: 'Centro',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 3
+        clientId: 3
       },
       {
-        zip_code: '56789-012',
+        zipCode: '56789-012',
         street: 'Rua 1',
         number: '101',        
-        neighborhood: 'Jardim',
+        neighborhoods: 'Jardim',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 4
+        clientId: 4
       },
       {
-        zip_code: '21098-765',
+        zipCode: '21098-765',
         street: 'Rua 1',
         number: '210',        
-        neighborhood: 'Centro',
+        neighborhoods: 'Centro',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 5
+        clientId: 5
       },
       {
-        zip_code: '65432-109',
+        zipCode: '65432-109',
         street: 'Rua 1',
         number: '321',        
-        neighborhood: 'Jardim',
+        neighborhoods: 'Jardim',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 6
+        clientId: 6
       },
       {
-        zip_code: '87654-321',
+        zipCode: '87654-321',
         street: 'Rua 1',
         number: '432',        
-        neighborhood: 'Centro',
+        neighborhoods: 'Centro',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 7
+        clientId: 7
       },
       {
-        zip_code: '10987-654',
+        zipCode: '10987-654',
         street: 'Rua 1',
         number: '543',        
-        neighborhood: 'Jardim',
+        neighborhoods: 'Jardim',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 8
+        clientId: 8
       },
       {
-        zip_code: '43210-987',
+        zipCode: '43210-987',
         street: 'Rua 1',
         number: '654',        
-        neighborhood: 'Centro',
+        neighborhoods: 'Centro',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 9
+        clientId: 9
       },
       {
-        zip_code: '76543-210',
+        zipCode: '76543-210',
         street: 'Rua 1',
         number: '765',        
-        neighborhood: 'Jardim',
+        neighborhoods: 'Jardim',
         city: 'São Paulo',
         state: 'SP',
-        client_id: 10
+        clientId: 10
       }
     ])
   }

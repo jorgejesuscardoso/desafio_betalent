@@ -25,6 +25,17 @@ export const FormatDataUser = (user: User): UserDTO => {
       name: user.name,
       email: user.email,
       role: user.role,
+    }
+  };
+};
+
+export const FormatDataUserShow = (user: User): UserDTO => {
+  return {
+    data:{
+      id: user.id,
+      name: user.name,
+      email: user.email,
+      role: user.role,
       created_at: FormatDate(user.created_at),
       updated_at: FormatDate(user.updated_at),
     }
@@ -45,9 +56,9 @@ export const FormatDataClientStore = (client , data: ResponseCreateClientDTO): C
       address: {
         id: data.address.id,
         street: data.address.street,
-        number: data.address.number,
+        number: (data.address.number).toString(),
         zipCode: data.address.zip_code,
-        neighborhood: data.address.neighborhood,
+        neighborhoods: data.address.neighborhoods,
         city: data.address.city,
         state: data.address.state,
 
@@ -69,21 +80,23 @@ export const FormatDataClientIndex = (data: ClientToIndex[] ): IClientDTO[] => {
   return response;
 }
 
-export const FormatDataClientUpdate = ({ client, phone, address }): IClientDTO => {
+export const FormatDataClientUpdate = (dataClient, dataResquest): IClientDTO => {
   return {
-    id: client.id,
-    name: client.name,
-    email: client.email,
-    phone: phone.number,
-    cpf: client.cpf,
+    id: dataClient.id,
+    name: dataResquest.name ?? dataClient.name,
+    email: dataResquest.email ?? dataClient.email,
+    phone: dataResquest.phone ?? dataClient.phones.number,
+    cpf: dataResquest.cpf ?? dataClient.cpf,
+    created_at: FormatDate(dataClient.created_at),
+    updated_at: FormatDate(dataClient.updated_at),
     address: {
-      id: address.id,
-      street: address.street,
-      number: address.number,
-      zipCode: address.zip_code,
-      neighborhood: address.neighborhood,
-      city: address.city,
-      state: address.state,      
+      id: dataClient.addresses.id,
+      street: dataResquest.address.street ?? dataClient.addresses.street,
+      number: dataResquest.address.number ?? dataClient.addresses.number,
+      zipCode: dataResquest.address.zip_code ?? dataClient.addresses.zip_code,
+      neighborhoods: dataResquest.address.neighborhoods ?? dataClient.addresses.neighborhoods,
+      city: dataResquest.address.city ?? dataClient.addresses.city,
+      state: dataResquest.address.state ?? dataClient.addresses.state,
     }
   }
 }
@@ -109,7 +122,7 @@ export const FormatDataClientShow = (getClient): ClientDTO => {
       street: getClient.addresses.street,
       number: getClient.addresses.number,
       zipCode: getClient.addresses.zip_code,
-      neighborhood: getClient.addresses.neighborhood,
+      neighborhoods: getClient.addresses.neighborhoods,
       city: getClient.addresses.city,
       state: getClient.addresses.state,
     }
@@ -128,7 +141,7 @@ export const FormatDataClientShow = (getClient): ClientDTO => {
   
   return { data };
 }
-
+ 
 // PRODUTOS
 export const FormatDataProduct = ( product: Product): ProductDTO => {
   return {
@@ -138,8 +151,13 @@ export const FormatDataProduct = ( product: Product): ProductDTO => {
       description: product.description,
       price: product.price,
       stock: product.stock,
+      sold_quantity: product.sold_quantity,
       thumbnail: product.thumbnail,
+      manufacturer: product.manufacturer,
       brand: product.brand,
+      category: product.category,
+      specifications: product.specifications,
+      status: product.status,
       created_at: FormatDate(product.created_at),
       updated_at: FormatDate(product.updated_at),
     }
@@ -158,15 +176,15 @@ export const FormatDataProductIndex = (data: Product) => {
 }
 
 // VENDAS
-export const FormatDataSale = (data: MergeSaleDTO): MergeSaleDTO => {
+export const FormatDataSale = ({ sale, client, product }): MergeSaleDTO => {
   return {
-    id: data.id,
-    client_name: data.client_name,
-    product_name: data.product_name,
-    quantity: data.quantity,
-    unity_price: data.unity_price,
-    total_price: data.total_price,
-    sale_date: data.sale_date,
+    id: sale.id,
+    client_name: client.name,
+    product_name: product.name,
+    quantity: sale.quantity,
+    unity_price: sale.unity_price,
+    total_price: sale.total_price,
+    sale_date: sale.sale_date,
   }
 }
 

@@ -7,11 +7,9 @@ import Sale from 'App/Models/Sale';
 import {
   FormatDataSaleShow,
   FormatDataSale,
-  FormatDate,
   FormatDataSaleIndex,
 } from 'App/Utils/formatData';
 import { DefaultMsg } from 'App/Utils/defaultMsg';
-import { DateTime } from 'luxon';
 
 export default class SaleController {
   constructor(
@@ -39,7 +37,7 @@ export default class SaleController {
       product.useTransaction(trx);
 
       // Verificar se o cliente existe
-      const client = await this.clientModel.findOrFail(client_id);
+      const client = await this.clientModel.findOrFail(client_id); // Sem transação, pois é apenas uma consulta
 
       // Calcular o preço total
       const total_price = quantity * product.price;
@@ -55,20 +53,12 @@ export default class SaleController {
         quantity,
         unity_price: product.price,
         total_price,
-        created_at: DateTime.now(),
       }
 
-      const sale = await this.saleModel.create(saleData, { client: trx });
-      
-      const FormatSaleData = {
-        ...saleData,
-        client_name: client.name,
-        product_name: product.name,
-        sale_date: FormatDate(sale.created_at),
-      };
-      
+      const sale = await this.saleModel.create(saleData, { client: trx });      
+       
       // Retornar a venda criada com os dados formatados
-      const data = this.formatDataSaleStore(FormatSaleData);
+      const data = this.formatDataSaleStore({ sale, client, product });
 
 
       await trx.commit();
@@ -90,22 +80,24 @@ export default class SaleController {
   public async index({ response }: HttpContextContract): Promise<void | SaleIndexDTO> {
     try {
       const sales = await this.saleModel
-      .query()
-      .orderBy('id', 'desc')
-      .where('is_deleted', false);
+        .query()
+        .preload('client')
+        .preload('product')
+        .orderBy('id', 'desc');
 
-      const data = await Promise.all(sales.map(async (sale) => {
-        const product = await this.productModel.findOrFail(sale.productId);
-        const client = await this.clientModel.findOrFail(sale.clientId);
 
-        const saleData = this.formatDataSaleIndex({
+      const data = sales.map((sale) => {
+        const product = sale.product;
+        const client = sale.client;
+
+        const dataSales = this.formatDataSaleIndex({
           sale,
           client,
           product
         });
 
-        return saleData;
-      }));      
+        return dataSales;
+      });      
 
       response.status(200);
 
@@ -129,15 +121,16 @@ export default class SaleController {
       const sale = await this.saleModel
       .query()
       .where('id', params.id)
-      .andWhere('is_deleted', false)
+      .preload('client')
+      .preload('product')
       .first();
 
       if (!sale) return response.status(404).json(this.defaultResponse.saleNotFound);
 
-      const client = await this.clientModel.findOrFail(sale.clientId);
-      const product = await this.productModel.findOrFail(sale.productId);
-
-      const data = this.formatDataSaleShow({ sale, client, product });
+      const data = this.formatDataSaleShow({
+        sale, client: sale.client,
+        product: sale.product,
+      });
       response.status(200);
 
       return {
@@ -151,7 +144,18 @@ export default class SaleController {
     }
   }
 
-  public async destroy ({
+  // A rota de update não é necessária, pois não faz sentido atualizar uma venda
+  public async update({ response }: HttpContextContract): Promise<void> {
+    return response.status(405).json(this.defaultResponse.methodNotAllowed);
+  }
+
+  // Para deletar uma venda, a melhor opção seria criar um campo is_deleted e setar como true.
+  public async destroy({ response }: HttpContextContract): Promise<void> {
+    return response.status(405).json(this.defaultResponse.methodNotAllowed);
+  }
+
+  // Exemplo de como seria a função destroy, caso fosse necessário deletar uma venda
+  /* public async destroy ({
     response,
     params,
   }: HttpContextContract): Promise<void> {
@@ -160,39 +164,34 @@ export default class SaleController {
 
     try {
       // Busca a venda pelo id
-      const getSales = await this.saleModel
-      .query()
-      .where('id', +params.id)
-      .andWhere('is_deleted', false)
-      .first();
-
-      if (!getSales) {
+      const sale = await this.saleModel
+        .query()
+        .where('id', params.id)
+        .andWhere('is_deleted', false)
+        .preload('product')
+        .first();
+      
+        
+      if (!sale) {
         await trx.rollback();
         return response.status(404).json(this.defaultResponse.saleNotFound);
       }
+      sale.useTransaction(trx);
 
-      getSales.useTransaction(trx);
+      // Busca o produto pelo id
+      const product = await sale.product;
+      product.useTransaction(trx);
 
-      const getProduct = await this.productModel.findBy('id', getSales.productId);
-      getProduct?.useTransaction(trx);
-
-      // Verifica se a venda e o produto existe
-      if (!getSales || !getProduct) {
-        await trx.rollback();
-        return response.status(404).json(this.defaultResponse.saleNotFound);
-      };      
-
-      // Atualiza a venda para deletada
-      getSales.is_deleted = true;
-      await getSales.save();
-
+      const updatedStock = product.stock + sale.quantity;
+      
       // Atualiza o estoque do produto
-      getProduct.stock += getSales?.quantity;
-      await getProduct.save();
+      await product.merge({ stock: updatedStock }).save();
+
+      // Deleta a venda
+      //await sale.delete(); // Essa opção deleta a venda do banco de dados, não é recomendado
+      await sale.merge({ is_deleted: true }).save(); // Essa opção seta o campo is_deleted como true. Soft delete
 
       await trx.commit();
-
-      response.status(204);
 
       return;
     } catch (error) {
@@ -202,5 +201,6 @@ export default class SaleController {
         error: error.message,
       });
     }
-  } 
-}
+  } */
+} 
+

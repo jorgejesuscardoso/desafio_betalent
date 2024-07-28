@@ -7,7 +7,7 @@ export default class Address extends BaseModel {
   public id: number;
 
   @column()
-  public zip_code: string;
+  public zipCode: string;
 
   @column()
   public street: string;
@@ -16,7 +16,7 @@ export default class Address extends BaseModel {
   public number: string;
 
   @column()
-  public neighborhood: string;
+  public neighborhoods: string;
 
   @column()
   public city: string;

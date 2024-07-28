@@ -6,6 +6,11 @@ export interface IProductDTO {
   stock: number;
   thumbnail?: string;
   brand?: string;
+  sold_quantity?: number;
+  category?: string;
+  specifications?: string;
+  manufacturer?: string;
+  status?: string;
   created_at?: string;
   updated_at?: string;
 }

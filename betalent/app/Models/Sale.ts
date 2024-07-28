@@ -22,8 +22,7 @@ export default class Sale extends BaseModel {
   @column()
   public total_price: number
 
-  @column()
-  public is_deleted: boolean
+  
 
   @column.dateTime({ autoCreate: true })
   public created_at: DateTime
@@ -31,6 +30,8 @@ export default class Sale extends BaseModel {
   @column.dateTime({ autoCreate: true, autoUpdate: true })
   public updated_at: DateTime
 
+
+  // Relacionamento com a tabela de clientes e produtos
   @belongsTo(() => Client)
   public client: BelongsTo<typeof Client>
 

@@ -7,9 +7,9 @@ export interface IClientDTO {
   address?: {
     id?: number;
     street: string;
-    number: number;
+    number: string;
     zipCode: string;
-    neighborhood: string;
+    neighborhoods: string;
     city: string;
     state: string;
   }
@@ -27,7 +27,7 @@ export interface ResponseCreateClientDTO {
     street: string;
     number: number;
     zip_code: string;
-    neighborhood: string;
+    neighborhoods: string;
     city: string;
     state: string;
   }

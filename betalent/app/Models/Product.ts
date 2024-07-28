@@ -28,7 +28,22 @@ export default class Product extends BaseModel {
   public thumbnail: string 
 
   @column()
+  public sold_quantity: number; // Quantidade vendida
+
+  @column()
   public brand: string
+  
+  @column()
+  public category: string;
+
+  @column()
+  public specifications: string;
+
+  @column()
+  public manufacturer: string; // Fabricante
+
+  @column()
+  public status: string; // Disponível, indisponível, em promoção
 
   @column()
   public is_deleted: boolean

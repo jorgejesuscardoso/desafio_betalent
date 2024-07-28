@@ -23,18 +23,18 @@ Route.group(() => {
   Route.post('/users', 'User.Controller.store')
   .middleware('userMiddleware')
 
-  Route.get('/users', 'User.Controller.index')
+  Route.get('/users', 'User.Controller.index').middleware('authMiddleware')
 
   Route.get('/users/:id', 'User.Controller.show')
-
+  .middleware('authMiddleware')
   Route.put('/users/:id', 'User.Controller.update')
-  .middleware('userUpdateMiddleware')
+  .middleware('userUpdateMiddleware').middleware('authMiddleware')
 
   Route.patch('/users/:id', 'User.Controller.update')
-  .middleware('userUpdateMiddleware')
+  .middleware('userUpdateMiddleware').middleware('authMiddleware')
 
-  Route.delete('users/:id', 'User.Controller.destroy')
-}).prefix('api').middleware('authMiddleware')
+  Route.delete('users/:id', 'User.Controller.destroy').middleware('authMiddleware')
+}).prefix('api')
 
 // Rotas de clientes
 Route.group(() => {

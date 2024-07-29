@@ -2123,10 +2123,12 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
   <br>
 
 ### 📋 Cadastrar `METHOD:POST`:
+
+  [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
   
   `Authorization: Bearer <token>`
 
-  `URL: http://example.com/api/sales`
+  `URL: http://localhost:3333/api/sales`
 
   - **client_id**: ID do cliente (number, obrigatório). ID do cliente que realizou a compra.
   - **product_id**: ID do produto (number, obrigatório). ID do produto vendido.
@@ -2239,7 +2241,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   `Authorization: Bearer <token>`
 
-  `URL: http://example.com/api/sales/:id`
+  `URL: http://localhost:3333/api/sales/:id`
 
   - **id**: ID da venda (number, obrigatório). ID da venda a ser consultada.
 
@@ -2298,7 +2300,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example.com/api/sales`
+  `URL: http://localhost:3333/api/sales`
 
   <br>
 

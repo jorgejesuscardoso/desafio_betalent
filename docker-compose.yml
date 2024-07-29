@@ -17,8 +17,9 @@ services:
       - betalent_network
 
       
+# Se for rodar o servidor do Adonis localmente, comente:
 
-  adonis:    
+  adonis:    # <<<<<<<<<< Daqui
     container_name: adonis_container
     build:
       context: ./betalent
@@ -34,7 +35,7 @@ services:
     depends_on:
       - mysql
     networks:
-      - betalent_network
+      - betalent_network # <<<<<<<<<< Até aqui
 
 volumes:
   mysql_data:

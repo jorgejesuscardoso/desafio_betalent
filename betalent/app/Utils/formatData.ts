@@ -113,6 +113,7 @@ export const FormatDataClientShow = (getClient): ClientDTO => {
       unityPrice: sale.unity_price,
       totaLPrice: sale.total_price,
       saleDate: FormatDate(sale.created_at),
+      thumbnail: sale.product.thumbnail,
     }
   });
 

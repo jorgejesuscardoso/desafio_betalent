@@ -21,7 +21,7 @@ export default class UserMiddleware {
       if(!role || !email || !password || !name) return response.badRequest(this.defaultMsg.invalidData)
 
       // Verifica se o email já está cadastrado
-      if(await this.userModel.findBy('email', email)) return response.badRequest(this.defaultMsg.emailAlreadyExist)
+      if(await this.userModel.findBy('email', email)) return response.conflict(this.defaultMsg.emailAlreadyExist)
 
       // Valida o tamanho da senha e telefone
       if(password.length < 6) return response.badRequest(this.defaultMsg.invalidPasswordLength)

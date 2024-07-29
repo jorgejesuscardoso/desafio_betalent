@@ -622,7 +622,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Não requerido.`
 
-  `URL: http://example/api/users`
+  `URL: http://localhost:3333/api/users`
 
   - **email**: E-mail do usuário (string, obrigatório, único).
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
@@ -733,7 +733,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Não requerido.`
 
-  `URL: http://example/api/login`
+  `URL: http://localhost:3333/api/login`
 
   - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
@@ -785,7 +785,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example/api/users/:id`
+  `URL: http://localhost:3333/api/users/:id`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
 
@@ -793,7 +793,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 **✅ Caso de sucesso:**
  
-  Requisição no endpoint: ***<i>http://www.example.com/api/users/1</i>***
+  Requisição no endpoint: <i>http://localhost:3333/api/users/1</i>
    
   Resposta:
 
@@ -817,7 +817,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
     Exemplo de entrada: `GET /api/users/:id`
   
-    Requisição: ***<i>http://www.example.com/api/users/999</i>***
+    Requisição: <i>http://localhost:3333/api/users/999</i>
     
     Resposta:
 
@@ -838,7 +838,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example/api/users`
+  `URL: http://localhost:3333/api/users`
 
   Nenhum parâmetro é necessário para esta rota.
 
@@ -898,7 +898,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   - **Error interno do servidor:**
 
-    Requisição: ***<i>http://www.example.com/api/users</i>***    
+    Requisição: <i>http://localhost:3333/api/users</i>*** 
 
     Resposta:
 
@@ -916,7 +916,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example/api/users/:id`
+  `URL: http://localhost:3333/api/users/:id`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser atualizado.
   - **email**: E-mail do usuário (string, opcional). Formato de e-mail válido.
@@ -982,7 +982,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   Exemplo de entrada: `PUT/PATCH /api/users/:id`
 
-  Requisição: ***<i>http://www.example.com/api/users/999</i>***
+  Requisição: <i>http://localhost:3333/api/users/999</i>
   
   Resposta:
 
@@ -1000,7 +1000,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example/api/users/:id`
+  `URL: http://localhost:3333/api/users/:id`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
 
@@ -1010,7 +1010,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   **✅ Caso de sucesso:**
  
-  Requisição no endpoint: ***<i>http://www.example.com/api/users/1</i>***
+  Requisição no endpoint: <i>http://localhost:3333/api/users/1</i>
    
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -1029,7 +1029,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
     Exemplo de entrada: `DELETE /api/users/:id`
   
-    Requisição: ***<i>http://www.example.com/api/users/999</i>***
+    Requisição: <i>http://localhost:3333/api/users/999</i>
     
     Resposta:
 
@@ -1057,7 +1057,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/clients`
+  `URL: http://localhost:3333/api/clients`
 
   Dados para tabela de clientes:
   - **name**: Nome do cliente (string, obrigatório).
@@ -1233,9 +1233,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/clients/:id` Consulta padrão.
+  `URL: http://localhost:3333/api/clients/:id` Consulta padrão.
 
-  `URL: http://example/api/clients/:id?month=MM&year=YYYY` Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados. A ordem de inserção das datas não importa: `month=MM&year=YYYY` ou `year=YYYY&month=MM`. Também é possível filtrar apenas por mês ou apenas por ano.
+  `URL: http://localhost:3333/api/clients/:id?month=MM&year=YYYY` Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados. A ordem de inserção das datas não importa: `month=MM&year=YYYY` ou `year=YYYY&month=MM`. Também é possível filtrar apenas por mês ou apenas por ano.
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser consultado.
 
@@ -1373,7 +1373,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/clients`
+  `URL: http://localhost:3333/api/clients`
 
   <br>
 
@@ -1448,7 +1448,7 @@ Filtrando as vendas por mês 5 e ano 2020
   
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/clients/:id`
+  `URL: http://localhost:3333/api/clients/:id`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser atualizado.
   - **name**: Nome do cliente (string, opcional).
@@ -1571,7 +1571,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example/api/clients/:id`
+  `URL: http://localhost:3333/api/clients/:id`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser deletado.
 
@@ -1670,7 +1670,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   `Authorization: Bearer <token>`
    
-  `URL: http://example/api/products` 
+  `URL: http://localhost:3333/api/products` 
 
   - **name**: Nome do produto (string, obrigatório).
   - **description**: Descrição do produto (string, opcional).
@@ -1794,7 +1794,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/products/:id`
+  `URL: http://localhost:3333/api/products/:id`
 
   - **id**: ID do produto (number, obrigatório). ID do produto a ser consultado.
 
@@ -1859,7 +1859,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   `Authorization: Bearer <token>`
   
-  `URL: http://example/api/products`
+  `URL: http://localhost:3333/api/products`
 
   <br>
 
@@ -1943,7 +1943,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/products/:id`
+  `URL: http://localhost:3333/api/products/:id`
 
   - **id**: ID do produto (number, obrigatório). ID do produto a ser atualizado.
   - **name**: Nome do produto (string, opcional).
@@ -2067,7 +2067,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   `Authorization: Bearer <token>`
 
-  `URL: http://example/api/products/1`
+  `URL: http://localhost:3333/api/products/1`
 
   - **id**: ID do produto (number, obrigatório). ID do produto a ser deletado.
 

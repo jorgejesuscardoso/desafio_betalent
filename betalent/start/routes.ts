@@ -80,6 +80,5 @@ Route.group(() => {
   Route.get('/sales', 'Sale.Controller.index')
 
   Route.get('/sales/:id', 'Sale.Controller.show')
-
-  Route.delete('/sales/:id', 'Sale.Controller.destroy')
+  
 }).prefix('api').middleware('authMiddleware')

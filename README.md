@@ -16,11 +16,10 @@ Este repositório contém a solução para o teste técnico de Back-end da BeTal
   - [📋 Estrutura do Projeto](#-estrutura-do-projeto)
   - [📦 Instalação e Execução](#-instalação-e-execução)
   - [🌐 API e Exemplos de Uso](#-api-e-exemplos-de-uso)
-    - [📚 Rotas](#-rotas)
-      - [👥 Usuários](#-usuários)
-      - [🧑‍💼 Clientes](#-clientes)
-      - [📦 Produtos](#-produtos)
-      - [📦 Vendas](#-vendas)
+    - [👥 Usuários](#-usuários)
+    - [🧑‍💼 Clientes](#-clientes)
+    - [📦 Produtos](#-produtos)
+    - [📦 Vendas](#-vendas)
 
   - [📚 Links uteis e referência](#-links-uteis-e-referências)
 

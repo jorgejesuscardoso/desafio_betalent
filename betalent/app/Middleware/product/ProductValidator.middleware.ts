@@ -14,14 +14,14 @@ export default class ValidatorDataCreateProduct {
 
       const { name, description, price, stock, brand } = request.body()
 
-      if(!name || !description || price < 0 || stock < 0 || !brand) return response.badRequest(this.defaultMsg.invalidData)
+      if(!name || !description || !price || !stock || !brand) return response.badRequest(this.defaultMsg.invalidData)
 
       const validator =
       name.length < 3 ? this.defaultMsg.invalidProductName
       : description.length < 10 ? this.defaultMsg.invalidProductDescription
       : brand.length < 3 ? this.defaultMsg.invalidBrand
-      : stock < 1 ? this.defaultMsg.invalidStock
-      : price < 1 ? this.defaultMsg.invalidPrice
+      : +stock < 1 ? this.defaultMsg.invalidStock
+      : +price < 1 ? this.defaultMsg.invalidPrice
       : null
       
       if(validator) return response.badRequest(validator)

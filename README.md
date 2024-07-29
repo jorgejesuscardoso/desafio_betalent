@@ -624,7 +624,8 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  ***`URL: http://example/api/users`***
+  `URL: http://example/api/users`
+  `Authorization: Não requerido.`
 
   - **email**: E-mail do usuário (string, obrigatório, único).
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
@@ -733,7 +734,8 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 <br>
 
-  **`URL: http://example/api/login`**
+  `URL: http://example/api/login`
+  `Authorization: Não requerido.`
 
   - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
@@ -781,9 +783,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
    
    <br>
 
-  **`BODY: { }`**
-
-  **`URL: http://example/api/users/:id`**
+  `BODY: { }`
+  `URL: http://example/api/users/:id`
+  `Authorization: Bearer <token>`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
 
@@ -832,9 +834,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   <br>
 
-  **`BODY: { }`**
-
-  ***`URL: http://example/api/users`***
+  `BODY: { }`
+  `URL: http://example/api/users`
+  `Authorization: Bearer <token>`
 
   Nenhum parâmetro é necessário para esta rota.
 
@@ -908,9 +910,11 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 ### 📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:
   
-  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+  > 👀 ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
 
-  ***`URL: http://example/api/users/:id`***
+  `BODY: { }`
+  `URL: http://example/api/users/:id`
+  `Authorization: Bearer <token>`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser atualizado.
   - **email**: E-mail do usuário (string, opcional). Formato de e-mail válido.
@@ -988,9 +992,11 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   ```
   <br>
 
-### 🗑️ Deletar um usuário `METHOD:DELETE`:**
+### 🗑️ Deletar um usuário `METHOD:DELETE`:
 
-  ***`URL: http://example/api/users/:id`***
+  `BODY: { }`
+  `URL: http://example/api/users/:id`
+  `Authorization: Bearer <token>`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
 
@@ -1045,17 +1051,17 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  **`URL: http://example/api/clients`**
-
-  **`HEADER: Authorization / Bearer <token>`**
+  `BODY: { }`
+  `URL: http://example/api/clients`
+  `Authorization: Bearer <token>`
 
   Dados para tabela de clientes:
   - **name**: Nome do cliente (string, obrigatório).
   - **email**: E-mail do cliente (string, obrigatório, único). Formato de e-mail válido.
-  - **cpf**: CPF do cliente (string, obrigatório, único). Formato de CPF válido.
+  - **cpf**: CPF do cliente (string, obrigatório, único). Deve ter 11 dígitos e ser válido conforme as regras matemáticas. Permitido apenas ponto( . ) e traço( - ) como separadores.
 
   Para a tabela de telefones:
-  - **phone**: Telefone do cliente (string, obrigatório, unico). Formato de telefone brasileiro válido.
+  - **phone**: Telefone do cliente (string, obrigatório, unico). Formato de telefone brasileiro válido. Ex: (99) 9 9999-9999.
   - **client_id**: ID do cliente (number, obrigatório). ID do cliente a ser associado ao telefone.
 
   Para a tabela de endereços:
@@ -1067,17 +1073,21 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   - **zip_code**: CEP do endereço (string, obrigatório).
 
   <br>
+  Exemplo:
+
+  <br>
 
   **✅ Caso de sucesso:**
 
   Requisição:
+
 
   ```json  
   {
     "name": "Zequinha da Silva",
     "email": "zack.silvla@2mwadil.com",
     "phone": "11 9 9999-9812",
-    "cpf": "807.909.730-57", // Gerado aleatoriamente
+    "cpf": "807.909.730-57", // Gerado aleatoriamente no 4devs.com.br
     "address": {
         "street": "Das Oliveiras",
         "number": "12",
@@ -1206,25 +1216,22 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   É possível filtrar as vendas por data inserindo mês e ano na URL. O sistema retorna as vendas realizadas para o cliente no mês e ano especificados.
    
-  **`BODY: {  }`**
-  
-  **`URL: http://example/api/clients/:id`** Consulta padrão. Retorna os dados do cliente correspondente ao ID fornecido incluindo todas as vendas realizadas para esse cliente.
-
-  **`URL: http://example/api/clients/:id?month=MM&year=YYYY`** Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados. A ordem de inserção das datas não importa: `month=MM&year=YYYY` ou `year=YYYY&month=MM`. Também é possível filtrar apenas por mês ou apenas por ano.
-
-  **`HEADER: Authorization / Bearer <token>`**
+  `BODY: {  }`  
+  `URL: http://example/api/clients/:id` Consulta padrão.
+  `URL: http://example/api/clients/:id?month=MM&year=YYYY` Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados. A ordem de inserção das datas não importa: `month=MM&year=YYYY` ou `year=YYYY&month=MM`. Também é possível filtrar apenas por mês ou apenas por ano.
+  `Authorization: Bearer <token>`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser consultado.
 
   <br>
 
+  Exemplo:
+
+  <br>
+
   **✅ Caso de sucesso:**
 
-Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1</i>***
-
-**`HEADER: Authorization / Bearer <token>`**
-
-**`BODY: { }`**
+Requisição no endpoint: `/api/clients/1`
 
   <br>
   
@@ -1286,11 +1293,9 @@ Resposta:
 
   <br>
 
-Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&year=2020</i>*** <i>Filtrando as vendas por mês 5 e ano 2020</i>
+Requisição no endpoint: `/api/clients/1?month=05&year=2020`
 
-**`HEADER: Authorization / Bearer <token>`**
-
-**`BODY: { }`**
+Filtrando as vendas por mês 5 e ano 2020
 
 ```json  
 {
@@ -1334,7 +1339,7 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
 
     Exemplo de entrada: `GET /api/clients/:id`
   
-    Requisição: ***<i>htt://www.example.com/api/clients/999</i>***
+    Requisição: `htt://www.example.com/api/clients/999`
     
     Resposta:
 
@@ -1348,21 +1353,16 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
   
 ### 🗄️ Obter os dados de todos os clientes `METHOD:GET`:
 
-  **`BODY: {  }`**
-  
-  **`URL: http://example/api/clients`**
+  `BODY: {  }`  
+  `URL: http://example/api/clients`
+  `Authorization: Bearer <token>`
 
-  **`HEADER: Authorization / Bearer <token>`**
-
-  Essa consulta não precisa de um corpo, apenas o ID do cliente a ser consultado.
-
-  É necessário um token de autenticação no cabeçalho.
 
   <br>
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: ***<i>htt://www.example.com/api/clients</i>***
+  Requisição no endpoint: `htt://www.example.com/api/clients`
 
   Resposta: 
   
@@ -1414,7 +1414,7 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
 
   - **Error interno do servidor:**
 
-    Requisição: ***<i>htt://www.example.com/api/clients</i>***
+    Requisição: `htt://www.example.com/api/clients`
 
     Resposta:
 
@@ -1427,11 +1427,11 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
   
 ### 📋 Atualizar os dados de um cliente `METHOD:PUT/PATCH`:
 
-  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+  > 👀 ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
   
-  **`HEADER: Authorization / Bearer <token>`**
-
-  **`URL: http://example/api/clients/:id`**
+  `BODY: { }`
+  `URL: http://example/api/clients/:id`
+  `Authorization: Bearer <token>`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser atualizado.
   - **name**: Nome do cliente (string, opcional).
@@ -1445,6 +1445,10 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
   - **city**: Cidade do endereço (string, opcional).
   - **state**: Estado do endereço (string, opcional).
   - **zip_code**: CEP do endereço (string, opcional).
+
+  <br>
+
+  Exemplo:
 
   <br>
 
@@ -1529,9 +1533,9 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
 
   - **Cliente não encontrado ou id inválido:**
 
-    Exemplo de entrada: `PUT/PATCH /api/clients/:id`
+    Entrada: `PUT/PATCH /api/clients/:id`
   
-    Requisição: ***<i>htt://www.example.com/api/clients/999</i>***
+    Requisição: `htt://www.example.com/api/clients/999`
     
     Resposta:
 
@@ -1546,17 +1550,21 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
 
 ### 🗑️ Deletar um cliente `METHOD:DELETE`:
 
-  **`HEADER: Authorization / Bearer <token>`**
-
-  **`URL: http://example/api/clients/:id`**
+  `BODY: { }`
+  `URL: http://example/api/clients/:id`
+  `Authorization: Bearer <token>`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser deletado.
+
+  <br>
+
+  Exemplo:
 
   <br>
   
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1</i>***
+  Requisição no endpoint: `htt://www.example.com/api/clients/1`
 
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -1573,7 +1581,7 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
 
   Exemplo de entrada: `DELETE /api/clients/:id`
 
-  Requisição: ***<i>htt://www.example.com/api/clients/999</i>***
+  Requisição: `htt://www.example.com/api/clients/999`
 
   Resposta:
 
@@ -1629,53 +1637,716 @@ Requisição no endpoint: ***<i>htt://www.example.com/api/clients/1?month=05&yea
     ``` 
 <br>
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 ### 📦 Produtos
 
-  A rota de produtos, `/api/products`, permite criar um novo produto no sistema, obter informações sobre o produto, atualizar os dados do produto e deletar produto.
+  A rota de produtos é protegida por autenticação JWT e requer um token válido para acesso. 
 
-  Ao cadastrar um novo produto, os dados do produto são validados e armazenados no banco de dados.
+  O preço do produto é validado por meio de uma função específica que verifica se o preço é um número válido e se é maior que zero.
 
-  A rota de produtos é protegida por autenticação JWT e requer um token válido para acesso. Os tokens JWT são gerados durante o processo de autenticação(login) e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas. Um middleware de autenticação verifica a validade do token e permite o acesso apenas a usuários devidamente autenticados.
+  <br>
 
-  As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
+### 📋 Cadastrar `METHOD:POST`:
 
-  O preço do produto é validado por meio de uma função específica que verifica se o preço é um número válido e se é maior que zero e possue 2 casas decimais. Essa validação assegura que o preço seja um número válido e positivo e que tenha 2 casas decimais para representar centavos.
+ [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+
+  `BODY: { }`
+  `URL: http://example/api/products`  
+  `Authorization: Bearer <token>`
+
+  - **name**: Nome do produto (string, obrigatório).
+  - **description**: Descrição do produto (string, opcional).
+  - **price**: Preço do produto (number, obrigatório). Deve ser um número válido e maior que zero.
+  - **thumbnail**: Imagem do produto (string, opcional).
+  - **stock**: Estoque do produto (number, obrigatório). Quantidade disponível do produto.
+  - **sold_quantity**: Quantidade do produto (number, opcional). Quantidade vendido do produto. Padrão é 0.
+  - **brand**: Marca do produto (string, opcional).
+  - **category**: Categoria do produto (string, opcional).
+  - **specifications**: Especificações do produto (object, opcional). Dados adicionais sobre o produto.
+  - **manufacturer**: Fabricante do produto (string, opcional).
+  - **status**: Status do produto (string, opcional). Padrão é "active".
+
+  <br>
+
+  Exemplo:
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição:
+
+  ```json
+  {
+    "name": "Gaming Laptop",
+    "description": "Powerful gaming laptop with high performance.",
+    "price": 100,
+    "thumbnail": "gaming_laptop.jpg",
+    "stock": 10,
+    "brand": "Dell",
+    "category": "Laptops",
+    "specifications": "Fast charging, Compatible with Qi-enabled devices",
+    "manufacturer": "Dell Inc."
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "data": {
+      "id": 1,
+      "name": "Gaming Laptop",
+      "description": "Powerful gaming laptop with high performance.",
+      "price": 100,
+      "thumbnail": "gaming_laptop.jpg",
+      "stock": 10,
+      "sold_quantity": 0,
+      "brand": "Dell",
+      "category": "Laptops",
+      "specifications": "Fast charging, Compatible with Qi-enabled devices",
+      "manufacturer": "Dell Inc.",
+      "status": "active",
+      "created_at": "29/07/2024 11:07:16",
+      "updated_at": "29/07/2024 11:07:16"
+    }
+  }
+  ```
+
+  <br>
+
+  **❌ Casos de erro:**
+
+  <br>
+
+  - **Sem token ou token inválido:**
+
+    Exemplo de entrada: `POST /api/products`
+  
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor.",
+      "error": {
+          "name": "JsonWebTokenError",
+          "message": "jwt malformed"
+      }
+    }
+    ```
+
+  - **Token expirado:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor.",
+      "error": {
+          "name": "TokenExpiredError",
+          "message": "jwt expired"
+      }
+    }
+    ```
+  - **Algum campo obrigatório não preenchido:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Invalid data format."
+    }
+    ```
+  
+  - **Preço inválido:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Invalid price."
+    }
+    ```
+
+  <br>
+
+### 🗄️ Obter os dados de um produto `METHOD:GET`:
+  
+  `BODY: {  }`  
+  `URL: http://example/api/products/:id`
+  `Authorization: Bearer <token>`
+
+  - **id**: ID do produto (number, obrigatório). ID do produto a ser consultado.
+
+
+  <br>
+
+  Exemplo:
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição no endpoint: `htt://www.example.com/api/products/1`
+
+  Resposta:
+
+  ```json
+  {
+    "data": {
+      "id": 1,
+      "name": "Gaming Laptop",
+      "description": "Powerful gaming laptop with high performance.",
+      "price": 100,
+      "thumbnail": "gaming_laptop.jpg",
+      "stock": 10,
+      "sold_quantity": 0,
+      "brand": "Dell",
+      "category": "Laptops",
+      "specifications": "Fast charging, Compatible with Qi-enabled devices",
+      "manufacturer": "Dell Inc.",
+      "status": "active",
+      "created_at": "29/07/2024 11:07:16",
+      "updated_at": "29/07/2024 11:07:16"
+    }
+  }
+  ```
+
+  <br>
+
+  **❌ Caso de erro:**
+
+  - **Produto não encontrado ou id inválido:**
+
+    Exemplo de entrada: `GET /api/products/:id`
+  
+    Requisição: `htt://www.example.com/api/products/999`
+    
+    Resposta:
+
+    ```json
+    {
+      "status": "404",
+      "message": "Product not found."
+    }
+    ```
+
+  <br>
+
+### 🗄️ Obter os dados de todos os produtos `METHOD:GET`:
+
+  `BODY: {  }`  
+  `URL: http://example/api/products`
+  `Authorization: Bearer <token>`
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição no endpoint: `htt://www.example.com/api/products`
+
+  Resposta:
+
+  ```json
+  {
+    "data": [
+      {
+        "id": 1,
+        "name": "Gaming Laptop",
+        "description": "Powerful gaming laptop with high performance.",
+        "price": 100,
+        "thumbnail": "gaming_laptop.jpg",
+        "stock": 10,
+        "sold_quantity": 0,
+        "brand": "Dell",
+        "category": "Laptops",
+        "specifications": "Fast charging, Compatible with Qi-enabled devices",
+        "manufacturer": "Dell Inc.",
+        "status": "active",
+        "created_at": "29/07/2024 11:07:16",
+        "updated_at": "29/07/2024 11:07:16"
+      },
+      {
+        "id": 2,
+        "name": "Wireless Mouse",
+        "description": "Wireless mouse with ergonomic design.",
+        "price": 50,
+        "thumbnail": "wireless_mouse.jpg",
+        "stock": 20,
+        "sold_quantity": 0,
+        "brand": "Logitech",
+        "category": "Peripherals",
+        "specifications": "Ergonomic design, 2.4 GHz wireless connection",
+        "manufacturer": "Logitech Inc.",
+        "status": "active",
+        "created_at": "29/07/2024 11:07:16",
+        "updated_at": "29/07/2024 11:07:16"
+      }
+    ]
+  }
+  ```
+  <br>
+
+  Sucesso sem retorno:
+
+  Resposta:
+
+  ```json
+  {
+    "data": []
+  }
+  ```
+
+  <br>
+
+  **❌ Caso de erro:**
+
+  - **Error interno do servidor:**
+
+    Requisição: `htt://www.example.com/api/products`
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Internal Server Error."
+    }
+    ```
+
+  <br>
+
+### 📋 Atualizar os dados de um produto `METHOD:PUT/PATCH`:
+
+  > 👀 ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um produto. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
+
+  `BODY: { }`
+  `URL: http://example/api/products/:id`
+  `Authorization: Bearer <token>`
+
+  - **id**: ID do produto (number, obrigatório). ID do produto a ser atualizado.
+  - **name**: Nome do produto (string, opcional).
+  - **description**: Descrição do produto (string, opcional).
+  - **price**: Preço do produto (number, opcional). Deve ser um número válido e maior que zero.
+  - **thumbnail**: Imagem do produto (string, opcional).
+  - **stock**: Estoque do produto (number, opcional). Quantidade disponível do produto.
+  - **sold_quantity**: Quantidade do produto (number, opcional). Quantidade vendido do produto.
+  - **brand**: Marca do produto (string, opcional).
+  - **category**: Categoria do produto (string, opcional).
+  - **specifications**: Especificações do produto (object, opcional). Dados adicionais sobre o produto.
+  - **manufacturer**: Fabricante do produto (string, opcional).
+  - **status**: Status do produto (string, opcional). Padrão é "active".
+
+  <br>
+
+  Exemplo:
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição `METHOD:PUT`:
+
+  ```json
+  {
+    "name": "Gaming Laptop",
+    "description": "Powerful gaming laptop with high performance.",
+    "price": 100,
+    "thumbnail": "gaming_laptop.jpg",
+    "stock": 10,
+    "brand": "Dell",
+    "category": "Laptops",
+    "specifications": "Fast charging, Compatible with Qi-enabled devices",
+    "manufacturer": "Dell Inc."
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "data": {
+      "id": 1,
+      "name": "Gaming Laptop",
+      "description": "Powerful gaming laptop with high performance.",
+      "price": 100,
+      "thumbnail": "gaming_laptop.jpg",
+      "stock": 10,
+      "sold_quantity": 0,
+      "brand": "Dell",
+      "category": "Laptops",
+      "specifications": "Fast charging, Compatible with Qi-enabled devices",
+      "manufacturer": "Dell Inc.",
+      "status": "active",
+      "created_at": "29/07/2024 11:07:16",
+      "updated_at": "29/07/2024 11:07:16"
+    }
+  }
+  ```
+
+  Requisição `METHOD:PATCH`:
+
+  ```json
+  {
+    "price": 150
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "data": {
+      "id": 1,
+      "name": "Gaming Laptop",
+      "description": "Powerful gaming laptop with high performance.",
+      "price": 150, // Preço atualizado
+      "thumbnail": "gaming_laptop.jpg",
+      "stock": 10,
+      "sold_quantity": 0,
+      "brand": "Dell",
+      "category": "Laptops",
+      "specifications": "Fast charging, Compatible with Qi-enabled devices",
+      "manufacturer": "Dell Inc.",
+      "status": "active",
+      "created_at": "29/07/2024 11:07:16",
+      "updated_at": "29/07/2024 11:07:16"
+    }
+  }
+  ```
+
+  <br>
+
+  **❌ Casos de erro:**
+
+  <br>
+
+  - **Produto não encontrado ou id inválido:**
+
+    Entrada: `PUT/PATCH /api/products/:id`
+  
+    Requisição: `htt://www.example.com/api/products/999`
+    
+    Resposta:
+
+    ```json
+    {
+      "status": "404",
+      "message": "Product not found."
+    }
+    ```
+
+  <br>
+
+### 🗑️ Deletar um produto `METHOD:DELETE`:
+
+Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produto é marcado como deletado, mas não é removido do banco de dados.
+
+  `BODY: { }`
+  `URL: http://example/api/products/1`
+  `Authorization: Bearer <token>`
+
+  - **id**: ID do produto (number, obrigatório). ID do produto a ser deletado.
+
+  <br>
+
+  Exemplo:
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição no endpoint: `htt://www.example.com/api/products/1`
+
+  Resposta: **<i>StatusHTTP: 204 No Content</i>**
+
+  ```json  
+  {
+    
+  }
+  ```
+
+  <br>
+
+  **❌ Caso de erro:**
+
+  **Produto não encontrado ou id inválido:**
+
+  Exemplo de entrada: `DELETE /api/products/:id`
+
+  Requisição: `htt://www.example.com/api/products/999`
+
+  Resposta:
+
+  ```json
+  {
+    "status": "404",
+    "message": "Product not found."
+  }
+  ```
+
+  <br>
+
+### 📦 Vendas
+
+  A rota de vendas é protegida por autenticação JWT e requer um token válido para acesso. 
+
+  O sistema valida a quantidade de produtos disponíveis no estoque antes de concluir a venda. Se a quantidade de produtos vendidos for maior que a quantidade disponível em estoque, a venda não é concluída e o sistema retorna uma mensagem de erro. Também é validado se o cliente existe no banco de dados antes de concluir a venda.
+
+  Essa rota não permite a venda de produtos deletados e nem possui a funcionalidade de delete, Soft Delete e update. Apenas a criação de novas vendas e a consulta de vendas existentes.
+
+  A venda é registrada com a data e hora da venda, o preço unitário do produto, o preço total da venda e a quantidade vendida. O preço unitário é obtido no momento que é validado a existência do produto no banco de dados. No momento de salvar no banco de dados, o preço total é calculado multiplicando o preço unitário, obtido no momento da validação, pela quantidade vendida.
+
+  <br>
+
+### 📋 Cadastrar `METHOD:POST`:
+  
+  `BODY: { }`
+  `URL: http://example.com/api/sales`
+  `Authorization: Bearer <token>`
+
+  - **client_id**: ID do cliente (number, obrigatório). ID do cliente que realizou a compra.
+  - **product_id**: ID do produto (number, obrigatório). ID do produto vendido.
+  - **quantity**: Quantidade do produto (number, obrigatório). Quantidade vendida do produto.
+
+  <br>
+
+  Exemplo:
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição:
+
+  ```json
+  {
+    "client_id": 1,
+    "product_id": 1,
+    "quantity": 2
+  }
+  ```
+
+  Resposta:
+
+  ```json
+  {
+    "data": {
+      "id": 1,
+      "client_id": 1,
+      "product_id": 1,
+      "quantity": 2,
+      "unity_price": 100,
+      "total_price": 200,
+      "sale_date": "29/07/2024 11:07:16",
+      "created_at": "29/07/2024 11:07:16",
+      "updated_at": "29/07/2024 11:07:16"
+    }
+  }
+  ```
+  <br>
+
+  **❌ Casos de erro:**
+
+  <br>
+
+  - **Sem token ou token inválido:**
+
+    Exemplo de entrada: `POST /api/sales`
+  
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor.",
+      "error": {
+          "name": "JsonWebTokenError",
+          "message": "jwt malformed"
+      }
+    }
+    ```
+  - **Token expirado:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Erro interno do servidor.",
+      "error": {
+          "name": "TokenExpiredError",
+          "message": "jwt expired"
+      }
+    }
+    ```
+
+  - **Cliente não encontrado:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Client not found."
+    }
+    ```
+
+  - **Produto não encontrado:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Product not found."
+    }
+    ```
+
+  - **Quantidade indisponível em estoque:**
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Insufficient stock."
+    }
+    ```
+  <br>
+
+### 🗄️ Obter os dados de uma venda `METHOD:GET`:
+
+  `BODY: {  }`  
+  `URL: http://example.com/api/sales/:id`
+  `Authorization: Bearer <token>`
+
+  - **id**: ID da venda (number, obrigatório). ID da venda a ser consultada.
+
+  <br>
+
+  Exemplo:
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição no endpoint: `htt://www.example.com/api/sales/1`
+
+  Resposta:
+
+  ```json
+  {
+    "data": {
+      "id": 1,
+      "client_id": 1,
+      "product_id": 1,
+      "quantity": 2,
+      "unity_price": 100,
+      "total_price": 200,
+      "sale_date": "29/07/2024 11:07:16",
+      "created_at": "29/07/2024 11:07:16",
+      "updated_at": "29/07/2024 11:07:16"
+    }
+  }
+  ```
+
+  <br>
+
+  **❌ Caso de erro:**
+
+  - **Venda não encontrada ou id inválido:**
+
+    Exemplo de entrada: `GET /api/sales/:id`
+  
+    Requisição: `htt://www.example.com/api/sales/999`
+    
+    Resposta:
+
+    ```json
+    {
+      "status": "404",
+      "message": "Sale not found."
+    }
+    ```
+
+  <br>
+
+### 🗄️ Obter os dados de todas as vendas `METHOD:GET`:
+  
+  `BODY: {  }`  
+  `URL: http://example.com/api/sales`
+  `Authorization: Bearer <token>`
+
+  <br>
+
+  **✅ Caso de sucesso:**
+
+  Requisição no endpoint: `htt://www.example.com/api/sales`
+
+  Resposta:
+
+  ```json
+  {
+    "data": [
+      {
+        "id": 1,
+        "client_id": 1,
+        "product_id": 1,
+        "quantity": 2,
+        "unity_price": 100,
+        "total_price": 200,
+        "sale_date": "29/07/2024 11:07:16",
+        "created_at": "29/07/2024 11:07:16",
+        "updated_at": "29/07/2024 11:07:16"
+      },
+      {
+        "id": 2,
+        "client_id": 2,
+        "product_id": 2,
+        "quantity": 3,
+        "unity_price": 50,
+        "total_price": 150,
+        "sale_date": "29/07/2024 11:07:16",
+        "created_at": "29/07/2024 11:07:16",
+        "updated_at": "29/07/2024 11:07:16"
+      }
+    ]
+  }
+  ```
+
+  <br>
+
+  Sucesso sem retorno:
+
+  Resposta:
+
+  ```json
+  {
+    "data": []
+  }
+  ```
+
+  <br>
+
+  **❌ Caso de erro:**
+
+  - **Error interno do servidor:**
+
+    Requisição: `htt://www.example.com/api/sales`
+
+    Resposta:
+
+    ```json
+    {
+      "message": "Internal Server Error."
+    }
+    ```
+
+  <br>
+
+### 📋 Atualizar os dados de uma venda `METHOD:PUT/PATCH`:
+
+#### Não é permitido atualizar os dados de uma venda. Apenas a criação de novas vendas e a consulta de vendas existentes.
+
+  <br>
+
+### 🗑️ Deletar uma venda `METHOD:DELETE`:
+
+#### Não é permitido deletar uma venda. Apenas a criação de novas vendas e a consulta de vendas existentes.
 
   <br>
 

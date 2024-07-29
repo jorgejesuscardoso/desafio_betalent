@@ -1,4 +1,5 @@
 import { HttpContextContract } from '@ioc:Adonis/Core/HttpContext';
+import count from 'App/Utils/CounterRequest';
 import { TokenVerify } from 'App/Utils/JWT';
 import { DefaultMsg } from 'App/Utils/defaultMsg';
 
@@ -6,10 +7,13 @@ export default class AuthMiddleware {
   constructor(
     private tokenVerify = TokenVerify,
     private defaultMsg = DefaultMsg,
+    private counts = count
   ) {}
 
   async handle({ request, response }: HttpContextContract, next: () => Promise<void>) {    
     try {
+
+      this.counts();
 
       // Obtém o token do cabeçalho da requisição
       const token = request.headers().authorization;

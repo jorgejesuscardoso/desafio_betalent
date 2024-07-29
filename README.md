@@ -152,7 +152,7 @@ Também contém informações sobre as rotas disponíveis, os métodos HTTP perm
 
 - [Lucid ORM](https://adonisjs.com/docs/4.1/lucid): Lucid ORM é um ORM (Object-Relational Mapping) que permite interagir com um banco de dados relacional usando objetos JavaScript. Ele é amplamente utilizado em aplicações Node.js para simplificar o acesso e a manipulação de dados em um banco de dados.
 
-- [Postman](https://www.postman.com/): Postman é uma ferramenta de colaboração para desenvolvimento de APIs que permite criar, testar e compartilhar APIs de forma rápida e fácil. Ele é amplamente utilizado por desenvolvedores para testar e depurar APIs durante o desenvolvimento de aplicações web e móveis.
+- [Postman](https://www.postman.com/): Postman é uma ferramenta de colaboração para desenvolvimento de APIs que permite criar, testar e compartilhar APIs de forma rápida e fácil. Ele é amplamente utilizado por desenvolvedores para testar e depurar APIs durante o desenvolvimento de aplicações web e móveis. Neste projeto, o Postman foi utilizado para testar as rotas da API e também para fazer testes de carga e desempenho com `1000` requisições em `1 minuto` em cada rota com média de `4ms` de resposta, `salvo rotas de cadastros e login que tiveram média de 53ms` de resposta.
 
 - [TypeScript](https://www.typescriptlang.org/): TypeScript é uma linguagem de programação de código aberto desenvolvida pela Microsoft que estende o JavaScript adicionando tipos estáticos opcionais. Ele é amplamente utilizado em aplicações web e móveis para melhorar a produtividade e a qualidade do código.
 
@@ -162,7 +162,7 @@ Também contém informações sobre as rotas disponíveis, os métodos HTTP perm
 
 ### 👀 Visão Geral
 
-Nestas seções, são apresentadas as principais partes do projeto, incluindo a estrutura de pastas, arquivos e módulos. A estrutura do projeto é organizada de acordo com as melhores práticas de desenvolvimento de software e segue o padrão MVC (Model-View-Controller). Cada parte do projeto é responsável por uma função específica e segue um conjunto de convenções para garantir a consistência e a legibilidade do código.
+Nestas seções, são apresentadas as principais partes do projeto, incluindo a estrutura de pastas, arquivos e módulos. A estrutura do projeto é organizada de acordo com o padrão MVC (Model-View-Controller). Cada parte do projeto é responsável por uma função específica e segue um conjunto de convenções para garantir a consistência e a legibilidade do código.
 
 ### 📁 Estrutura das Pastas
 
@@ -172,32 +172,47 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 
 ```bash
 /betalent
-├── /app
+├── /app                                      
 │   ├── /Controllers
 │   │   ├── /Http
-│   │   │   ├── AuthController.ts       # Controlador para autenticação
-│   │   │   └── UserController.ts       # Controlador para gerenciamento de usuários
-│   ├── /DTO
-│   │   └── /Users
-│   │       ├── CreateUserDTO.ts        # DTO para criação de usuários
-│   │       └── ResponseUserDTO.ts      # DTOs para formato de resposta ao usuários
-│   ├── /Exceptions
-│   │   └── Handler.ts                  # Manipulador de exceções
-│   ├── /Middleware
-│   │   └── Auth.ts                     # Middleware de autenticação
-│   ├── /Models
-│   │   ├── Address.ts                  # Modelo para endereços
-│   │   ├── Category.ts                 # Modelo para categorias
-│   │   ├── Client.ts                   # Modelo para clientes
-│   │   ├── Phone.ts                    # Modelo para telefones
-│   │   ├── Product.ts                  # Modelo para produtos
-│   │   ├── Sale.ts                     # Modelo para vendas
-│   │   └── User.ts                     # Modelo para usuários
-│   └── /Utils
-│       ├── ImageUpload.ts              # Funções para upload e manipulação de imagens
-│       ├── Regex.ts                    # Funções e expressões regulares
-│       ├── JWT.ts                      # Funções para criação e verificação de tokens JWT
-│       └── ReturnDefaultMsg.ts         # Mensagens padrão de retorno
+│   │   │   ├── Client.Controller.ts       # Controlador para operações relacionadas a clientes
+│   │   │   ├── Login.Controller.ts        # Controlador para operações de login
+│   │   │   ├── Product.Controller.ts      # Controlador para operações relacionadas a produtos
+│   │   │   ├── Sale.Controller.ts         # Controlador para operações de vendas
+│   │   │   └── UserController.ts          # Controlador para operações relacionadas a usuários
+│   │   ├── /DTO
+│   │   │  ├── ClientDTO.ts                # DTO para dados de cliente
+│   │   │  ├── ProductDTO.ts               # DTO para dados de produto
+│   │   │  ├── UserDTO.ts                  # DTO para dados de usuário
+│   │   │  └── SaleDTO.ts                  # DTO para dados de venda
+│   │   ├── /Middleware
+│   │   │   ├── /client
+│   │   │   │   ├── ClientValidator.middleware.ts        # Middleware para validação de dados de cliente
+│   │   │   │   └── ClientUpdateValidator.middleware.ts  # Middleware para validação de atualização de cliente
+│   │   │   ├── /product
+│   │   │   │   ├── ProductValidator.middleware.ts       # Middleware para validação de dados de produto
+│   │   │   │   └── ProductUpdateValidator.middleware.ts # Middleware para validação de atualização de produto
+│   │   │   ├── /sale
+│   │   │   │   └── SaleValidator.middleware.ts          # Middleware para validação de dados de venda
+│   │   │   ├── /user
+│   │   │   │   ├── UserValidator.middleware.ts          # Middleware para validação de dados de usuário
+│   │   │   │   └── UserUpdateValidator.middleware.ts    # Middleware para validação de atualização de usuário
+│   │   │   ├── Auth.middleware.ts        # Middleware para autenticação
+│   │   │   └── Login.middleware.ts        # Middleware para login
+│   │   ├── /Models
+│   │   │   ├── Address.ts                # Modelo para dados de endereço
+│   │   │   ├── Client.ts                 # Modelo para dados de cliente
+│   │   │   ├── Phone.ts                  # Modelo para dados de telefone
+│   │   │   ├── Product.ts                # Modelo para dados de produto
+│   │   │   ├── Sale.ts                  # Modelo para dados de venda
+│   │   │   └── User.ts                  # Modelo para dados de usuário
+│   │   └── /Utils
+│   │       ├── handleImageUpload.ts     # Utilitário para manipulação de upload de imagens
+│   │       ├── defaultMsg.ts            # Utilitário para mensagens padrão
+│   │       ├── JWT.ts                   # Utilitário para manipulação de JWT
+│   │       ├── validator.ts             # Utilitário para validação de dados
+│   │       ├── counterRequest.ts        # Utilitário para contagem de requisições
+│   │       └── formatData.ts            # Utilitário para formatação de dados
 ├── /Commands
 │   └── Index.ts                        # Comandos personalizados para o projeto
 ├── /Config
@@ -216,16 +231,24 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 ├── /database
 │   ├── /factories
 │   │   └── index.ts                    # Fábricas de dados para testes
-│   └── /migrations
-│       ├── <timestamp>_categories.ts   # Migração para a tabela de categorias
-│       ├── <timestamp>_users.ts        # Migração para a tabela de usuários
-│       ├── <timestamp>_clients.ts      # Migração para a tabela de clientes
-│       ├── <timestamp>_products.ts     # Migração para a tabela de produtos
-│       ├── <timestamp>_sales.ts        # Migração para a tabela de vendas
-│       ├── <timestamp>_addresses.ts    # Migração para a tabela de endereços
-│       └── <timestamp>_phones.ts       # Migração para a tabela de telefones
+│   ├── /migrations
+│   │   ├── <timestamp>_users.ts        # Migração para a tabela de usuários
+│   │   ├── <timestamp>_clients.ts      # Migração para a tabela de clientes
+│   │   ├── <timestamp>_products.ts     # Migração para a tabela de produtos
+│   │   ├── <timestamp>_sales.ts        # Migração para a tabela de vendas
+│   │   ├── <timestamp>_addresses.ts    # Migração para a tabela de endereços
+│   │   └── <timestamp>_phones.ts       # Migração para a tabela de telefones
+│   └── /seeders
+│       ├── 01_Client.ts                # Seeder para a tabela de clientes
+│       ├── 02_User.ts                  # Seeder para a tabela de usuários
+│       ├── 03_Product.ts               # Seeder para a tabela de produtos
+│       ├── 04_Sale.ts                  # Seeder para a tabela de vendas
+│       ├── 05_Phone.ts                 # Seeder para a tabela de telefones
+│       └── 06_Address.ts               # Seeder para a tabela de endereços
 ├── /providers
 │   └── AppProvider.ts                  # Provedor de serviços da aplicação
+├── /public
+│   └── /thumbs                         # Diretório de uploads de imagens
 ├── /start
 │   ├── kernel.ts                       # Configuração do kernel do aplicativo
 │   └── routes.ts                       # Definição das rotas da aplicação
@@ -234,7 +257,6 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 │   │   └── hello_world.spec.ts         # Testes funcionais
 │   └── bootstrap.ts                    # Configuração de bootstrap para testes
 ├── /tmp
-│   └── /uploads                        # Diretório temporário para uploads
 ├── .adonisrc.json                      # Configuração do AdonisJS
 ├── .editorconfig                       # Configurações do editor de código
 ├── .env.example                        # Exemplo de arquivo de variáveis de ambiente
@@ -247,7 +269,6 @@ A organização do projeto pode ser visualizada na seguinte estrutura de pastas:
 ├── tsconfig.json                       # Configuração do TypeScript
 ├── docker-compose.yml                  # Configuração do Docker Compose (se aplicável)
 └── README.md                           # Documentação do projeto
-
 ```
 
 ## 📦 Instalação e Execução
@@ -262,8 +283,8 @@ Instruções sobre como configurar o ambiente de desenvolvimento e realizar a in
 
 Para executar o projeto, é necessário ter as seguintes ferramentas instaladas e devidamente configuradas no seu sistema:
 
-- [Node.js](https://nodejs.org/en/): (v18.13.0) ou superior.
-- [npm](https://www.npmjs.com/): (v10.2.8) ou superior.
+- [Node.js](https://nodejs.org/en/): (v22.5.1) ou superior.
+- [npm](https://www.npmjs.com/): (v10.8.2) ou superior.
 - [Docker](https://www.docker.com/): (v25.0.2) ou superior.
 - [GIT](https://git-scm.com/): (v2.39.2) ou superior.
 
@@ -287,56 +308,49 @@ git clone <link_do_projeto>
 **Exemplo de configuração do Docker-Compose**
 
 ```yml
-version: '3.8' # Versão do Docker Compose
+version: '3.8'        # Versão do Docker Compose
 
-services: # Serviços do Docker Compose
-  mysql: # Serviço do banco de dados MySQL altere se desejar
-    image: mysql:8.0  # Imagem do MySQL. Use essa versão ou superior
-    container_name: <seu_mysql_container> # Nome do container
-    environment: # Variáveis de ambiente
-      MYSQL_ROOT_PASSWORD: exampleRootPassword # Senha do usuário root
-      MYSQL_DATABASE: exampleDatabase # Nome do banco de dados
-      MYSQL_PASSWORD: examplePassword # Senha do banco de dados
+services:          # Serviços do Docker Compose 
+  mysql:       # Serviço do banco de dados MySQL
+    image: mysql:8.0      # Imagem do MySQL
+    container_name: mysql_container   # Nome do container
+    environment:    # Variáveis de ambiente
+      MYSQL_ROOT_PASSWORD: seupassword   # Senha do root
+      MYSQL_DATABASE: seuDataBase   # Nome do banco de dados
+      MYSQL_PASSWORD: seupassword
+      tz: America/Sao_Paulo  # Fuso horário, opcional
     ports:
-      - "3306:3306" # Porta do MySQL
-    volumes:
-      - mysql_data:/var/lib/mysql # Volume para persistência dos dados, caso o container seja removido. Altere se desejar, mas mantenha a estrutura
-    networks:
-      - <sua_network> # Rede do Docker Compose para comunicação entre os serviços
+      - "3306:3306"  # Porta do MySQL
+    volumes:      # Volumes do Docker Compose para persistência de dados
+      - mysql_data:/var/lib/mysql 
+    networks:     # Rede do Docker Compose para comunicação entre os containers
+      - betalent_network
 
-  adonis:     # Serviço do AdonisJS
-    container_name: <seu_adonis_container> # Nome do container
-    build: # Configuração do build
-      context: ./betalent # Contexto do build, onde está o Dockerfile. Altere se necessário mas deve ser o mesmo que o diretório do projeto
-      dockerfile: Dockerfile # Arquivo Dockerfile, onde está a configuração do container
-    working_dir: /app # Diretório de trabalho, onde o código-fonte será montado
-    volumes: # Volumes
-      - ./betalent:/app # Volume para montagem do código-fonte. Cuide para que o diretório do projeto seja o mesmo que o contexto do build
-    command: ["npm", "run", "start"] # Comando para iniciar o servidor
-    ports: 
-      - "3333:3333" # Porta do servidor. Altere conforme desejar ou caso a porta 3333 esteja em uso. Mas lembre-se de alterar no arquivo .env e o Dockerfile
-    environment: # Variáveis de ambiente
-      - PORT=3333
-      - HOST=0.0.0.0
-      - DB_CONNECTION=mysql
-      - MYSQL_HOST=mysql
-      - MYSQL_PORT=3306
-      - MYSQL_DATABASE=betalent
-      - MYSQL_USER=root
-      - MYSQL_PASSWORD=rootpassword
-      - APP_KEY=JsSD0IKWYOhiaH19G5j3NmguWLgXtKrG
-      - SECRET=betalent
-    depends_on: # Dependências do serviço AdonisJS, garante que o MySQL esteja rodando antes de iniciar o servidor
+      
+
+  adonis:         # Serviço do AdonisJS
+    container_name: adonis_container    # Nome do container
+    build:      
+      context: ./betalent   # Contexto do Dockerfile
+      dockerfile: Dockerfile    
+    working_dir: /app   # Diretório de trabalho
+    volumes:    # Volumes do Docker Compose para montagem do código-fonte
+      - ./betalent:/app
+    command: ["npm", "run", "start"]    # Comando para iniciar o servidor
+    ports:
+      - "3333:3333"   # Porta do servidor
+    env_file:    # Arquivo de variáveis de ambiente
+      - .env
+    depends_on:     # Dependências do Docker Compose para garantir a ordem de inicialização
       - mysql
-    networks: # Rede do Docker Compose para comunicação entre os serviços
-      - <sua_nertwork>
+    networks:   # Rede do Docker Compose para comunicação entre os containers
+      - betalent_network  
 
 volumes:
   mysql_data:
 
 networks:
   betalent_network:
-
 ```
 
 2. Na raiz do projeto, rode o banco de dados em um container Docker:  
@@ -347,7 +361,7 @@ networks:
     
 <br>
 
-  > OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente as linhas 20 até o 45. Isso impedirá que o servidor suba no container Docker.
+  > OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente da linha 21 até o 37. Isso impedirá que o servidor suba no container Docker.
 
   
 <br>
@@ -362,30 +376,30 @@ networks:
 
 <br>
 
-  > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+  > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`. Todos esses valores podem ser alterados conforme a necessidade já que são apenas exemplos e são padrões criados pelo AdonisJS.
 
 
 <br>
 
 **Variáveis de Ambiente**
 
-  | Variável        | Descrição                                    | Exemplo                 |
-  |-----------------|----------------------------------------------|-------------------------|
-  | `PORT`          | Porta do servidor                            | `3333`                  |
-  | `HOST`          | Host do servidor                             | `localhost`             |
-  | `NODE_ENV`      | Ambiente de execução                         | `development`           |
-  | `APP_KEY`       | Chave de aplicativo                          | `gerada pelo comando`   |
-  | `DRIVE_DISK`    | Disco de armazenamento                       | `local`                 |
-  | `SECRET`        | Chave secreta para JWT                       | `sua_chave_secreta`     |
-  | `EXPIRES_IN`    | Tempo de expiração do token                  | `1h`                    |
-  | `HASH_DRIVER`   | Driver de hashing                            | `bcrypt`                |
-  | `SALT_ROUNDS`   | Número de rounds para hashing                | `10`                    |
-  | `DB_CONNECTION` | Tipo de conexão de banco de dados            | `mysql`                 |
-  | `MYSQL_HOST`    | Host do banco de dados                       | `localhost`             |
-  | `MYSQL_PORT`    | Porta do banco de dados                      | `3306`                  |
-  | `MYSQL_DATABASE`| Nome do banco de dados                       | `meu_banco`             |
-  | `MYSQL_USER`    | Usuário do banco de dados                    | `seuuser`               |
-  | `MYSQL_PASSWORD`| Senha do banco de dados                      | `senha_secreta`         |
+  | Variável        | Descrição                                    | Exemplo                   |
+  |-----------------|----------------------------------------------|---------------------------|
+  | `PORT`          | Porta do servidor                            | `3333`                    |
+  | `HOST`          | Host do servidor                             | `localhost`               |
+  | `NODE_ENV`      | Ambiente de execução                         | `development`             |
+  | `APP_KEY`       | Chave de aplicativo                          | `node ace generate:key`   |
+  | `DRIVE_DISK`    | Disco de armazenamento                       | `local`                   |
+  | `SECRET`        | Chave secreta para JWT                       | `sua_chave_secreta`       |
+  | `EXPIRES_IN`    | Tempo de expiração do token                  | `1d`                      |
+  | `HASH_DRIVER`   | Driver de hashing                            | `bcrypt`                  |
+  | `SALT_ROUNDS`   | Número de rounds para hashing                | `10`                      |
+  | `DB_CONNECTION` | Tipo de conexão de banco de dados            | `mysql`                   |
+  | `MYSQL_HOST`    | Host do banco de dados                       | `localhost`               |
+  | `MYSQL_PORT`    | Porta do banco de dados                      | `3306`                    |
+  | `MYSQL_DATABASE`| Nome do banco de dados                       | `meu_banco`               |
+  | `MYSQL_USER`    | Usuário do banco de dados                    | `seu_user`                 |
+  | `MYSQL_PASSWORD`| Senha do banco de dados                      | `senha_secreta`           |
 
 
 5. Execute as migrações do banco de dados:
@@ -398,7 +412,10 @@ node ace serve --watch
 ```
 7. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
 
-8. Para acessar o banco de dados, utilize um cliente MySQL (ex: MySQL Workbench, DBeaver) e conecte-se ao banco de dados com as credenciais configuradas no arquivo `.env`. Também é possível acessar o banco de dados a partir de um terminal usando o comando:
+8. Para acessar o banco de dados, utilize um cliente MySQL (ex: MySQL Workbench, DBeaver) e conecte-se ao banco de dados com as credenciais configuradas no arquivo `.env`.
+
+    Também é possível acessar o banco de dados a partir de um terminal usando o comando:
+
  ```bash
  docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
  ```
@@ -485,6 +502,8 @@ export default class UserSeeder extends BaseSeeder {
 
 Todos os dados iniciais contido nos seeders serão inseridos no banco de dados.
 
+> 👀 Alguns seeders já estão criados no projeto, como `Client.ts`, `User.ts`, `Product.ts`, `Sale.ts`, `Phone.ts` e `Address.ts`. Se desejar, pode adicionar mais seeders.
+
 Outros comandos disponíveis podem ser visualizados com o comando `node ace`.
 
 Caso deseje parar o container, utilize o comando:
@@ -512,12 +531,12 @@ git clone <link_do_projeto>
 
 <br>
 
-3. Execulte o docker-compose para subir o container do projeto e do banco de dados:
+3. Execulte o docker-compose para subir os containers do projeto e do banco de dados:
    
 ```bash
 docker-compose up -d
 ```
- > - Todas as dependências do projeto serão instaladas, todas migrações serão feitas e o servidor será iniciado automaticamente. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
+ > 👀 Todas as dependências do projeto serão instaladas, todas migrações serão feitas, todos os seeders serão lançados no banco de dados e o servidor será iniciado automaticamente. O servidor estará disponível em `http://localhost:<PORT>`, onde `<PORT>` é a porta configurada no arquivo `.env`.
 
 4. Poderá acessar o container do projeto pelo terminal com o comando:
 
@@ -529,6 +548,19 @@ docker exec -it <seu_container_backend> /bin/bash
 ```bash
 docker exec -it <seu_container_db> mysql -u <seu_mysql_user> -p
 ```
+  >> 👀 Atenção: caso deseje criar algum seeder enquanto utiliza o projeto com docker, você terá que semear via container. Se tentar fora do container, não vai conseguir.
+
+  Para subir seeders via container, entre no container com o comando:
+
+```bash
+docker exec -it <seu_container_backend> /bin/bash
+```
+  Depois semeie com o comando:
+
+```bash
+node ace db:seed
+```
+
 <br>
 
 Caso deseje parar o container, utilize o comando:
@@ -584,11 +616,11 @@ docker-compose up -d
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-A API é acessada por meio de requisições HTTP e retorna respostas em formato JSON. Algumas das rotas disponíveis são protegidas por autenticação JWT e requerem um token válido para acesso.
+A API é acessada por meio de requisições HTTP e retorna respostas em formato JSON. Quase todas as rotas disponíveis são protegidas por autenticação JWT e requerem um token válido para acesso. Salvo as rotas de cadastro e login.
 
-Os tokens JWT são gerados durante o processo de autenticação e devem ser incluídos no cabeçalho `Authorization` das requisições protegidas. As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
+Os tokens JWT são gerados durante o processo de autenticação e devem ser incluídos no cabeçalho das requisições. As rotas protegidas verificam a validade do token e permitem o acesso apenas a usuários autenticados.
 
-Os prazos de validade dos tokens JWT são configuráveis e podem ser ajustados conforme necessário. Os tokens expirados são rejeitados pelas rotas protegidas e exigem a geração de um novo token para acesso. Prazo padrão de 1 hora.
+Os prazos de validade dos tokens JWT são configuráveis e podem ser ajustados conforme necessário. Os tokens expirados são rejeitados pelas rotas protegidas e exigem a geração de um novo token para acesso. Prazo padrão de 1 dia.
 
 <br>
 
@@ -600,8 +632,6 @@ As rotas da API são organizadas em grupos e seguem um padrão de nomenclatura c
 
 A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, autenticar um usuário existente, obter informações sobre o usuário, atualizar os dados de usuário e deletar usuário.
 
-A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-mail deve ser único e válido, e a senha deve atender a critérios mínimos de segurança, como ter pelo menos 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
-
 <br>
 
 ### 📋 Cadastrar `METHOD:POST`:
@@ -610,87 +640,14 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   ***`URL: http://example/api/users`***
 
-  - **email**: E-mail do usuário (string, obrigatório, único). Formato de e-mail válido.
+  - **email**: E-mail do usuário (string, obrigatório, único).
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
   - **name**: Nome do usuário (string, obrigatório).
   - **role**: Função do usuário (string, obrigatório).
-  - **phone**: Telefone do usuário (string, opcional). Formato de telefone brasileiro válido. É opicional mas se for preenchido, deve ser um telefone válido.
-  - **photo**: Foto do usuário (string, opcional). Imagem com tamanho máximo de 2MB.
 
 <br>
 
-### 👮 Autenticação(login) `METHOD:POST`:
-
-  **`URL: http://example/api/users`**
-
-  - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
-  - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
-
-<br>
-
-### 🗄️ Obter os dados de um usuário `METHOD:GET`:
-
-  **`BODY: { }`**
-
-  **`URL: http://example/api/users/:id`**
-
-  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
-
-  Essa consulta não precisa de um corpo, apenas o ID do usuário a ser consultado.
-
-<br>
-
-## 🗄️ Obter os dados de todos os usuários `METHOD:GET`:
-
-  **`BODY: { }`**
-
-  ***`URL: http://example/api/users`***
-
-  Essa consulta não precisa de um corpo, apenas o ID do usuário a ser consultado.
-
-<br>
-
-**📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:**
-  
-  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
-
-  ***`URL: http://example/api/users/:id`***
-
-  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser atualizado.
-  - **email**: E-mail do usuário (string, opcional). Formato de e-mail válido.
-  - **password**: Senha do usuário (string, opcional). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
-  - **name**: Nome do usuário (string, opcional).
-  - **role**: Função do usuário (string, opcional).
-  - **phone**: Telefone do usuário (string, opcional). Formato de telefone brasileiro válido. É opicional mas se for preenchido, deve ser um telefone válido.
-  - **photo**: Foto do usuário (string, opcional). Imagem com tamanho máximo de 2MB.
-
-<br>
-
-**🗑️ Deletar um usuário `METHOD:DELETE`:**
-
-  ***`URL: http://example/api/users/:id`***
-
-  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
-
-
-  <br>
-  
-####  📝 Exemplos de requisições para cadastro de um usuário do sistema
-
-<details> <summary>Ver exemplos de uso</summary>
-
-[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
-
-<br>
-
-  - **Método:** `POST`
-  - **Endpoint:** `/api/users`
-  - **Parâmetros:** `email`, `password`, `name`, `role`, `phone`, `photo`
-  - **Autenticação:** Não requer autenticação
-
-  <br>
-  
-  **✅ Caso de sucesso:**
+**✅ Caso de sucesso:**
  
   Requisição:
 
@@ -699,23 +656,20 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "email": "admin@adm.com",
       "password": "Admin123@",
       "name": "John Doe",
-      "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg"
+      "role": "admin"
     }
   ```
   Resposta:
 
   ```json  
     {
-      "message": "Criado com sucesso.",
       "data": {
         "name": "John Doe",
         "email": "admin@adm.com",
         "role": "admin",
         "password": "$hashFicticio====+-hashFicticiov1nd0DA73rR@d053Lvag3mN1v3lSeisSer10E55e70h@5h3F1ct1c10",
-        "created_at": "2024-07-23T20:05:23.377+00:00",
-        "updated_at": "2024-07-23T20:05:23.377+00:00",
+        "created_at": "01/01/2024 20:05:23",
+        "updated_at": "01/01/2024 20:05:23",
         "id": 1
       }
     }
@@ -740,15 +694,13 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
         "password": "Admin123@",
         "name": "John Doe",
         "role": "admin",
-        "phone": "11 1 1111-1111",
-        "photo": "imagem.jpg"
       }
       ```
     Resposta:
 
       ```json
       {
-        "message": "Email já cadastrado."
+        "message": "Email already exists",
       }
       ```
   <br>
@@ -761,16 +713,14 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "email": "adminadm.com",  // ou "admin@adm" ou "admin" ou "admin@.com" ou "admin@adm." ou "admin@.com.",etc...
       "password": "Admin123@",
       "name": "John Doe",
-      "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg"
+      "role": "admin"
     }
     ```
     Resposta:
 
     ```json
     {
-      "message": "Email inválido."
+      "message": "Invalid email format."
     }
     ```
   <br>
@@ -784,16 +734,14 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "email": "admin@adm.com",
       "password": "Adm3@",
       "name": "John Doe",
-      "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg"
+      "role": "admin"
     }
     ```
     Resposta:
 
     ```json
     {
-      "message": "Senha deve ter no mínimo 6 caracteres."
+      "message": "Password deve ter no mínimo 6 caracteres."
     }
     ```
   <br>
@@ -808,64 +756,17 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "password": "Admin", // ou "admin123@" ou "Admin123" ou "admin@123" ou "Admin@adm" ou "admin@Adm", etc...
       "name": "John Doe",
       "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg"
     }
+
     ```
     Resposta:
 
     ```json
     {
-      "message": "Senha inválida. Deve conter ao menos 6 caracteres e uma letra maiúscula, uma minúscula, um número e um caractere especial."
+      "message": "Invalid password format"
     }
     ```
 <br>
-
-  - **Imagem com tamanho maior que 2MB:**
-
-    Requisição:
-
-    ```json
-    {
-      "email": "admin@adm.com",
-      "password": "Admin123@",
-      "name": "John Doe",
-      "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg" // Imagem com mais de 2MB
-    }
-    ```
-    Resposta:
-
-    ```json
-    {
-      "message": "Erro ao salvar a imagem. Tamanho máximo permitido: 2MB."
-    }
-    ```
-  <br>
-  
-  - **Telefone com tamanho inválido:**
-
-    Requisição:
-
-    ```json
-    {
-      "email": "admin@adm.com",
-      "password": "Admin123@",
-      "name": "John Doe",
-      "role": "admin",
-      "phone": " 1 1111-1111", // Sem DD. Mas tambem retorna erro se maior ou menor que 11 caracteres. Ou insira um telefone válido ou deixa em branco.
-      "photo": "imagem.jpg"
-    }
-    ```
-    Resposta:
-
-    ```json
-    {
-      "message": "Telefone inválido."
-    }
-    ```
-  <br>
   
   - **Error ao salvar no banco de dados ou do servidor:**
 
@@ -876,56 +777,47 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "password": "Admin123@",
       "name": "John Doe",
       "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg"
     }
     ```
     Resposta:
 
     ```json
     {
-      "message": "Erro interno do servidor."
+      "message": "Internal Server Error."
     }
     ```
-    </details>
-
-
-</details>
-
-  <br>
-  
-####  📝 Exemplos de requisições para autenticação de um usuário do sistema
-
-<details> <summary>Ver exemplos de uso</summary>
-
-[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+  </details>
 
 <br>
 
-  - **Método:** `POST`
-  - **Endpoint:** `/api/users`
-  - **Parâmetros:** `email`, `password`
-  - **Autenticação:** Não requer autenticação
+### 👮 Autenticação(login) `METHOD:POST`:
 
-  <br>
+<br>
+
+  **`URL: http://example/api/login`**
+
+  - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
+  - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
+
+<br>
   
   **✅ Caso de sucesso:**
  
   Requisição:
 
-    ```json
-    {
-      "email": "admin@adm.com",
-      "password": "Admin123@"
-    }
-    ```
+  ```json
+  {
+    "email": "admin@adm.com",
+    "password": "Admin123@"
+  }
+  ```
   Resposta:
 
-    ```json  
-    {
-      "token": "eyTOKENficticioM3uam160UzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1c2hpZG9AeSS3toKeNvALL1NadAiOjE3MjE3NzE5ODcseFakeJAdiSSEcCI1nT3re554nt3n40EmesMo.qW79H2ZLCEjtJP8yYkuJPSerIoEssETokEnEfAKe"
-    }
-    ```
+  ```json  
+  {
+    "token": "eyTOKENficticioM3uam160UzI1NiIsInR5cCI6IkpXVCJ9.eyJlbWFpbCI6ImJ1c2hpZG9AeSS3toKeNvALL1NadAiOjE3MjE3NzE5ODcseFakeJAdiSSEcCI1nT3re554nt3n40EmesMo.qW79H2ZLCEjtJP8yYkuJPSerIoEssETokEnEfAKe"
+  }
+  ```
   <br>
   
   **❌ Casos de erro:**
@@ -950,7 +842,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
       ```json
       {
-        "message": "Dados inválidos."
+        "message": "Invalid credentials."
       }
       ```
   <br>
@@ -970,50 +862,24 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
     ```json
     {
-      "message": "Dados inválidos."
+      "message": "Invalid credentials."
     }
     ```
-
+    </details>
   <br>
-  
-  - **Error ao salvar no banco de dados ou do servidor:**
 
-    Requisição:
-    ```json
-    {
-      "email": "admin@adm.com",
-      "password": "Admin123@"
-    }
-    ```
+### 🗄️ Obter os dados de um usuário `METHOD:GET`:
+   
+   <br>
 
-    Resposta:
+  **`BODY: { }`**
 
-    ```json
-    {
-      "message": "Erro interno do servidor."
-    }
-    ```
-  </details>
-</details>
+  **`URL: http://example/api/users/:id`**
 
-  <br>
-  
-####  📝 Exemplos de requisições para obter os dados de um usuário do sistema
-
-<details> <summary>Ver exemplos de uso</summary>
-
-[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
 
 <br>
-
-  - **Método:** `GET`
-  - **Endpoint:** `/api/users/:id`
-  - **Parâmetros:** `id`
-  - **Autenticação:**  Não requer autenticação
-
-  <br>
-  
-  **✅ Caso de sucesso:**
+**✅ Caso de sucesso:**
  
   Requisição no endpoint: ***<i>htt://www.example.com/api/users/1</i>***
    
@@ -1025,8 +891,6 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "name": "John Doe",
       "email": "admin@adm.com",
       "role": "admin",
-      "phone": "11 1 1111-1111",
-      "photo": "imagem.jpg",
       "createdAt": "01/01/2024",
       "updatedAt": "01/01/2024"
     }
@@ -1035,8 +899,7 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
 
   <br>
   
-  **❌ Casos de erro:**
-  <details> <summary>Ver Casos de Erro</summary>
+  **❌ Caso de erro:**
 
   - **Usuário não encontrado ou id inválido:**
 
@@ -1046,46 +909,28 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
     
     Resposta:
 
-      ```json
-      {
-        "error": "Not found.",
-        "message": "Usuário não encontrado."
-      }
-      ```
-  - **Error interno do servidor:**
-
-    Requisição: ***<i>htt://www.example.com/api/users/1</i>***
-    
-
-    Resposta:
-
     ```json
     {
-      "message": "Erro interno do servidor."
+      "error": "Not found.",
+      "message": "Usuário não encontrado."
     }
     ```
-  </details>
-
-</details>
 
   <br>
-  
-####  📝 Exemplos de requisições para obter os dados de todos os usuários do sistema
 
-<details> <summary>Ver exemplos de uso</summary>
+### 🗄️ Obter os dados de todos os usuários `METHOD:GET`:
 
-[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
+  <br>
+
+  **`BODY: { }`**
+
+  ***`URL: http://example/api/users`***
+
+  Nenhum parâmetro é necessário para esta rota.
 
 <br>
 
-  - **Método:** `GET`
-  - **Endpoint:** `/api/users`
-  - **Parâmetros:** Nenhum
-  - **Autenticação:**  Não requer autenticação
-
-  <br>
-  
-  **✅ Caso de sucesso:**
+**✅ Caso de sucesso:**
  
   Requisição no endpoint: **<i>htt://www.example.com/api/users</i>**
   
@@ -1103,8 +948,6 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
           "name": "John Doe",
           "email": "user1@gmail.com",
           "role": "admin",
-          "phone": "11 1 1111-1111",
-          "photo": "imagem.jpg",
           "createdAt": "01/01/2024",
           "updatedAt": "01/01/2024"
         },
@@ -1112,8 +955,6 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
           "name": "Jane Doe",
           "email": "user2@gmail.com",
           "role": "user",
-          "phone": "11 1 1111-1111",
-          "photo": "imagem.jpg",
           "createdAt": "01/01/2024",
           "updatedAt": "01/01/2024"
         }
@@ -1148,26 +989,23 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       "message": "Erro interno do servidor."
     }
     ```
-</details>
-
   <br>
+
+### 📋 Atualizar os dados de um usuário `METHOD:PUT/PATCH`:
   
-####  📝 Exemplos de requisições para atualizar os dados de um usuário do sistema
+  > ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
 
-<details> <summary>Ver exemplos de uso</summary>
+  ***`URL: http://example/api/users/:id`***
 
-[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
-
-<br>
-
-  - **Método:** `PUT/PATCH`
-  - **Endpoint:** `/api/users/:id`
-  - **Parâmetros:** `id`, `email`, `password`, `name`, `role`, `phone`, `photo`
-  - **Autenticação:**  Não requer autenticação
+  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser atualizado.
+  - **email**: E-mail do usuário (string, opcional). Formato de e-mail válido.
+  - **password**: Senha do usuário (string, opcional). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
+  - **name**: Nome do usuário (string, opcional).
+  - **role**: Função do usuário (string, opcional).
 
 <br>
 
-  **✅ Caso de sucesso:**
+**✅ Caso de sucesso:**
  
   Requisição `METHOD:PUT`:
 
@@ -1243,37 +1081,16 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
     }
   ```
   <br>
-  
-  **Error interno do servidor:**
 
-  Requisição: ***<i>htt://www.example.com/api/users/1</i>***
-  
-  Resposta:
+### 🗑️ Deletar um usuário `METHOD:DELETE`:**
 
-  ```json
-    {
-      "message": "Erro interno do servidor."
-    }
-  ```
-</details>
+  ***`URL: http://example/api/users/:id`***
 
+  - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
+
+  Nenhum parâmetro é necessário para esta rota.
 
   <br>
-  
-####  📝 Exemplos de requisições para deletar um usuário do sistema
-
-<details> <summary>Ver exemplos de uso</summary>
-
-[Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
-
-<br>
-
-  - **Método:** `DELETE`
-  - **Endpoint:** `/api/users/:id`
-  - **Parâmetros:** `id`
-  - **Autenticação:**  Não requer autenticação
-
-<br>
 
   **✅ Caso de sucesso:**
  
@@ -1286,12 +1103,9 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
     
   }
   ```
-  <br>
-  
+  <br>  
 
-  **❌ Casos de erro:**
-
-  <details> <summary>Ver Casos de Erro</summary>
+  **❌ Caso de erro:**
 
   <br>
   
@@ -1311,23 +1125,15 @@ A senha e o e-mail são obrigatórios para o cadastro de um novo usuário. O e-m
       ```
   <br>
   
-  - **Error interno do servidor:**
+  
+  
+  
 
-    Requisição: ***<i>htt://www.example.com/api/users/1</i>***
-    
+  
 
-    Resposta:
 
-    ```json
-    {
-      "message": "Erro interno do servidor."
-    }
-    ```
-  </details>
 
-</details>
 
-<br>
 
 ### 🧑‍💼 Clientes
 

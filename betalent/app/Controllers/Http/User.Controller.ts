@@ -6,7 +6,6 @@ import { FormatDataUser, FormatDataUserShow } from 'App/Utils/formatData';
 import { UserDTO, UserIndexDTO } from 'App/DTO/UserDTO';
 
 export default class UserController {
-
   constructor(
     private userModel = User,
     private hashService = Hash,
@@ -18,7 +17,7 @@ export default class UserController {
   public async store({ request, response }: HttpContextContract): Promise<void |UserDTO> {
     try {
      let { name, email, password, role } = request.body();     
-   
+      
       // Criptografa a senha e cria um novo usuário
       const hashed = await this.hashService.make(password)  ;
       const user = await this.userModel.create({

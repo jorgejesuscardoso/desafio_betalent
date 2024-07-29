@@ -19,7 +19,7 @@ export default class ProductController {
 
   public async store ({ request, response }: HttpContextContract): Promise<void | ProductDTO> {
     try {
-      const dataRequest = request.only(['name', 'description', 'price', 'stock', 'thumbnail', 'brand']);
+      const dataRequest = request.body();
 
       const thumbnail = request.file('thumbnail');
 

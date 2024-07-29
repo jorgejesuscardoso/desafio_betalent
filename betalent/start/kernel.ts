@@ -42,14 +42,14 @@ Server.middleware.register([
 |
 */
 Server.middleware.registerNamed({
-  loginMiddleware: () => import('App/Middleware/Login.Middleware'),
-  authMiddleware: () => import('App/Middleware/Auth.Middleware'),
-  clientMiddleware: () => import('App/Middleware/client/ValidatorDataClient.Middleware'),
-  userMiddleware: () => import('App/Middleware/user/ValidatorDataUser.Middleware'),
-  userUpdateMiddleware: () => import('App/Middleware/user/ValidatorDataUserUpdate.Middleware'),
-  clientUpdateMiddleware: () => import('App/Middleware/client/ValidatorDataClientUpdate.Middleware'),
-  productMiddleware: () => import('App/Middleware/product/ValidatorDataProduct.Middleware'),
-  producUpdatetMiddleware: () => import('App/Middleware/product/ValidatorDataProductUpdate.Middleware'),
-  saleMiddleware: () => import('App/Middleware/sale/ValidatorCreateSale.Middleware'),
+  loginMiddleware: () => import('App/Middleware/Login.middleware'),
+  authMiddleware: () => import('App/Middleware/Auth.middleware'),
+  clientMiddleware: () => import('App/Middleware/client/ClientValidator.middleware'),
+  userMiddleware: () => import('App/Middleware/user/UserValidator.middleware'),
+  userUpdateMiddleware: () => import('App/Middleware/user/UserUpdateValidator.middleware'),
+  clientUpdateMiddleware: () => import('App/Middleware/client/ClientUpdateValidator.middleware'),
+  productMiddleware: () => import('App/Middleware/product/ProductValidator.middleware'),
+  producUpdatetMiddleware: () => import('App/Middleware/product/ProductUpdateValidator.middleware'),
+  saleMiddleware: () => import('App/Middleware/sale/SaleValidator.middleware'),
 })
 

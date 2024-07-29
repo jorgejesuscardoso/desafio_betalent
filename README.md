@@ -846,7 +846,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 **✅ Caso de sucesso:**
  
-  Requisição no endpoint: **<i>http://www.example.com/api/users</i>**
+  Requisição no endpoint: **<i>http://localhost:3333/api/users</i>**
   
   
   <br>
@@ -1355,7 +1355,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Exemplo de entrada: `GET /api/clients/:id`
   
-    Requisição: `http://www.example.com/api/clients/999`
+    Requisição: `http://localhost:3333/api/clients/999`
     
     Resposta:
 
@@ -1379,7 +1379,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/clients`
+  Requisição no endpoint: `http://localhost:3333/api/clients`
 
   Resposta: 
   
@@ -1431,7 +1431,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   - **Error interno do servidor:**
 
-    Requisição: `http://www.example.com/api/clients`
+    Requisição: `http://localhost:3333/api/clients`
 
     Resposta:
 
@@ -1552,7 +1552,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Entrada: `PUT/PATCH /api/clients/:id`
   
-    Requisição: `http://www.example.com/api/clients/999`
+    Requisição: `http://localhost:3333/api/clients/999`
     
     Resposta:
 
@@ -1583,7 +1583,7 @@ Filtrando as vendas por mês 5 e ano 2020
   
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/clients/1`
+  Requisição no endpoint: `http://localhost:3333/api/clients/1`
 
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -1600,7 +1600,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   Exemplo de entrada: `DELETE /api/clients/:id`
 
-  Requisição: `http://www.example.com/api/clients/999`
+  Requisição: `http://localhost:3333/api/clients/999`
 
   Resposta:
 
@@ -1807,7 +1807,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/products/1`
+  Requisição no endpoint: `http://localhost:3333/api/products/1`
 
   Resposta:
 
@@ -1840,7 +1840,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Exemplo de entrada: `GET /api/products/:id`
   
-    Requisição: `http://www.example.com/api/products/999`
+    Requisição: `http://localhost:3333/api/products/999`
     
     Resposta:
 
@@ -1865,7 +1865,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/products`
+  Requisição no endpoint: `http://localhost:3333/api/products`
 
   Resposta:
 
@@ -1925,7 +1925,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   - **Error interno do servidor:**
 
-    Requisição: `http://www.example.com/api/products`
+    Requisição: `http://localhost:3333/api/products`
 
     Resposta:
 
@@ -2046,7 +2046,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Entrada: `PUT/PATCH /api/products/:id`
   
-    Requisição: `http://www.example.com/api/products/999`
+    Requisição: `http://localhost:3333/api/products/999`
     
     Resposta:
 
@@ -2079,7 +2079,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/products/1`
+  Requisição no endpoint: `http://localhost:3333/api/products/1`
 
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -2097,7 +2097,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   Exemplo de entrada: `DELETE /api/products/:id`
 
-  Requisição: `http://www.example.com/api/products/999`
+  Requisição: `http://localhost:3333/api/products/999`
 
   Resposta:
 
@@ -2251,7 +2251,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/sales/1`
+  Requisição no endpoint: `http://localhost:3333/api/sales/1`
 
   Resposta:
 
@@ -2279,7 +2279,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
     Exemplo de entrada: `GET /api/sales/:id`
   
-    Requisição: `http://www.example.com/api/sales/999`
+    Requisição: `http://localhost:3333/api/sales/999`
     
     Resposta:
 
@@ -2304,7 +2304,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `http://www.example.com/api/sales`
+  Requisição no endpoint: `http://localhost:3333/api/sales`
 
   Resposta:
 
@@ -2355,7 +2355,7 @@ Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o prod
 
   - **Error interno do servidor:**
 
-    Requisição: `http://www.example.com/api/sales`
+    Requisição: `http://localhost:3333/api/sales`
 
     Resposta:
 

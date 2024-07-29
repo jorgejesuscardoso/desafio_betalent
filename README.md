@@ -347,7 +347,7 @@ networks:
     
 <br>
 
-  > OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente da linha 21 até o 37. Isso impedirá que o servidor suba no container Docker.
+  > 👀 OBS: Esse comando também irá subir o servidor num container Docker, o que fará com que não precise fazer os passos seguintes. Caso queira rodar o servidor localmente, abra o arquivo `docker-compose.yml` e comente da linha 21 até o 37. Isso impedirá que o servidor suba no container Docker.
 
   
 <br>
@@ -362,7 +362,7 @@ networks:
 
 <br>
 
-  > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`. Todos esses valores podem ser alterados conforme a necessidade já que são apenas exemplos e são padrões criados pelo AdonisJS.
+  > 👀 OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`. Todos esses valores podem ser alterados conforme a necessidade já que são apenas exemplos e são padrões criados pelo AdonisJS.
 
 
 <br>
@@ -374,7 +374,7 @@ networks:
   | `PORT`          | Porta do servidor                            | `3333`                    |
   | `HOST`          | Host do servidor                             | `localhost`               |
   | `NODE_ENV`      | Ambiente de execução                         | `development`             |
-  | `APP_KEY`       | Chave de aplicativo                          | `node ace generate:key`   |
+  | `APP_KEY`       | Gere a sua ou use a padrão. Pra gerar use    | `node ace generate:key`   |
   | `DRIVE_DISK`    | Disco de armazenamento                       | `local`                   |
   | `SECRET`        | Chave secreta para JWT                       | `sua_chave_secreta`       |
   | `EXPIRES_IN`    | Tempo de expiração do token                  | `1d`                      |
@@ -408,11 +408,11 @@ node ace serve --watch
 
 <br>
 
- Após isso, insira a senha do banco de dados e você estará conectado ao banco de dados.
+ Após isso, insira a senha do banco de dados e você estará conectado ao terminal do banco de dados.
 
 <br>
 
-  > OBS: Enquanto você estiver digitando a senha, não aparecerá nada na tela, mas ela está sendo digitada.
+  > 👀 OBS: Enquanto você estiver digitando a senha, não aparecerá nada na tela, mas ela está sendo digitada.
 
 <br>
 
@@ -513,7 +513,7 @@ git clone <link_do_projeto>
 
 <br>
 
-  > OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
+  > 👀 OBS: O arquivo `.env.example` contém um exemplo de configuração das variáveis de ambiente. Substitua os valores das variáveis pelas suas configurações e renomeie o arquivo para `.env`.
 
 <br>
 
@@ -610,11 +610,8 @@ Os prazos de validade dos tokens JWT são configuráveis e podem ser ajustados c
 
 <br>
 
-## 📚 Rotas
 
-As rotas da API são organizadas em grupos e seguem um padrão de nomenclatura consistente. Cada grupo de rotas corresponde a uma parte específica da aplicação e contém rotas relacionadas a essa parte.
-
-### 👥 Usuários
+## 👥 Rota Usuários
 
 A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, autenticar um usuário existente, obter informações sobre o usuário, atualizar os dados de usuário e deletar usuário.
 
@@ -624,8 +621,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  `URL: http://example/api/users`
   `Authorization: Não requerido.`
+
+  `URL: http://example/api/users`
 
   - **email**: E-mail do usuário (string, obrigatório, único).
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
@@ -734,8 +732,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 <br>
 
-  `URL: http://example/api/login`
   `Authorization: Não requerido.`
+
+  `URL: http://example/api/login`
 
   - **email**: E-mail do usuário (string, obrigatório). Formato de e-mail válido.
   - **password**: Senha do usuário (string, obrigatório). Mínimo de 6 caracteres, uma letra maiúscula, uma minúscula, um número e um caractere especial.
@@ -784,8 +783,10 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
    <br>
 
   `BODY: { }`
-  `URL: http://example/api/users/:id`
+
   `Authorization: Bearer <token>`
+  
+  `URL: http://example/api/users/:id`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser consultado.
 
@@ -793,7 +794,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 **✅ Caso de sucesso:**
  
-  Requisição no endpoint: ***<i>htt://www.example.com/api/users/1</i>***
+  Requisição no endpoint: ***<i>http://www.example.com/api/users/1</i>***
    
   Resposta:
 
@@ -817,7 +818,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
     Exemplo de entrada: `GET /api/users/:id`
   
-    Requisição: ***<i>htt://www.example.com/api/users/999</i>***
+    Requisição: ***<i>http://www.example.com/api/users/999</i>***
     
     Resposta:
 
@@ -835,8 +836,10 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   <br>
 
   `BODY: { }`
-  `URL: http://example/api/users`
+
   `Authorization: Bearer <token>`
+  
+  `URL: http://example/api/users`
 
   Nenhum parâmetro é necessário para esta rota.
 
@@ -844,7 +847,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
 **✅ Caso de sucesso:**
  
-  Requisição no endpoint: **<i>htt://www.example.com/api/users</i>**
+  Requisição no endpoint: **<i>http://www.example.com/api/users</i>**
   
   
   <br>
@@ -896,7 +899,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   - **Error interno do servidor:**
 
-    Requisição: ***<i>htt://www.example.com/api/users</i>***    
+    Requisição: ***<i>http://www.example.com/api/users</i>***    
 
     Resposta:
 
@@ -912,9 +915,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   
   > 👀 ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um usuário. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
 
-  `BODY: { }`
-  `URL: http://example/api/users/:id`
   `Authorization: Bearer <token>`
+  
+  `URL: http://example/api/users/:id`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser atualizado.
   - **email**: E-mail do usuário (string, opcional). Formato de e-mail válido.
@@ -980,7 +983,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   Exemplo de entrada: `PUT/PATCH /api/users/:id`
 
-  Requisição: ***<i>htt://www.example.com/api/users/999</i>***
+  Requisição: ***<i>http://www.example.com/api/users/999</i>***
   
   Resposta:
 
@@ -995,8 +998,10 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 ### 🗑️ Deletar um usuário `METHOD:DELETE`:
 
   `BODY: { }`
-  `URL: http://example/api/users/:id`
+
   `Authorization: Bearer <token>`
+  
+  `URL: http://example/api/users/:id`
 
   - **id**: ID do usuário (number, obrigatório). ID do usuário a ser deletado.
 
@@ -1006,7 +1011,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   **✅ Caso de sucesso:**
  
-  Requisição no endpoint: ***<i>htt://www.example.com/api/users/1</i>***
+  Requisição no endpoint: ***<i>http://www.example.com/api/users/1</i>***
    
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -1025,7 +1030,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
     Exemplo de entrada: `DELETE /api/users/:id`
   
-    Requisição: ***<i>htt://www.example.com/api/users/999</i>***
+    Requisição: ***<i>http://www.example.com/api/users/999</i>***
     
     Resposta:
 
@@ -1037,7 +1042,7 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
       ```
   <br>
 
-### 🧑‍💼 Clientes
+## 🧑‍💼 Clientes
 
   O CPF do cliente é validado utilizando uma função específica que checa a conformidade do formato e dos dígitos do CPF com as regras padrões de formatação. Essa validação assegura que o CPF siga o formato correto e que os dígitos estejam de acordo com os critérios matemáticos estabelecidos.
 
@@ -1051,9 +1056,9 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
 
   [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  `BODY: { }`
-  `URL: http://example/api/clients`
   `Authorization: Bearer <token>`
+
+  `URL: http://example/api/clients`
 
   Dados para tabela de clientes:
   - **name**: Nome do cliente (string, obrigatório).
@@ -1143,20 +1148,23 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   }
   ```
 
+<br>
+  
   - **Token expirado:**
 
   Resposta:
 
-    ```json
-    {
-      "message": "Erro interno do servidor.",
-      "error": {
-          "name": "TokenExpiredError",
-          "message": "jwt expired"
-      }
+  ```json
+  {
+    "message": "Erro interno do servidor.",
+    "error": {
+        "name": "TokenExpiredError",
+        "message": "jwt expired"
     }
-    ```
-<br>
+  }
+  ```
+
+  <br>
   
   - **Algum campo obrigatório não preenchido:**
   
@@ -1168,6 +1176,8 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   }
   ```
 
+<br>
+  
   - **CPF já cadastrado:**
 
   Resposta:
@@ -1176,8 +1186,10 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   {
     "message": "CPF already exists."
   }
-    ```
+  ```
 
+<br>
+  
   - **CPF com formato inválido:**
 
   Resposta:
@@ -1199,6 +1211,8 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   }
   ```
 
+<br>
+  
   - **Email com formato inválido:**
 
   Resposta:
@@ -1217,9 +1231,12 @@ A rota de usuário, `/api/users`, permite criar um novo usuário no sistema, aut
   É possível filtrar as vendas por data inserindo mês e ano na URL. O sistema retorna as vendas realizadas para o cliente no mês e ano especificados.
    
   `BODY: {  }`  
-  `URL: http://example/api/clients/:id` Consulta padrão.
-  `URL: http://example/api/clients/:id?month=MM&year=YYYY` Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados. A ordem de inserção das datas não importa: `month=MM&year=YYYY` ou `year=YYYY&month=MM`. Também é possível filtrar apenas por mês ou apenas por ano.
+  
   `Authorization: Bearer <token>`
+
+  `URL: http://example/api/clients/:id` Consulta padrão.
+
+  `URL: http://example/api/clients/:id?month=MM&year=YYYY` Consulta com filtro. Retorna as vendas realizadas para o cliente no mês e ano especificados. A ordem de inserção das datas não importa: `month=MM&year=YYYY` ou `year=YYYY&month=MM`. Também é possível filtrar apenas por mês ou apenas por ano.
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser consultado.
 
@@ -1339,7 +1356,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Exemplo de entrada: `GET /api/clients/:id`
   
-    Requisição: `htt://www.example.com/api/clients/999`
+    Requisição: `http://www.example.com/api/clients/999`
     
     Resposta:
 
@@ -1354,15 +1371,16 @@ Filtrando as vendas por mês 5 e ano 2020
 ### 🗄️ Obter os dados de todos os clientes `METHOD:GET`:
 
   `BODY: {  }`  
-  `URL: http://example/api/clients`
+
   `Authorization: Bearer <token>`
 
+  `URL: http://example/api/clients`
 
   <br>
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/clients`
+  Requisição no endpoint: `http://www.example.com/api/clients`
 
   Resposta: 
   
@@ -1414,7 +1432,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   - **Error interno do servidor:**
 
-    Requisição: `htt://www.example.com/api/clients`
+    Requisição: `http://www.example.com/api/clients`
 
     Resposta:
 
@@ -1429,9 +1447,9 @@ Filtrando as vendas por mês 5 e ano 2020
 
   > 👀 ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um cliente. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
   
-  `BODY: { }`
-  `URL: http://example/api/clients/:id`
   `Authorization: Bearer <token>`
+
+  `URL: http://example/api/clients/:id`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser atualizado.
   - **name**: Nome do cliente (string, opcional).
@@ -1535,7 +1553,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Entrada: `PUT/PATCH /api/clients/:id`
   
-    Requisição: `htt://www.example.com/api/clients/999`
+    Requisição: `http://www.example.com/api/clients/999`
     
     Resposta:
 
@@ -1551,8 +1569,10 @@ Filtrando as vendas por mês 5 e ano 2020
 ### 🗑️ Deletar um cliente `METHOD:DELETE`:
 
   `BODY: { }`
-  `URL: http://example/api/clients/:id`
+
   `Authorization: Bearer <token>`
+  
+  `URL: http://example/api/clients/:id`
 
   - **id**: ID do cliente (number, obrigatório). ID do cliente a ser deletado.
 
@@ -1564,7 +1584,7 @@ Filtrando as vendas por mês 5 e ano 2020
   
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/clients/1`
+  Requisição no endpoint: `http://www.example.com/api/clients/1`
 
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -1581,7 +1601,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   Exemplo de entrada: `DELETE /api/clients/:id`
 
-  Requisição: `htt://www.example.com/api/clients/999`
+  Requisição: `http://www.example.com/api/clients/999`
 
   Resposta:
 
@@ -1637,7 +1657,7 @@ Filtrando as vendas por mês 5 e ano 2020
     ``` 
 <br>
 
-### 📦 Produtos
+## 📦 Produtos
 
   A rota de produtos é protegida por autenticação JWT e requer um token válido para acesso. 
 
@@ -1649,9 +1669,9 @@ Filtrando as vendas por mês 5 e ano 2020
 
  [Sumário](#sumário) | [Descrição do teste](#ℹ️-descrição-do-teste)
 
-  `BODY: { }`
-  `URL: http://example/api/products`  
   `Authorization: Bearer <token>`
+   
+  `URL: http://example/api/products` 
 
   - **name**: Nome do produto (string, obrigatório).
   - **description**: Descrição do produto (string, opcional).
@@ -1772,8 +1792,10 @@ Filtrando as vendas por mês 5 e ano 2020
 ### 🗄️ Obter os dados de um produto `METHOD:GET`:
   
   `BODY: {  }`  
-  `URL: http://example/api/products/:id`
+
   `Authorization: Bearer <token>`
+
+  `URL: http://example/api/products/:id`
 
   - **id**: ID do produto (number, obrigatório). ID do produto a ser consultado.
 
@@ -1786,7 +1808,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/products/1`
+  Requisição no endpoint: `http://www.example.com/api/products/1`
 
   Resposta:
 
@@ -1819,7 +1841,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Exemplo de entrada: `GET /api/products/:id`
   
-    Requisição: `htt://www.example.com/api/products/999`
+    Requisição: `http://www.example.com/api/products/999`
     
     Resposta:
 
@@ -1835,14 +1857,16 @@ Filtrando as vendas por mês 5 e ano 2020
 ### 🗄️ Obter os dados de todos os produtos `METHOD:GET`:
 
   `BODY: {  }`  
-  `URL: http://example/api/products`
+
   `Authorization: Bearer <token>`
+  
+  `URL: http://example/api/products`
 
   <br>
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/products`
+  Requisição no endpoint: `http://www.example.com/api/products`
 
   Resposta:
 
@@ -1902,7 +1926,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
   - **Error interno do servidor:**
 
-    Requisição: `htt://www.example.com/api/products`
+    Requisição: `http://www.example.com/api/products`
 
     Resposta:
 
@@ -1918,9 +1942,9 @@ Filtrando as vendas por mês 5 e ano 2020
 
   > 👀 ***Pode-se usar o método `PUT` ou `PATCH` para atualizar os dados de um produto. O método usado não altera o funcionamento da rota. Preferencialmente, use o método `PATCH` para atualizações parciais e o método `PUT` para atualizações completas.*** 🚀
 
-  `BODY: { }`
-  `URL: http://example/api/products/:id`
   `Authorization: Bearer <token>`
+
+  `URL: http://example/api/products/:id`
 
   - **id**: ID do produto (number, obrigatório). ID do produto a ser atualizado.
   - **name**: Nome do produto (string, opcional).
@@ -2023,7 +2047,7 @@ Filtrando as vendas por mês 5 e ano 2020
 
     Entrada: `PUT/PATCH /api/products/:id`
   
-    Requisição: `htt://www.example.com/api/products/999`
+    Requisição: `http://www.example.com/api/products/999`
     
     Resposta:
 
@@ -2038,11 +2062,13 @@ Filtrando as vendas por mês 5 e ano 2020
 
 ### 🗑️ Deletar um produto `METHOD:DELETE`:
 
-Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produto é marcado como deletado, mas não é removido do banco de dados.
+Essa rota consta com a funcionalidade de fazer um `Soft Delete`, ou seja, o produto é marcado como deletado, mas não é removido do banco de dados.
 
   `BODY: { }`
-  `URL: http://example/api/products/1`
+
   `Authorization: Bearer <token>`
+
+  `URL: http://example/api/products/1`
 
   - **id**: ID do produto (number, obrigatório). ID do produto a ser deletado.
 
@@ -2054,7 +2080,7 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/products/1`
+  Requisição no endpoint: `http://www.example.com/api/products/1`
 
   Resposta: **<i>StatusHTTP: 204 No Content</i>**
 
@@ -2072,7 +2098,7 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
   Exemplo de entrada: `DELETE /api/products/:id`
 
-  Requisição: `htt://www.example.com/api/products/999`
+  Requisição: `http://www.example.com/api/products/999`
 
   Resposta:
 
@@ -2085,7 +2111,7 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
   <br>
 
-### 📦 Vendas
+## 📦 Vendas
 
   A rota de vendas é protegida por autenticação JWT e requer um token válido para acesso. 
 
@@ -2099,9 +2125,9 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
 ### 📋 Cadastrar `METHOD:POST`:
   
-  `BODY: { }`
-  `URL: http://example.com/api/sales`
   `Authorization: Bearer <token>`
+
+  `URL: http://example.com/api/sales`
 
   - **client_id**: ID do cliente (number, obrigatório). ID do cliente que realizou a compra.
   - **product_id**: ID do produto (number, obrigatório). ID do produto vendido.
@@ -2211,8 +2237,10 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 ### 🗄️ Obter os dados de uma venda `METHOD:GET`:
 
   `BODY: {  }`  
-  `URL: http://example.com/api/sales/:id`
+
   `Authorization: Bearer <token>`
+
+  `URL: http://example.com/api/sales/:id`
 
   - **id**: ID da venda (number, obrigatório). ID da venda a ser consultada.
 
@@ -2224,7 +2252,7 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/sales/1`
+  Requisição no endpoint: `http://www.example.com/api/sales/1`
 
   Resposta:
 
@@ -2252,7 +2280,7 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
     Exemplo de entrada: `GET /api/sales/:id`
   
-    Requisição: `htt://www.example.com/api/sales/999`
+    Requisição: `http://www.example.com/api/sales/999`
     
     Resposta:
 
@@ -2268,14 +2296,16 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 ### 🗄️ Obter os dados de todas as vendas `METHOD:GET`:
   
   `BODY: {  }`  
-  `URL: http://example.com/api/sales`
+
   `Authorization: Bearer <token>`
+  
+  `URL: http://example.com/api/sales`
 
   <br>
 
   **✅ Caso de sucesso:**
 
-  Requisição no endpoint: `htt://www.example.com/api/sales`
+  Requisição no endpoint: `http://www.example.com/api/sales`
 
   Resposta:
 
@@ -2326,7 +2356,7 @@ Essa rota consta com a funcionalidade de fazer um Soft Delete, ou seja, o produt
 
   - **Error interno do servidor:**
 
-    Requisição: `htt://www.example.com/api/sales`
+    Requisição: `http://www.example.com/api/sales`
 
     Resposta:
 
